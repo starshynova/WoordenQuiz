@@ -1,6 +1,7 @@
 import { USER_INTERFACE_ID, START_QUIZ_BUTTON_ID, NAME_INPUT_ID } from '../constants.js';
 import { createWelcomeElement } from '../views/welcomeView.js';
 import { initQuestionPage } from './questionPage.js';
+import { getWord } from './flashCardPage.js';
 
 export let userName = "";
 
@@ -21,7 +22,8 @@ export const initWelcomePage = () => {
   .getElementById(START_QUIZ_BUTTON_ID)
   .addEventListener('click', () => {
   userName = nameInput.value;
-  initQuestionPage()
+  // initQuestionPage()
+  getWord()
   }
   );
 };

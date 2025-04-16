@@ -21,7 +21,3 @@ export const createQuestionElement = (questionText) => {
 
   return element;
 };
-
-/* <button id="${NEXT_QUESTION_BUTTON_ID}">
-    Next question
-  </button> */

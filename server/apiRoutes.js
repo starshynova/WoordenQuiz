@@ -1,4 +1,4 @@
-const EXTERNAL_BASE_URL = "https://react-project-t4ti.onrender.com";
+const EXTERNAL_BASE_URL = "http://localhost:3000";
 
 
 export const API_ROUTES = {
