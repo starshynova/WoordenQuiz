@@ -26,7 +26,7 @@ app.use(express.json());
 
 app.get("/api/word", async (req, res) => {
   try {
-    const word = await collection.findOne({status: "new"});
+    const word = await collection.findOne({status: "new", stage: 0});
     if (!word) {
       return res.status(404).json({ error: "Word not found" });
     }

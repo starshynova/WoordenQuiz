@@ -1,23 +1,15 @@
 {
-  "name": "js-quiz-starter",
+  "name": "WoordenQuiz",
   "version": "1.0.0",
+  "type": "module",
   "scripts": {
     "prettier:write": "prettier --write .",
     "prettier:check": "prettier --check ."
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/HackYourFuture/browser-quiz-project-starter.git"
-  },
   "author": "",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/HackYourFuture/browser-quiz-project-starter/issues"
-  },
-  "homepage": "https://github.com/HackYourFuture/browser-quiz-project-starter",
   "devDependencies": {
     "prettier": "^2.8.8"
   },
-  "description": "This repository functions as the basis of the quiz project in the [Browsers module](https://github.com/HackYourFuture/Browsers). Before the first group meeting, have a look through this code and try to understand how it works and how it is organised. We will explain the idea behind the structure below as well as the Backlog (which will identify what is needed to be implemented).",
   "main": "prettier.config.js"
 }

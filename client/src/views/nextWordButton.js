@@ -1,7 +1,7 @@
-import { getWord } from '..pages/flashCardPage.js';
-import { currentWordId } from '..pages/flashCardPage.js';
+import { getWord } from "../pages/wordPage.js"
+import { currentWordId } from '../pages/wordPage.js';
 
-const nextButton = document.createElement('button');
+export const nextButton = document.createElement('button');
 nextButton.textContent = 'Next word';
 nextButton.className = 'next-button';
 
