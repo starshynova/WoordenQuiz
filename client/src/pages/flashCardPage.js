@@ -1,7 +1,7 @@
 import { renderSingleCard } from '../views/flashCardView.js'; 
 
 export let currentWordId = 0;
-async function getWord() {
+export async function getWord() {
     try {
       const response = await fetch('http://localhost:3000/api/word') 
       const word = await response.json(); 
@@ -13,8 +13,8 @@ async function getWord() {
     }
   }
   
-  document.addEventListener('DOMContentLoaded', () => {
-    getWord();
-  });
+//   document.addEventListener('DOMContentLoaded', () => {
+//     getWord();
+//   });
 
-  export { getWord };
+//   export { getWord };

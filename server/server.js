@@ -45,7 +45,7 @@ app.put("/api/word/:id", async (req, res) => {
 
     const result = await collection.updateOne(
       { _id: new ObjectId(wordId) },
-      { $set: updateData }
+      { $inc: updateData }
     );
 
     if (result.modifiedCount === 0) {
