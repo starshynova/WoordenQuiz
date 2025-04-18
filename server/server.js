@@ -28,9 +28,9 @@ app.use(express.json());
 
 app.get("/api/word", async (req, res) => {
   try {
-  const lenghtActiveWoorden = await activeWoorden.countDocuments();
+  const lengthActiveWoorden = await activeWoorden.countDocuments();
  
-  if (lenghtActiveWoorden === 0) {
+  if (lengthActiveWoorden === 0) {
     const temporaryWoorden = await woorden.find({status: "new", stage: 0})
     .limit(10)
     .toArray();
@@ -87,9 +87,9 @@ app.get("/api/active-word", async (req, res) => {
 
 app.get("/api/repeat-words", async (req, res) => {
   try {
-  const lenghtRepeatWoorden = await repeatWoordenWoorden.countDocuments();
+  const lengthRepeatWoorden = await repeatWoordenWoorden.countDocuments();
  
-  if (lenghtRepeatWoorden === 0) {
+  if (lengthRepeatWoorden === 0) {
     const temporaryWoorden = await woorden.find({status: "familiar"})
     .limit(5)
     .toArray();
@@ -207,6 +207,84 @@ app.put("/api/update-words", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+app.get("/api/quiz-two/:id", async (req, res) => {
+  try {
+    const wordId = new ObjectId(req.params.id);
+
+    const currentWord = await activeWoorden.findOne({ _id: wordId });
+    if (!currentWord) {
+      return res.status(404).json({ error: "Word not found" });
+    }
+
+    const otherWords = await activeWoorden
+      .aggregate([
+        { $match: { _id: { $ne: wordId } } },
+        { $sample: { size: 1 } }
+      ])
+      .toArray();
+
+    if (otherWords.length === 0) {
+      return res.status(404).json({ error: "No alternative word found" });
+    }
+
+    const wrongBack = otherWords[0].back;
+
+    const options = [currentWord.back, wrongBack].sort(() => Math.random() - 0.5);
+
+    res.json({
+      question: currentWord.front,
+      options,
+      correctAnswer: currentWord.back,
+      wordId: currentWord._id
+    });
+  } catch (error) {
+    console.error("Error generating quiz:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.get("/api/quiz-four/:id", async (req, res) => {
+  try {
+    const wordId = new ObjectId(req.params.id);
+
+    const currentWord = await activeWoorden.findOne({ _id: wordId });
+    if (!currentWord) {
+      return res.status(404).json({ error: "Word not found" });
+    }
+
+    const wrongAnswers = await activeWoorden
+      .aggregate([
+        { $match: { _id: { $ne: wordId } } },
+        { $sample: { size: 3 } }
+      ])
+      .toArray();
+
+    if (wrongAnswers.length < 3) {
+      return res.status(404).json({ error: "Not enough alternative words" });
+    }
+
+    const incorrectOptions = wrongAnswers.map(word => word.back);
+    const correctAnswer = currentWord.back;
+
+    const options = [correctAnswer, ...incorrectOptions].sort(() => Math.random() - 0.5);
+
+    res.json({
+      question: currentWord.front,
+      options,
+      correctAnswer,
+      wordId: currentWord._id
+    });
+  } catch (error) {
+    console.error("Error generating quiz:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
+
+
+
 
 app.delete("/api/clear-collections", async (req, res) => {
   const session = client.startSession(); 
