@@ -161,8 +161,6 @@ input::placeholder {
 
  */
 
-
-
 body {
   font-family: sans-serif;
   display: flex;
@@ -197,7 +195,8 @@ body {
   transform: rotateY(180deg);
 }
 
-.card-front, .card-back {
+.card-front,
+.card-back {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -216,14 +215,13 @@ body {
   background: #d0eaff;
 }
 
-
 .next-button {
   margin-top: 20px;
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
   border-radius: 8px;
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   border: none;
   transition: background-color 0.3s;
