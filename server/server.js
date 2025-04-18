@@ -50,11 +50,15 @@ app.get("/api/word", async (req, res) => {
         }))
       );
     }
-    const nextWord = await activeWoorden.findOne().sort({ stage: 1 });
+    const nextWord = await activeWoorden
+    .find()
+    .sort({ stage: 1 })
+    .limit(1)
+    .toArray();
     if (!nextWord) {
       return res.status(404).json({ error: "No word found" });
     }
-    res.json(nextWord)
+    res.json(nextWord[0])
 
   } catch (error) {
       console.error("Error fetching word:", error);
@@ -66,11 +70,15 @@ app.get("/api/word", async (req, res) => {
 
 app.get("/api/active-word", async (req, res) => {
   try {
-    const word = await activeWoorden.findOne().sort({ stage: 1 });
+    const word = await activeWoorden.find()
+    .sort({ stage: 1 })
+    .limit(1)
+    .toArray();
+
     if (!word) {
       return res.status(404).json({ error: "No word found" });
     }
-    res.json(word)
+    res.json(word[0])
   } catch (error) {
       console.error("Error fetching word:", error);
       res.status(500).json({ error: "Internal server error" });
@@ -101,7 +109,7 @@ app.get("/api/repeat-words", async (req, res) => {
         }))
       );
     }
-    
+
     const nextWord = await activeWoorden.findOne().sort({ stage: 1 });
     if (!nextWord) {
       return res.status(404).json({ error: "No word found" });
@@ -114,6 +122,39 @@ app.get("/api/repeat-words", async (req, res) => {
     }
   }
 );
+
+
+app.put("/api/word/:id", async (req, res) => {
+  try {
+    const wordId = req.params.id;
+    const updateData = req.body;
+
+    if (updateData.counter === undefined && updateData.stage === undefined) {
+      return res.status(400).json({ error: "Both 'counter' and 'stage' are missing" });
+    }
+    // const collectionName = req.body.collection;
+
+    // if (!collectionName) {
+    //   return res.status(400).json({ error: "Collection name is required" });
+    // }
+
+    // const collection = db.collection(collectionName);
+
+    const result = await activeWoorden.updateOne(
+      { _id: new ObjectId(wordId) },
+      { $set: { counter: updateData.counter || 0,  stage: updateData.stage} }
+    );
+
+    if (result.modifiedCount === 0) {
+      return res.status(404).json({ error: "Word not updated" });
+    }
+
+    res.json({ message: "Word updated successfully" });
+  } catch (error) {
+    console.error("Error updating word:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 
 app.put("/api/update-words", async (req, res) => {
@@ -202,26 +243,7 @@ app.delete("/api/clear-collections", async (req, res) => {
 
 
 
-// app.put("/api/word/:id", async (req, res) => {
-//   try {
-//     const wordId = req.params.id;
-//     const updateData = req.body;
 
-//     const result = await woorden.updateOne(
-//       { _id: new ObjectId(wordId) },
-//       { $inc: updateData }
-//     );
-
-//     if (result.modifiedCount === 0) {
-//       return res.status(404).json({ error: "Word not updated" });
-//     }
-
-//     res.json({ message: "Word updated successfully" });
-//   } catch (error) {
-//     console.error("Error updating word:", error);
-//     res.status(500).json({ error: "Internal server error" });
-//   }
-// });
 
 
 

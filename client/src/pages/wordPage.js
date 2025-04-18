@@ -1,6 +1,7 @@
 import { renderSingleCard } from '../views/flashCardView.js'; 
 
 export let currentWordId;
+export let currentStage = 0;
 let stageWordCounter = 0;
 export const  getWord = async() => {
   let word;
@@ -8,6 +9,7 @@ export const  getWord = async() => {
     const response = await fetch('http://localhost:3000/api/word') 
     word = await response.json();
     currentWordId = word._id;
+    currentStage = word.stage;
   } catch (error) {
     console.error('Error getting word:', error);
     return;

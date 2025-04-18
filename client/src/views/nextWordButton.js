@@ -1,5 +1,6 @@
 import { getWord } from "../pages/wordPage.js"
 import { currentWordId } from '../pages/wordPage.js';
+import { currentStage } from "../pages/wordPage.js";
 
 export const nextButton = document.createElement('button');
 nextButton.textContent = 'Next word';
@@ -12,7 +13,7 @@ nextButton.addEventListener('click', async () => {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ stage: 1 }) 
+          body: JSON.stringify({ stage: currentStage + 1 }) 
         });
       } catch (error) {
         console.error('Error when updating a word:', error);
