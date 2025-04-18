@@ -1,5 +1,3 @@
-// import { currentWordId } from '../pages/flashCardPage.js';
-// import { getWord } from '../pages/flashCardPage.js';
 import {nextButton} from "./nextWordButton.js"
 
 export function renderSingleCard(front, back) {
