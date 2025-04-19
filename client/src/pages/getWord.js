@@ -37,9 +37,9 @@ export const getWord = async () => {
   } else if ([3, 4].includes(stage)) {
     renderQuizTwoCard();
   } else if ([5, 6].includes(stage)) {
-    renderQuizFourCard();
+    renderQuizFourCard('front-to-back');
   } else if (stage === 7) {
-    renderQuizFourCard(word.back);
+    renderQuizFourCard('back-to-front');
   }
   stageWordCounter++;
 };

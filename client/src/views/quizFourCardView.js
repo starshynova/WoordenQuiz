@@ -1,23 +1,33 @@
-import { generateFourAnswers } from "./generateFourAnswers.js";
+import { generateFourAnswers, generateFourAnswersInversion } from "./generateFourAnswers.js";
 import { nextButton } from "./nextWordButton.js";
 import { setIncorrectAnswer } from "../pages/getWord.js";
 
-export const renderQuizFourCard = async () => {
+export const renderQuizFourCard = async (direction) => {
   const container = document.createElement("div");
-  container.className = "quiz-2-container";
+  container.className = "quiz-4-container";
 
-  const cardBlock = await createCardBlock(container);
+  const cardBlock = await createCardBlock(container, direction);
   container.appendChild(cardBlock);
   container.appendChild(nextButton);
 
   document.getElementById("user-interface").appendChild(container);
 };
 
-const createCardBlock = async (container) => {
+const createCardBlock = async (container, direction) => {
   const wrapper = document.createElement("div");
   wrapper.className = "card-block";
 
-  const data = await generateFourAnswers();
+
+  let data;
+
+  if (direction === 'front-to-back') {
+    data = await generateFourAnswers(); 
+  } else if (direction === 'back-to-front') {
+    data = await generateFourAnswersInversion(); 
+  } else {
+    console.error("Unknown direction:", direction);
+    return;
+  }
   console.log("generateFourAnswers:", data);
 
   const question = document.createElement("div");

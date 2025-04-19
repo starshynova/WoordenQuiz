@@ -249,6 +249,7 @@ app.get("/api/quiz-two/:id", async (req, res) => {
 app.get("/api/quiz-four/:id", async (req, res) => {
   try {
     const wordId = new ObjectId(req.params.id);
+    const direction = req.query.direction || 'front-to-back';
 
     const currentWord = await activeWoorden.findOne({ _id: wordId });
     if (!currentWord) {
@@ -264,17 +265,20 @@ app.get("/api/quiz-four/:id", async (req, res) => {
 
     if (wrongAnswers.length < 3) {
       return res.status(404).json({ error: "Not enough alternative words" });
-    }
+    };
 
-    const incorrectOptions = wrongAnswers.map((word) => word.back);
-    const correctAnswer = currentWord.back;
+    const questionField = direction === 'front-to-back' ? 'front' : 'back';
+    const answerField = direction === 'front-to-back' ? 'back' : 'front';
+
+    const incorrectOptions = wrongAnswers.map((word) => word[answerField]);
+    const correctAnswer = currentWord[answerField];
 
     const options = [correctAnswer, ...incorrectOptions].sort(
       () => Math.random() - 0.5,
     );
 
     res.json({
-      question: currentWord.front,
+      question: currentWord[questionField],
       options,
       correctAnswer,
       wordId: currentWord._id,
