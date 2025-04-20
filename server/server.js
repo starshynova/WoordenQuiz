@@ -52,13 +52,18 @@ app.get("/api/word", async (req, res) => {
     }
     const nextWord = await activeWoorden
       .find()
-      .sort({ stage: 1 })
+      .sort({ stage: 1, updatedAt: 1 })
       .limit(1)
       .toArray();
     if (!nextWord) {
       return res.status(404).json({ error: "No word found" });
     }
-    res.json(nextWord[0]);
+
+    const totalWordsWithStage = await activeWoorden.countDocuments({ stage: nextWord[0].stage });
+    res.json({
+      word: nextWord[0],
+      totalWordsWithStage: totalWordsWithStage, 
+    });
   } catch (error) {
     console.error("Error fetching word:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -85,7 +90,7 @@ app.get("/api/active-word", async (req, res) => {
 
 app.get("/api/repeat-words", async (req, res) => {
   try {
-    const lengthRepeatWoorden = await repeatWoordenWoorden.countDocuments();
+    const lengthRepeatWoorden = await repeatWoorden.countDocuments();
 
     if (lengthRepeatWoorden === 0) {
       const temporaryWoorden = await woorden
@@ -111,7 +116,7 @@ app.get("/api/repeat-words", async (req, res) => {
       );
     }
 
-    const nextWord = await activeWoorden.findOne().sort({ stage: 1 });
+    const nextWord = await repeatWoorden.findOne().sort({ stage: 1 });
     if (!nextWord) {
       return res.status(404).json({ error: "No word found" });
     }
@@ -164,8 +169,8 @@ app.put("/api/update-words", async (req, res) => {
     const updatedActiveWoorden = await activeWoorden.find().toArray();
     const updatedRepeatWoorden = await repeatWoorden.find().toArray();
 
-    await Promise.all(
-      updatedActiveWoorden.forEach(async (word) => {
+    // await Promise.all(
+      for (const word of updatedActiveWoorden) {
         await woorden.updateOne(
           { _id: word.wordId },
           {
@@ -175,13 +180,13 @@ app.put("/api/update-words", async (req, res) => {
               stage: word.stage,
             },
           },
-          { session },
+          { session }
         );
-      }),
-    );
+      }
+    // );
 
-    await Promise.all(
-      updatedRepeatWoorden.forEach(async (word) => {
+    // await Promise.all(
+      for (const word of updatedRepeatWoorden) {
         await woorden.updateOne(
           { _id: word.wordId },
           {
@@ -191,10 +196,10 @@ app.put("/api/update-words", async (req, res) => {
               stage: word.stage,
             },
           },
-          { session },
+          { session }
         );
-      }),
-    );
+      }
+    // );
 
     await session.commitTransaction();
     session.endSession();

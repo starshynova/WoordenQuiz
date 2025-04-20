@@ -1,5 +1,6 @@
 import { generateFourAnswers, generateFourAnswersInversion } from "./generateFourAnswers.js";
 import { nextButton } from "./nextWordButton.js";
+import { nextWordSetButton } from "./nextWordSetButton.js";
 import { setIncorrectAnswer } from "../pages/getWord.js";
 
 export const renderQuizFourCard = async (direction) => {
@@ -9,6 +10,7 @@ export const renderQuizFourCard = async (direction) => {
   const cardBlock = await createCardBlock(container, direction);
   container.appendChild(cardBlock);
   container.appendChild(nextButton);
+  container.appendChild(nextWordSetButton);
 
   document.getElementById("user-interface").appendChild(container);
 };

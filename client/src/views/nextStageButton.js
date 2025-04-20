@@ -1,13 +1,9 @@
 import { getWord } from "../pages/getWord.js";
-import { currentWordId, currentStage, currentCounter, getIncorrectAnswer, stageCounters } from "../pages/getWord.js";
+import { currentWordId, currentStage, currentCounter, getIncorrectAnswer } from "../pages/getWord.js";
 
-export const nextButton = document.createElement("button");
-
-nextButton.classList.add("next-button");
-
-export function updateNextButtonText() {
-  
-}
+export const nextStageButton = document.createElement("button");
+nextStageButton.textContent = "Next stage";
+nextStageButton.className = "next-button";
 
 const setUpdateData = async (data) => {
   try {
@@ -41,18 +37,17 @@ const setUpdateData = async (data) => {
 //   }
 // };
 
-nextButton.addEventListener("click", async () => {
+nextStageButton.addEventListener("click", async () => {
   let updateData = {};
 
-  if (currentStage < 8) {
+  // if (currentStage < 8) {
     updateData.stage = currentStage + 1;
 
     if (getIncorrectAnswer?.() === true) {
       updateData.counter = currentCounter + 1;
     }
 
-  } else if (currentStage === 8) {
-  }
+  // } else if (currentStage === 8) {
   //   if (currentCounter <= 1) {
   //     updateData = { status: "learned" };
   //   } else if (currentCounter > 1 && currentCounter < 4) {
@@ -63,8 +58,8 @@ nextButton.addEventListener("click", async () => {
   // }
 
   await setUpdateData(updateData);
-  // await setUpdatedCollections();
-  // await clearCollections();
+  await setUpdatedCollections();
+  await clearCollections();
 
   document.getElementById("user-interface").innerHTML = "";
   getWord();
