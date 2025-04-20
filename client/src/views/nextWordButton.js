@@ -18,25 +18,6 @@ const setUpdateData = async (data) => {
   }
 };
 
-// const setUpdatedCollections = async (data) => {
-//   try {
-//     await fetch('http://localhost:3000/api/update-words', {
-//       method: "PUT",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify(data),
-//     });
-//   } catch (error) {
-//     console.error("Error when updating collections:", error);
-//   }
-// }
-
-// const clearCollections = async () => {
-//   try {
-//     await fetch('http://localhost:3000/api/clear-collections')
-//   } catch (error) {
-//     console.error("Error when clearing collections:", error);
-//   }
-// };
 
 nextButton.addEventListener("click", async () => {
   let updateData = {};
@@ -48,21 +29,21 @@ nextButton.addEventListener("click", async () => {
       updateData.counter = currentCounter + 1;
     }
 
+    // if (currentCounter <= 1) {
+    //   updateData = { status: "learned" };
+    // } else if (currentCounter > 1 && currentCounter < 4) {
+    //   updateData = { status: "familiar", counter: 0, stage: 5 };
+    // } else if (currentCounter >= 4) {
+    //   updateData = { status: "new", counter: 0, stage: 0 };
+    // }
+
   } else if (currentStage === 8) {
 nextWordSetPage();
   }
-  //   if (currentCounter <= 1) {
-  //     updateData = { status: "learned" };
-  //   } else if (currentCounter > 1 && currentCounter < 4) {
-  //     updateData = { status: "familiar", counter: 0, stage: 5 };
-  //   } else if (currentCounter >= 4) {
-  //     updateData = { status: "new", counter: 0, stage: 0 };
-  //   }
-  // }
+    
+  
 
   await setUpdateData(updateData);
-  // await setUpdatedCollections();
-  // await clearCollections();
 
   document.getElementById("user-interface").innerHTML = "";
   getWord();

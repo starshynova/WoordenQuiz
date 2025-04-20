@@ -169,37 +169,39 @@ app.put("/api/update-words", async (req, res) => {
     const updatedActiveWoorden = await activeWoorden.find().toArray();
     const updatedRepeatWoorden = await repeatWoorden.find().toArray();
 
-    // await Promise.all(
-      for (const word of updatedActiveWoorden) {
-        await woorden.updateOne(
-          { _id: word.wordId },
-          {
-            $set: {
-              status: word.status,
-              counter: word.counter,
-              stage: word.stage,
-            },
-          },
-          { session }
-        );
-      }
-    // );
+    const processWord = async (word) => {
+      let updatedData = {
+        status: word.status,
+        counter: word.counter,
+        stage: word.stage,
+      };
 
-    // await Promise.all(
-      for (const word of updatedRepeatWoorden) {
-        await woorden.updateOne(
-          { _id: word.wordId },
-          {
-            $set: {
-              status: word.status,
-              counter: word.counter,
-              stage: word.stage,
-            },
-          },
-          { session }
-        );
+      if (word.counter === 0 || word.counter === 1) {
+        updatedData.status = "learned";
+      } else if (word.counter === 2 || word.counter === 3) {
+        updatedData.status = "familiar";
+        updatedData.counter = 0;
+        updatedData.stage = 5;
+      } else if (word.counter === 4 || word.counter === 5) {
+        updatedData.counter = 0;
+        updatedData.stage = 0;
       }
-    // );
+      
+
+      await woorden.updateOne(
+        { _id: word.wordId },
+        { $set: updatedData },
+        { session }
+      );
+    };
+
+    for (const word of updatedActiveWoorden) {
+      await processWord(word);
+    }
+
+    for (const word of updatedRepeatWoorden) {
+      await processWord(word);
+    }
 
     await session.commitTransaction();
     session.endSession();
@@ -212,6 +214,7 @@ app.put("/api/update-words", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
 
 app.get("/api/quiz-two/:id", async (req, res) => {
   try {
@@ -317,16 +320,6 @@ app.delete("/api/clear-collections", async (req, res) => {
   }
 });
 
-// app.delete("/api/clear-collection", async (req, res) => {
-//   const session = client.startSession();
-//   try {
-//     await collection.deleteMany({});
-//     res.json({ message: "All documents have been deleted" });
-//   } catch (error) {
-//     console.error("Error deleting documents:", error);
-//     res.status(500).json({ error: "Internal server error" });
-//   }
-// });
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
