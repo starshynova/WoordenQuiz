@@ -1,21 +1,13 @@
 import { getWord } from "../pages/getWord.js";
 import { currentWordId, currentStage, currentCounter, getIncorrectAnswer } from "../pages/getWord.js";
 
-export const nextWordSetButton = document.createElement("button");
+export const nextWordSetPage = () => {
+const container = document.createElement("div");
+const nextWordSetButton = document.createElement("button");
 nextWordSetButton.textContent = "Next 10 word ";
-nextWordSetButton.classList.add("hide");
-
-const setUpdateData = async (data) => {
-  try {
-    await fetch(`http://localhost:3000/api/word/${currentWordId}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-  } catch (error) {
-    console.error("Error when updating a word:", error);
-  }
-};
+nextWordSetButton.classList.add("next-button");
+document.getElementById("user-interface").appendChild(container);
+container. appendChild(nextWordSetButton);
 
 const setUpdatedCollections = async (data) => {
   try {
@@ -31,36 +23,22 @@ const setUpdatedCollections = async (data) => {
 
 const clearCollections = async () => {
   try {
-    await fetch('http://localhost:3000/api/clear-collections')
+    await fetch('http://localhost:3000/api/clear-collections', {
+      method: "DELETE",
+    });
   } catch (error) {
     console.error("Error when clearing collections:", error);
   }
 };
 
-nextWordSetButton.addEventListener("click", async () => {
-  let updateData = {};
-
-  if (currentStage < 8) {
-    updateData.stage = currentStage + 1;
-
-    if (getIncorrectAnswer?.() === true) {
-      updateData.counter = currentCounter + 1;
-    }
-
-  } else if (currentStage === 8) {
-    if (currentCounter <= 1) {
-      updateData = { status: "learned" };
-    } else if (currentCounter > 1 && currentCounter < 4) {
-      updateData = { status: "familiar", counter: 0, stage: 5 };
-    } else if (currentCounter >= 4) {
-      updateData = { status: "new", counter: 0, stage: 0 };
-    }
-  }
-
-  await setUpdateData(updateData);
+  nextWordSetButton.addEventListener("click", async () => {
   await setUpdatedCollections();
   await clearCollections();
 
   document.getElementById("user-interface").innerHTML = "";
-  getWord();
+  await getWord();
 });
+};
+
+
+

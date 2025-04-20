@@ -5,6 +5,10 @@ export function renderSingleCard(front, back) {
   container.className = "card-container";
   const card = createCard(front, back);
 
+  if (nextButton.className = "hide") {
+    nextButton.classList.remove("hide");
+    nextButton.classList.add("next-button");
+  }
   container.appendChild(card);
   container.appendChild(nextButton);
 

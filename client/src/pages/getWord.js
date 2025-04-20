@@ -2,7 +2,8 @@ import { renderSingleCard } from "../views/flashCardView.js";
 import { renderQuizTwoCard } from "../views/quizTwoCardView.js";
 import { renderQuizFourCard } from "../views/quizFourCardView.js";
 import { nextButton } from "../views/nextWordButton.js";
-import {nextWordSetButton} from "../views/nextWordSetButton.js"
+// import {nextWordSetButton} from "../views/nextWordSetButton.js";
+import { finishSetButton } from "../views/finishSetButton.js";
 
 export let currentWordId;
 export let currentStage = 0;
@@ -57,14 +58,14 @@ export const getWord = async () => {
   }
 
 if (totalStageCount === 1) {
-    nextButton.textContent = "Next stage"; // Меняем текст кнопки
+    nextButton.textContent = "Next stage"; 
   } else {
     nextButton.textContent = "Next word";
   }
 if (currentStage === 7 && totalStageCount === 1) {
   nextButton.classList.add("hide");
-  nextWordSetButton.classList.remove("hide");
-  nextWordSetButton.classList.add("next-button");
+  finishSetButton.classList.remove("hide");
+  finishSetButton.classList.add("next-button");
 }
 };
 
