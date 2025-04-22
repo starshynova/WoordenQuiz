@@ -5,6 +5,7 @@ import { nextWordSetPage } from "./nextWordSetButton.js";
 export const finishSetButton = document.createElement("button");
 finishSetButton.textContent = "Finish this set";
 finishSetButton.classList.add("hide");
+finishSetButton.disabled = true;
 
 const setUpdateData = async (data) => {
   try {

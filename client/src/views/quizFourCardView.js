@@ -1,12 +1,13 @@
 import { generateFourAnswers, generateFourAnswersInversion } from "./generateFourAnswers.js";
 import { nextButton } from "./nextWordButton.js";
 import { nextWordSetPage } from "./nextWordSetButton.js";
-import { setIncorrectAnswer } from "../pages/getWord.js";
+import { currentStage, setIncorrectAnswer, totalStageCount } from "../pages/getWord.js";
 import { finishSetButton } from "./finishSetButton.js";
 
 export const renderQuizFourCard = async (direction) => {
   const container = document.createElement("div");
   container.className = "quiz-4-container";
+  nextButton.disabled = true;
 
   const cardBlock = await createCardBlock(container, direction);
   container.appendChild(cardBlock);
@@ -68,6 +69,9 @@ const createCardBlock = async (container, direction) => {
           correctAnswerElement.classList.add("correct-answer");
         }
       }
+      nextButton.disabled = false;
+      if (currentStage === 7 && totalStageCount === 1)
+      finishSetButton.disabled = false
     });
 
     return element;

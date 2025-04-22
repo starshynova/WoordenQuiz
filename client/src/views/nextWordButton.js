@@ -5,6 +5,7 @@ import { nextWordSetPage } from "./nextWordSetButton.js";
 export const nextButton = document.createElement("button");
 
 nextButton.classList.add("next-button");
+// nextButton.disabled = true;
 
 const setUpdateData = async (data) => {
   try {

@@ -5,6 +5,7 @@ import { setIncorrectAnswer } from "../pages/getWord.js";
 export const renderQuizTwoCard = async () => {
   const container = document.createElement("div");
   container.className = "quiz-2-container";
+  nextButton.disabled = true;
 
   const cardBlock = await createCardBlock(container);
   container.appendChild(cardBlock);
@@ -54,6 +55,7 @@ const createCardBlock = async (container) => {
           correctAnswerElement.classList.add("correct-answer");
         }
       }
+      nextButton.disabled = false;
     });
 
     return element;
