@@ -6,9 +6,9 @@ import { nextButton } from "../views/nextWordButton.js";
 import { finishSetButton } from "../views/finishSetButton.js";
 
 export let currentWordId;
-export let currentStage = 0;
+export let currentStage;
 export const stageCounters = {};
-export let currentCounter = 0;
+export let currentCounter;
 let incorrectAnswer = false;
 export const setIncorrectAnswer = (value) => {
   incorrectAnswer = value;
@@ -20,14 +20,14 @@ export const getIncorrectAnswer = () => incorrectAnswer;
 export const getWord = async () => {
   let word;
   
-  const incrementStageCounter = (stage) => {
-    if (!stageCounters[stage]) {
-      stageCounters[stage] = 1;
-    } else {
-      stageCounters[stage]++;
-      console.log(stageCounters);
-    }
-  };
+  // const incrementStageCounter = (stage) => {
+  //   if (!stageCounters[stage]) {
+  //     stageCounters[stage] = 1;
+  //   } else {
+  //     stageCounters[stage]++;
+  //     console.log(stageCounters);
+  //   }
+  // };
   
   try {
     const response = await fetch("http://localhost:3000/api/word");
@@ -36,6 +36,7 @@ export const getWord = async () => {
     currentStage = word.word.stage;
     totalStageCount = word.totalWordsWithStage; 
     currentCounter = word.word.counter;
+    console.log("current counter:", currentCounter)
   } catch (error) {
     console.error("Error getting word:", error);
     return;

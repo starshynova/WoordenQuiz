@@ -2,10 +2,10 @@ import {
   USER_INTERFACE_ID,
   START_QUIZ_BUTTON_ID,
   NAME_INPUT_ID,
-} from "../constants.js";
-import { createWelcomeElement } from "../views/welcomeView.js";
+} from "../src/constants.js";
+import { createWelcomeElement } from "./welcomeView.js";
 import { initQuestionPage } from "./questionPage.js";
-import { getWord } from "./flashCardPage.js";
+import { getWord } from "../src/pages/flashCardPage.js";
 
 export let userName = "";
 

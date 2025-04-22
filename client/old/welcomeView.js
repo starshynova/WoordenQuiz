@@ -1,6 +1,6 @@
-import { START_QUIZ_BUTTON_ID } from "../constants.js";
-import { NAME_INPUT_ID } from "../constants.js";
-import { QUESTION_HEADER_ID } from "../constants.js";
+import { START_QUIZ_BUTTON_ID } from "../src/constants.js";
+import { NAME_INPUT_ID } from "../src/constants.js";
+import { QUESTION_HEADER_ID } from "../src/constants.js";
 
 /**
  * Create the welcome screen

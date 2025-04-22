@@ -145,10 +145,19 @@ app.put("/api/word/:id", async (req, res) => {
 
     // const collection = db.collection(collectionName);
 
+
+    const updateFields = {};
+    if (updateData.counter !== undefined) updateFields.counter = updateData.counter;
+    if (updateData.stage !== undefined) updateFields.stage = updateData.stage;
+
     const result = await activeWoorden.updateOne(
-      { _id: new ObjectId(wordId) },
-      { $set: { counter: updateData.counter || 0, stage: updateData.stage } },
+    { _id: new ObjectId(wordId) },
+    { $set: updateFields }
     );
+    // const result = await activeWoorden.updateOne(
+    //   { _id: new ObjectId(wordId) },
+    //   { $set: { counter: updateData.counter, stage: updateData.stage } },
+    // );
 
     if (result.modifiedCount === 0) {
       return res.status(404).json({ error: "Word not updated" });
@@ -176,13 +185,15 @@ app.put("/api/update-words", async (req, res) => {
         stage: word.stage,
       };
 
-      if (word.counter === 0 || word.counter === 1) {
+      const counter = Number(word.counter);
+
+      if (counter === 0 || counter === 1) {
         updatedData.status = "learned";
-      } else if (word.counter === 2 || word.counter === 3) {
+      } else if (counter === 2 || counter === 3) {
         updatedData.status = "familiar";
         updatedData.counter = 0;
         updatedData.stage = 5;
-      } else if (word.counter === 4 || word.counter === 5) {
+      } else if (counter === 4 || counter === 5) {
         updatedData.counter = 0;
         updatedData.stage = 0;
       }

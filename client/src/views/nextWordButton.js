@@ -27,6 +27,7 @@ nextButton.addEventListener("click", async () => {
 
     if (getIncorrectAnswer?.() === true) {
       updateData.counter = currentCounter + 1;
+      console.log("current counter for word", updateData.counter)
     }
 
     // if (currentCounter <= 1) {

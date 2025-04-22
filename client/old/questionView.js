@@ -1,5 +1,5 @@
-import { ANSWERS_LIST_ID } from "../constants.js";
-import { QUESTION_HEADER_ID } from "../constants.js";
+import { ANSWERS_LIST_ID } from "../src/constants.js";
+import { QUESTION_HEADER_ID } from "../src/constants.js";
 
 /**
  * Create a full question element
