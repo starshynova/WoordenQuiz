@@ -1,11 +1,10 @@
 import { getWord } from "../pages/getWord.js";
-import { currentWordId, currentStage, currentCounter, getIncorrectAnswer, stageCounters } from "../pages/getWord.js";
+import { currentWordId, currentStage, currentCounter, getIncorrectAnswer } from "../pages/getWord.js";
 import { nextWordSetPage } from "./nextWordSetButton.js";
 
 export const nextButton = document.createElement("button");
 
 nextButton.classList.add("next-button");
-// nextButton.disabled = true;
 
 const setUpdateData = async (data) => {
   try {
@@ -30,14 +29,6 @@ nextButton.addEventListener("click", async () => {
       updateData.counter = currentCounter + 1;
       console.log("current counter for word", updateData.counter)
     }
-
-    // if (currentCounter <= 1) {
-    //   updateData = { status: "learned" };
-    // } else if (currentCounter > 1 && currentCounter < 4) {
-    //   updateData = { status: "familiar", counter: 0, stage: 5 };
-    // } else if (currentCounter >= 4) {
-    //   updateData = { status: "new", counter: 0, stage: 0 };
-    // }
 
   } else if (currentStage === 8) {
 nextWordSetPage();

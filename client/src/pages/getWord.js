@@ -1,9 +1,7 @@
 import { renderSingleCard } from "../views/flashCardView.js";
-import { renderQuizTwoCard } from "../views/quizTwoCardView.js";
-import { renderQuizFourCard } from "../views/quizFourCardView.js";
 import { nextButton } from "../views/nextWordButton.js";
-// import {nextWordSetButton} from "../views/nextWordSetButton.js";
 import { finishSetButton } from "../views/finishSetButton.js";
+import { renderQuizCard } from "../views/quizCardView.js";
 
 export let currentWordId;
 export let currentStage;
@@ -19,15 +17,6 @@ export const getIncorrectAnswer = () => incorrectAnswer;
 
 export const getWord = async () => {
   let word;
-  
-  // const incrementStageCounter = (stage) => {
-  //   if (!stageCounters[stage]) {
-  //     stageCounters[stage] = 1;
-  //   } else {
-  //     stageCounters[stage]++;
-  //     console.log(stageCounters);
-  //   }
-  // };
   
   try {
     const response = await fetch("http://localhost:3000/api/word");
@@ -51,11 +40,11 @@ export const getWord = async () => {
   } else if (stage === 2) {
     renderSingleCard(word.word.back, word.word.front);
   } else if ([3, 4].includes(stage)) {
-    renderQuizTwoCard();
+    renderQuizCard(2);
   } else if ([5, 6].includes(stage)) {
-    renderQuizFourCard('front-to-back');
+    renderQuizCard(4, 'front-to-back');
   } else if (stage === 7) {
-    renderQuizFourCard('back-to-front');
+    renderQuizCard(4, 'back-to-front');
   }
 
 if (totalStageCount === 1) {

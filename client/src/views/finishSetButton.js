@@ -1,4 +1,3 @@
-import { getWord } from "../pages/getWord.js";
 import { currentWordId, currentStage, currentCounter, getIncorrectAnswer } from "../pages/getWord.js";
 import { nextWordSetPage } from "./nextWordSetButton.js";
 
@@ -32,5 +31,4 @@ finishSetButton.addEventListener("click", async () => {
 
   document.getElementById("user-interface").innerHTML = "";
     nextWordSetPage();
-  // getWord();
 });

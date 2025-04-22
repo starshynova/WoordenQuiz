@@ -1,5 +1,4 @@
 import { getWord } from "../pages/getWord.js";
-import { currentWordId, currentStage, currentCounter, getIncorrectAnswer } from "../pages/getWord.js";
 
 export const nextWordSetPage = () => {
 const container = document.createElement("div");

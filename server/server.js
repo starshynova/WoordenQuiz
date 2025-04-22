@@ -8,8 +8,8 @@ const app = express();
 app.use(cors());
 
 dotenv.config();
-// const PORT = process.env.PORT;
-const PORT = 3000;
+
+const PORT = process.env.PORT;
 const client = new MongoClient(process.env.MONGODB_URL, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -21,7 +21,6 @@ const client = new MongoClient(process.env.MONGODB_URL, {
 const db = client.db("WoordenQuiz");
 const woorden = db.collection("woorden");
 const activeWoorden = db.collection("active_woorden");
-// const repeatWoorden = db.collection("repeat_woorden");
 
 app.use(express.json());
 
@@ -95,45 +94,6 @@ app.get("/api/active-word", async (req, res) => {
   }
 });
 
-// app.get("/api/repeat-words", async (req, res) => {
-//   try {
-//     const lengthRepeatWoorden = await repeatWoorden.countDocuments();
-
-//     if (lengthRepeatWoorden === 0) {
-//       const temporaryWoorden = await woorden
-//         .find({ status: "familiar" })
-//         .limit(5)
-//         .toArray();
-
-//       if (!temporaryWoorden) {
-//         return res
-//           .status(404)
-//           .json({ error: "No new words for the repeating found" });
-//       }
-
-//       await repeatWoorden.insertMany(
-//         temporaryWoorden.map((word) => ({
-//           wordId: word._id,
-//           front: word.front,
-//           back: word.back,
-//           status: word.status,
-//           counter: 0,
-//           stage: 5,
-//         })),
-//       );
-//     }
-
-//     const nextWord = await repeatWoorden.findOne().sort({ stage: 1 });
-//     if (!nextWord) {
-//       return res.status(404).json({ error: "No word found" });
-//     }
-//     res.json(nextWord);
-//   } catch (error) {
-//     console.error("Error fetching word:", error);
-//     res.status(500).json({ error: "Internal server error" });
-//   }
-// });
-
 app.put("/api/word/:id", async (req, res) => {
   try {
     const wordId = req.params.id;
@@ -144,14 +104,6 @@ app.put("/api/word/:id", async (req, res) => {
         .status(400)
         .json({ error: "Both 'counter' and 'stage' are missing" });
     }
-    // const collectionName = req.body.collection;
-
-    // if (!collectionName) {
-    //   return res.status(400).json({ error: "Collection name is required" });
-    // }
-
-    // const collection = db.collection(collectionName);
-
 
     const updateFields = {};
     if (updateData.counter !== undefined) updateFields.counter = updateData.counter;
@@ -161,10 +113,6 @@ app.put("/api/word/:id", async (req, res) => {
     { _id: new ObjectId(wordId) },
     { $set: updateFields }
     );
-    // const result = await activeWoorden.updateOne(
-    //   { _id: new ObjectId(wordId) },
-    //   { $set: { counter: updateData.counter, stage: updateData.stage } },
-    // );
 
     if (result.modifiedCount === 0) {
       return res.status(404).json({ error: "Word not updated" });
@@ -178,12 +126,8 @@ app.put("/api/word/:id", async (req, res) => {
 });
 
 app.put("/api/update-words", async (req, res) => {
-  // const session = client.startSession();
   try {
-  //   session.startTransaction();
-
     const updatedActiveWoorden = await activeWoorden.find().toArray();
-    // const updatedRepeatWoorden = await repeatWoorden.find().toArray();
 
     const processWord = async (word) => {
       let updatedData = {
@@ -191,8 +135,6 @@ app.put("/api/update-words", async (req, res) => {
         counter: word.counter,
         stage: word.stage,
       };
-
-      // const counter = Number(word.counter);
 
       if (word.counter === 0 || word.counter === 1) {
         updatedData.status = "learned";
@@ -205,11 +147,9 @@ app.put("/api/update-words", async (req, res) => {
         updatedData.stage = 0;
       }
       
-
       await woorden.updateOne(
         { _id: word.wordId },
         { $set: updatedData },
-        // { session }
       );
     };
 
@@ -217,17 +157,8 @@ app.put("/api/update-words", async (req, res) => {
       await processWord(word);
     }
 
-    // for (const word of updatedRepeatWoorden) {
-    //   await processWord(word);
-    // }
-
-    // await session.commitTransaction();
-    // session.endSession();
-
     res.json({ message: "Words updated successfully" });
   } catch (error) {
-    // await session.abortTransaction();
-    // session.endSession();
     console.error("Error updating words:", error);
     res.status(500).json({ error: "Internal server error" });
   }
@@ -316,23 +247,14 @@ app.get("/api/quiz-four/:id", async (req, res) => {
 });
 
 app.delete("/api/clear-collections", async (req, res) => {
-  // const session = client.startSession();
   try {
-    // session.startTransaction();
 
     await activeWoorden.deleteMany();
-
-    // await repeatWoorden.deleteMany({}, { session });
-
-    // await session.commitTransaction();
-    // session.endSession();
 
     res.json({
       message: "Documents deleted successfully from both collections",
     });
   } catch (error) {
-    // await session.abortTransaction();
-    // session.endSession();
     console.error("Error deleting documents:", error);
     res.status(500).json({ error: "Internal server error" });
   }

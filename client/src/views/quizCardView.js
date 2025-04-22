@@ -1,39 +1,43 @@
+import { generateTwoAnswers } from "./generateTwoAnswers.js";
 import { generateFourAnswers, generateFourAnswersInversion } from "./generateFourAnswers.js";
 import { nextButton } from "./nextWordButton.js";
-import { nextWordSetPage } from "./nextWordSetButton.js";
-import { currentStage, setIncorrectAnswer, totalStageCount } from "../pages/getWord.js";
 import { finishSetButton } from "./finishSetButton.js";
+import { currentStage, setIncorrectAnswer, totalStageCount } from "../pages/getWord.js";
 
-export const renderQuizFourCard = async (direction) => {
+export const renderQuizCard = async (answerCount, direction = 'front-to-back') => {
   const container = document.createElement("div");
-  container.className = "quiz-4-container";
+  container.className = `quiz-${answerCount}-container`;
   nextButton.disabled = true;
 
-  const cardBlock = await createCardBlock(container, direction);
+  const cardBlock = await createCardBlock(container, answerCount, direction);
   container.appendChild(cardBlock);
   container.appendChild(nextButton);
-  container.appendChild(finishSetButton);
-  // container.appendChild(nextWordSetButton);
+  if (answerCount === 4) {
+    container.appendChild(finishSetButton);
+  }
 
   document.getElementById("user-interface").appendChild(container);
 };
 
-const createCardBlock = async (container, direction) => {
+const createCardBlock = async (container, answerCount, direction) => {
   const wrapper = document.createElement("div");
   wrapper.className = "card-block";
 
-
   let data;
-
-  if (direction === 'front-to-back') {
-    data = await generateFourAnswers(); 
-  } else if (direction === 'back-to-front') {
-    data = await generateFourAnswersInversion(); 
-  } else {
-    console.error("Unknown direction:", direction);
-    return;
+  if (answerCount === 2) {
+    data = await generateTwoAnswers();
+  } else if (answerCount === 4) {
+    if (direction === "front-to-back") {
+      data = await generateFourAnswers();
+    } else if (direction === "back-to-front") {
+      data = await generateFourAnswersInversion();
+    } else {
+      console.error("Unknown direction:", direction);
+      return;
+    }
   }
-  console.log("generateFourAnswers:", data);
+
+  console.log("quizCard data:", data);
 
   const question = document.createElement("div");
   question.className = "question";
@@ -69,9 +73,12 @@ const createCardBlock = async (container, direction) => {
           correctAnswerElement.classList.add("correct-answer");
         }
       }
+
       nextButton.disabled = false;
-      if (currentStage === 7 && totalStageCount === 1)
-      finishSetButton.disabled = false
+
+      if (currentStage === 7 && totalStageCount === 1) {
+        finishSetButton.disabled = false;
+      }
     });
 
     return element;
