@@ -4,13 +4,9 @@
  * @param {string} answerText
  */
 
-
-
 export const createAnswerElement = (answerText) => {
-  const element = document.createElement('button');
+  const element = document.createElement("button");
   element.textContent = answerText;
 
   return element;
 };
-
-  

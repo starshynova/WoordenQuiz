@@ -1,9 +1,7 @@
-
-import { initWelcomePage } from './pages/welcomePage.js';
+import { getWord } from "./pages/getWord.js";
 
 const loadApp = () => {
-
-  initWelcomePage();
+  getWord();
 };
 
-window.addEventListener('load', loadApp);
+window.addEventListener("load", loadApp);
