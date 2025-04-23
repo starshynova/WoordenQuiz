@@ -7,7 +7,7 @@ export function renderSingleCard(front, back) {
   container.classList.add("container");
   const containerHeader = document.createElement("div");
   containerHeader.classList.add("container-header");
-  containerHeader.textContent = `There is a flash-card from ${currentStage} stage`;
+  containerHeader.textContent = `There is a flash-card from ${currentStage+1} stage`;
 
   const card = createCard(front, back);
 
@@ -16,12 +16,16 @@ export function renderSingleCard(front, back) {
     nextButton.classList.add("next-button");
   }
 
+  const containerNexButton = document.createElement("div");
+  containerNexButton.classList.add("container-next-button");
+  containerNexButton.appendChild(nextButton);
+
+
   container.appendChild(containerHeader);
   container.appendChild(card);
-  container.appendChild(nextButton);
+  container.appendChild(containerNexButton);
 
   document.getElementById("user-interface").appendChild(container);
-  // document.getElementById("user-interface").appendChild(nextButton);
 }
 
 function createCard(frontText, backText) {

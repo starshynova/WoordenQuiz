@@ -47,10 +47,16 @@ export const getWord = async () => {
     renderQuizCard(4, 'back-to-front');
   }
 
-if (totalStageCount === 1) {
-    nextButton.textContent = "Next stage"; 
-  } else {
+if (currentStage < 3 && totalStageCount === 1) {
+    nextButton.textContent = "Go to the next stage"; 
+  } else if (currentStage < 3) {
     nextButton.textContent = "Next word";
+  }
+  if (currentStage > 2 && currentStage < 7) {
+    nextButton.textContent = "Go to the next stage";
+    if (totalStageCount !==1) {
+      nextButton.disabled = true;
+    }
   }
 if (currentStage === 7 && totalStageCount === 1) {
   nextButton.classList.add("hide");
@@ -59,4 +65,4 @@ if (currentStage === 7 && totalStageCount === 1) {
 }
 };
 
-getWord();
+// getWord();

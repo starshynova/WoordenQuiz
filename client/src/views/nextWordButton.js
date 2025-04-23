@@ -38,25 +38,4 @@ nextWordSetPage();
   getWord();
 }
 
-nextButton.addEventListener("click", nextWord
-//   let updateData = {};
-
-//   if (currentStage < 8) {
-//     updateData.stage = currentStage + 1;
-
-//     if (getIncorrectAnswer?.() === true) {
-//       updateData.counter = currentCounter + 1;
-//       console.log("current counter for word", updateData.counter)
-//     }
-
-//   } else if (currentStage === 8) {
-// nextWordSetPage();
-//   }
-    
-  
-
-//   await setUpdateData(updateData);
-
-//   document.getElementById("user-interface").innerHTML = "";
-//   getWord();
-);
+nextButton.addEventListener("click", nextWord);

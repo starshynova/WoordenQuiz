@@ -12,31 +12,26 @@ export const renderQuizCard = async (answerCount, direction = 'front-to-back') =
   const containerHeader = document.createElement("div");
   containerHeader.classList.add("container-header");
   if (currentStage === 3 || currentStage === 4) {
-  containerHeader.textContent = `There is ${currentStage} stage. You have to choose one of two answers.`
+  containerHeader.textContent = `You are able to choose one of two answers.`
   } else if (currentStage > 4 || currentStage < 8) {
-    containerHeader.textContent = `There is ${currentStage} stage. You have to choose one of four answers.`
+    containerHeader.textContent = `You are able to choose one of four answers.`
   }
   container.appendChild(containerHeader);
-  // container.className = `quiz-${answerCount}-container`;
-  // nextButton.disabled = true;
-  nextButton.classList.add("hide");
+  const containerNextButton = document.createElement("div");
+  containerNextButton.classList.add("container-next-button");
+  containerNextButton.appendChild(nextButton)
 
   const cardBlock = await createCardBlock(container, answerCount, direction);
   container.appendChild(cardBlock);
-  container.appendChild(nextButton);
+  container.appendChild(containerNextButton);
   if (answerCount === 4) {
-    // document.getElementById("user-interface").appendChild(finishSetButton);
     container.appendChild(finishSetButton);
   }
 
   document.getElementById("user-interface").appendChild(container);
-  // document.getElementById("user-interface").appendChild(nextButton);
 };
 
 const createCardBlock = async (container, answerCount, direction) => {
-  // const wrapper = document.createElement("div");
-  
-  // wrapper.className = "answer-block";
 
   let data;
   if (answerCount === 2) {
@@ -65,11 +60,15 @@ const createCardBlock = async (container, answerCount, direction) => {
 
   const createAnswerElement = (answerText) => {
     const element = document.createElement("button");
-    element.classList.add("answer-btn");
+    if (answerCount === 4) {
+      element.classList.add("answer");
+    } else if (answerCount === 2) {
+      element.classList.add("answer-big");
+    }
     element.textContent = answerText;
 
     element.addEventListener("click", () => {
-      document.querySelectorAll(".answer-btn").forEach((btn) => {
+      document.querySelectorAll(".answer, .answer-big").forEach((btn) => {
         btn.disabled = true;
       });
 
@@ -98,10 +97,8 @@ const createCardBlock = async (container, answerCount, direction) => {
       }
       }
       if (totalStageCount === 1) {
-        nextButton.classList.remove("hide");
+        nextButton.disabled = false;
       }
-
-      // nextButton.disabled = false;
 
       if (currentStage === 7 && totalStageCount === 1) {
         finishSetButton.disabled = false;
