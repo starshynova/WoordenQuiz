@@ -46,8 +46,8 @@ button:not(:disabled):hover {
   align-items: center;
   width: 60%;
   max-width: 500px;
-  height: 60%;
-  min-height: 300px;
+  height: 80%;
+  min-height: 500px;
   position: relative;
   background-color: #ffffff;
   border-radius: 20px;
@@ -75,8 +75,9 @@ button:not(:disabled):hover {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  row-gap: 40px;
-  margin: 40px 0;
+  row-gap: 30px;
+  /* margin-top: -80px; */
+  /* padding-top: 50px; */
 }
 
 input {

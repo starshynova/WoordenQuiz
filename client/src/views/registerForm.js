@@ -6,12 +6,18 @@ document.getElementById("user-interface").appendChild(loginContainer);
 
 const loginContainerHeader = document.createElement("div");
 loginContainerHeader.classList.add("login-container-header");
-loginContainerHeader.textContent = "Please log in"
+loginContainerHeader.textContent = "Registration form"
 loginContainer.appendChild(loginContainerHeader);
 
 const inputContainer = document.createElement("div");
 inputContainer.classList.add("input-container");
+inputContainer.style.marginTop = "-20px";
 loginContainer.appendChild(inputContainer);
+
+const nameInput = document.createElement("input");
+nameInput.type = "text";
+nameInput.placeholder = "Name";
+inputContainer.appendChild(nameInput);
 
 const emailInput = document.createElement("input");
 emailInput.type = "text";
@@ -25,11 +31,14 @@ inputContainer.appendChild(passwordInput);
 
 const confirmPasswordInput = document.createElement("input");
 confirmPasswordInput.type = "text";
-confirmPasswordInput.placeholder = "Password";
+confirmPasswordInput.placeholder = "Confirm password";
 inputContainer.appendChild(confirmPasswordInput);
 
-const loginButton = document.createElement("button");
-loginButton.classList.add("next-button");
-loginButton.textContent = "Register";
-loginContainer.appendChild(loginButton);
+const registerButton = document.createElement("button");
+registerButton.classList.add("next-button");
+registerButton.style.width = "200px";
+registerButton.style.position = "absolute";
+registerButton.style.bottom = "40px";
+registerButton.textContent = "Register";
+loginContainer.appendChild(registerButton);
 }
