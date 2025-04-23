@@ -12,9 +12,3 @@ export async function getWord() {
     console.error("Error getting word:", error);
   }
 }
-
-//   document.addEventListener('DOMContentLoaded', () => {
-//     getWord();
-//   });
-
-//   export { getWord };

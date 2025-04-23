@@ -3,25 +3,40 @@ import { generateFourAnswers, generateFourAnswersInversion } from "./generateFou
 import { nextButton } from "./nextWordButton.js";
 import { finishSetButton } from "./finishSetButton.js";
 import { currentStage, setIncorrectAnswer, totalStageCount } from "../pages/getWord.js";
+import { nextWord } from "./nextWordButton.js";
 
 export const renderQuizCard = async (answerCount, direction = 'front-to-back') => {
+  document.getElementById("user-interface").innerHTML = "";
   const container = document.createElement("div");
-  container.className = `quiz-${answerCount}-container`;
-  nextButton.disabled = true;
+  container.classList.add("container");
+  const containerHeader = document.createElement("div");
+  containerHeader.classList.add("container-header");
+  if (currentStage === 3 || currentStage === 4) {
+  containerHeader.textContent = `There is ${currentStage} stage. You have to choose one of two answers.`
+  } else if (currentStage > 4 || currentStage < 8) {
+    containerHeader.textContent = `There is ${currentStage} stage. You have to choose one of four answers.`
+  }
+  container.appendChild(containerHeader);
+  // container.className = `quiz-${answerCount}-container`;
+  // nextButton.disabled = true;
+  nextButton.classList.add("hide");
 
   const cardBlock = await createCardBlock(container, answerCount, direction);
   container.appendChild(cardBlock);
   container.appendChild(nextButton);
   if (answerCount === 4) {
+    // document.getElementById("user-interface").appendChild(finishSetButton);
     container.appendChild(finishSetButton);
   }
 
   document.getElementById("user-interface").appendChild(container);
+  // document.getElementById("user-interface").appendChild(nextButton);
 };
 
 const createCardBlock = async (container, answerCount, direction) => {
-  const wrapper = document.createElement("div");
-  wrapper.className = "card-block";
+  // const wrapper = document.createElement("div");
+  
+  // wrapper.className = "answer-block";
 
   let data;
   if (answerCount === 2) {
@@ -37,15 +52,13 @@ const createCardBlock = async (container, answerCount, direction) => {
     }
   }
 
-  console.log("quizCard data:", data);
-
   const question = document.createElement("div");
-  question.className = "question";
+  question.classList.add("question");
   question.textContent = data.question;
   container.appendChild(question);
 
   const answerContainer = document.createElement("div");
-  answerContainer.className = "answer-2-container";
+  answerContainer.className = "answer-block";
   container.appendChild(answerContainer);
 
   const correctAnswer = data.correctAnswer;
@@ -62,9 +75,15 @@ const createCardBlock = async (container, answerCount, direction) => {
 
       if (answerText === correctAnswer) {
         element.classList.add("correct-answer");
+        if (totalStageCount !== 1) { 
+          setTimeout(() => {
+            nextWord();
+          }, 500);
+        }
       } else {
         element.classList.add("incorrect-answer");
         setIncorrectAnswer(true);
+        
 
         const correctAnswerElement = Array.from(answerContainer.children).find(
           (btn) => btn.innerText === correctAnswer,
@@ -72,9 +91,17 @@ const createCardBlock = async (container, answerCount, direction) => {
         if (correctAnswerElement) {
           correctAnswerElement.classList.add("correct-answer");
         }
+        if (totalStageCount !== 1) { 
+        setTimeout(() => {
+          nextWord();
+        }, 500);
+      }
+      }
+      if (totalStageCount === 1) {
+        nextButton.classList.remove("hide");
       }
 
-      nextButton.disabled = false;
+      // nextButton.disabled = false;
 
       if (currentStage === 7 && totalStageCount === 1) {
         finishSetButton.disabled = false;
@@ -89,5 +116,5 @@ const createCardBlock = async (container, answerCount, direction) => {
     answerContainer.appendChild(answerElement);
   });
 
-  return wrapper;
+  return answerContainer;
 };

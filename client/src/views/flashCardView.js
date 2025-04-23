@@ -1,23 +1,32 @@
 import { nextButton } from "./nextWordButton.js";
+import { currentStage } from "../pages/getWord.js";
 
 export function renderSingleCard(front, back) {
+  document.getElementById("user-interface").innerHTML = "";
   const container = document.createElement("div");
-  container.className = "card-container";
+  container.classList.add("container");
+  const containerHeader = document.createElement("div");
+  containerHeader.classList.add("container-header");
+  containerHeader.textContent = `There is a flash-card from ${currentStage} stage`;
+
   const card = createCard(front, back);
 
   if (nextButton.className = "hide") {
     nextButton.classList.remove("hide");
     nextButton.classList.add("next-button");
   }
+
+  container.appendChild(containerHeader);
   container.appendChild(card);
   container.appendChild(nextButton);
 
   document.getElementById("user-interface").appendChild(container);
+  // document.getElementById("user-interface").appendChild(nextButton);
 }
 
 function createCard(frontText, backText) {
   const card = document.createElement("div");
-  card.className = "card";
+  card.classList.add("card");
 
   const inner = document.createElement("div");
   inner.className = "card-inner";

@@ -6,7 +6,7 @@ const nextWordSetButton = document.createElement("button");
 nextWordSetButton.textContent = "Next 10 word ";
 nextWordSetButton.classList.add("next-button");
 document.getElementById("user-interface").appendChild(container);
-container. appendChild(nextWordSetButton);
+container.appendChild(nextWordSetButton);
 
 const setUpdatedCollections = async (data) => {
   try {

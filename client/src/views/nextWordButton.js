@@ -18,8 +18,7 @@ const setUpdateData = async (data) => {
   }
 };
 
-
-nextButton.addEventListener("click", async () => {
+export const nextWord = async () => {
   let updateData = {};
 
   if (currentStage < 8) {
@@ -27,17 +26,37 @@ nextButton.addEventListener("click", async () => {
 
     if (getIncorrectAnswer?.() === true) {
       updateData.counter = currentCounter + 1;
-      console.log("current counter for word", updateData.counter)
     }
 
   } else if (currentStage === 8) {
 nextWordSetPage();
   }
-    
-  
 
   await setUpdateData(updateData);
 
   document.getElementById("user-interface").innerHTML = "";
   getWord();
-});
+}
+
+nextButton.addEventListener("click", nextWord
+//   let updateData = {};
+
+//   if (currentStage < 8) {
+//     updateData.stage = currentStage + 1;
+
+//     if (getIncorrectAnswer?.() === true) {
+//       updateData.counter = currentCounter + 1;
+//       console.log("current counter for word", updateData.counter)
+//     }
+
+//   } else if (currentStage === 8) {
+// nextWordSetPage();
+//   }
+    
+  
+
+//   await setUpdateData(updateData);
+
+//   document.getElementById("user-interface").innerHTML = "";
+//   getWord();
+);

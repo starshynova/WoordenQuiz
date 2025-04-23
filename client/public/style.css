@@ -1,8 +1,6 @@
-/* body {
-  background-color: #FA4F84;
-}
 
-.centered {
+
+/* .centered {
   margin-left: auto;
   margin-right: auto;
 }
@@ -167,20 +165,58 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: #f0f0f0;
+  background: radial-gradient(circle, #866BC3, #5732A0 );
 }
 
-#card-container {
+
+
+ #user-interface {
+  width: 100%;
+  height: 100%;
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  align-items: center;
+  justify-content: center;
+ }
+
+ .container {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  width: 70%;
+  max-width: 1000px;
+  height: 60%;
+  min-height: 600px;
+  position: relative;
+  background-color: #ffffff;
+  border-radius: 20px;
+  /* border: 5px solid red; */
+}
+
+.container-header {
+  display: flex;
+  background-color: #000000;
+  color: #ffffff;
+  font-size: 24px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 120px;
+  /* min-height: 120px; */
+  border-radius: 20px 20px 0 0;
+  position: absolute;
+  top: 0px;
 }
 
 .card {
-  width: 200px;
-  height: 120px;
-  perspective: 1000px;
+  width: 80%;
+  max-width: 700px;
+  height: 60%;
+  max-height: 300px;
+  /* perspective: 1000px; */
   cursor: pointer;
+  margin-top: 180px;
 }
 
 .card-inner {
@@ -201,46 +237,86 @@ body {
   width: 100%;
   height: 100%;
   background: white;
-  border: 1px solid #ccc;
-  border-radius: 10px;
+  color: #170029;
+  border: 5px solid #170029;
+  border-radius: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
   backface-visibility: hidden;
-  font-size: 20px;
+  font-size: 48px;
 }
 
 .card-back {
   transform: rotateY(180deg);
-  background: #d0eaff;
+  background: #ffdbfe;
 }
 
 .next-button {
-  margin-top: 20px;
+  /* margin-top: 20px; */
+  width: auto;
+  height: 60px;
   padding: 10px 20px;
-  font-size: 16px;
+  font-size: 20px;
   cursor: pointer;
-  border-radius: 8px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
+  border:  3px solid #540094;
+  border-radius: 10px;
+  background-color: #ffffff;
+  color: #170029;
+  /* border: none; */
   transition: background-color 0.3s;
+  position: absolute;
+  bottom: 20px;
+  /* right: 120px; */
 }
 
 .next-button:hover {
-  background-color: #45a049;
+  background-color: #e6d9f7;
+  font-size: 24px;
 }
 
-.answer-btn {
-  width: 100%;
+
+.question {
+  width: 40%;
   height: 80px;
-  padding: 40px;
+  border: 2px solid #170029;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #170029;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  text-align: center;
+  margin-bottom: 40px;
+  margin-top: 160px;
+  /* position: absolute; */
+}
+
+.answer-block {
+  width: 80%;
+  height: auto;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+  /* column-gap: 10%; */
+  row-gap: 20px;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+
+.answer-btn {
+  width: 40%;
+  height: 80px;
+  /* padding: 40px; */
   background-color: #ffffff;
-  border: #a9a9a9 2px solid;
-  border-radius: 16px;
+  border: #634bba 2px solid;
+  border-radius: 20px;
   cursor: pointer;
-  font-size: 20px;
-  color: #303030;
+  font-size: 24px;
+  color: #1a0035;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -249,18 +325,18 @@ body {
 }
 
 .answer-btn:hover {
-  background-color: #cbcbcb;
+  background-color: #ebc0ff;
   font-size: 24px;
-  border-color: #505050;
+  border-color: #4c1576;
 }
 
 .correct-answer {
-  background-color: #00b400;
+  background-color: #27d027;
   color: white;
 }
 
 .incorrect-answer {
-  background-color: #c40000;
+  background-color: #e93b3b;
   color: white;
 }
 
