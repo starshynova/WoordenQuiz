@@ -1,4 +1,5 @@
 import { loginForm } from "../views/loginForm.js";
+import {getWord} from "./getWord.js"
 
 export const welcomePage = () => {
     document.getElementById("user-interface").innerHTML = "";
@@ -49,5 +50,6 @@ export const welcomePage = () => {
       startButton.textContent = "Start WoordenQuiz!";
       containerStartButton.appendChild(startButton);
 
-      startButton.addEventListener("click", loginForm)
+      // startButton.addEventListener("click", loginForm)
+      startButton.addEventListener("click", getWord)
 }

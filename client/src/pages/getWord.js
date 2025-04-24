@@ -31,7 +31,6 @@ export const getWord = async () => {
     return;
   }
 
-  console.log("Word:", word);
   const stage = word.word.stage;
   setIncorrectAnswer(false);
 
@@ -65,4 +64,3 @@ if (currentStage === 7 && totalStageCount === 1) {
 }
 };
 
-// getWord();

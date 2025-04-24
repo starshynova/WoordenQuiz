@@ -1,6 +1,6 @@
 export const registerForm = () => {
-    document.getElementById("user-interface").innerHTML = "";
-    const loginContainer = document.createElement("div");
+document.getElementById("user-interface").innerHTML = "";
+const loginContainer = document.createElement("div");
 loginContainer.classList.add("login-container");
 document.getElementById("user-interface").appendChild(loginContainer);
 

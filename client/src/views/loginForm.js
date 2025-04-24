@@ -61,7 +61,4 @@ const message = document.createElement("p");
   registerMessage.appendChild(message);
   buttonMessageContainer.appendChild(registerMessage);
   loginContainer.appendChild(buttonMessageContainer);
-  
-
-
 }

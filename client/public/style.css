@@ -76,8 +76,6 @@ button:not(:disabled):hover {
   align-items: center;
   flex-direction: column;
   row-gap: 30px;
-  /* margin-top: -80px; */
-  /* padding-top: 50px; */
 }
 
 input {
@@ -87,7 +85,6 @@ input {
   border: #b7b7b7 2px solid;
   border-radius: 12px;
   padding: 10px;
-  /* margin: 80px auto 20px auto; */
   font-size: 18px;
   display: flex;
   outline: none;
