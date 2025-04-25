@@ -1,5 +1,6 @@
 import { loginForm } from "../views/loginForm.js";
-import {getWord} from "./getWord.js"
+import {getWord} from "./getWord.js";
+import { registerForm } from "../views/registerForm.js";
 
 export const welcomePage = () => {
     document.getElementById("user-interface").innerHTML = "";
@@ -51,5 +52,6 @@ export const welcomePage = () => {
       containerStartButton.appendChild(startButton);
 
       // startButton.addEventListener("click", loginForm)
-      startButton.addEventListener("click", getWord)
+      // startButton.addEventListener("click", getWord)
+      startButton.addEventListener("click", registerForm);
 }
