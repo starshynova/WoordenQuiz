@@ -3,6 +3,14 @@ import { nextButton } from "../views/nextWordButton.js";
 import { finishSetButton } from "../views/finishSetButton.js";
 import { renderQuizCard } from "../views/quizCardView.js";
 
+
+
+
+
+
+
+
+
 export let currentWordId;
 export let currentStage;
 export const stageCounters = {};
