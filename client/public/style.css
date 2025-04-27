@@ -82,6 +82,7 @@ button:not(:disabled):hover {
   width: 80%;
   height: auto;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   /* align-items: center; */
 }
@@ -295,4 +296,19 @@ h5 {
   font-size: 12px;
   margin-top: 5px;
   margin-bottom: 0px;
+}
+
+.message-container {
+  width: 60%;
+  height: 40%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #170029;
+  background-color: #ffffff;
+  border: 3px solid #170029;
+  border-radius: 20px;
+  font-size: 20px;
+  text-align: center;
+  margin: auto;
 }
