@@ -1,3 +1,6 @@
+import {loginForm} from "./loginForm.js";
+import { message } from "./message.js";   
+
 export const registerForm = () => {
 document.getElementById("user-interface").innerHTML = "";
 const registerContainer = document.createElement("div");
@@ -99,87 +102,6 @@ function updateButtonState() {
     registerButton.disabled = !isFormValid;
 }
 
-// function validateForm() {
-//     const isAnyFieldEmpty = 
-//         emailInput.value === "" || 
-//         nameInput.value === "" || 
-//         passwordInput.value === "" || 
-//         confirmPasswordInput.value === "";
-    
-//     const isFormValid = !isAnyFieldEmpty && errorCounter === 0;
-    
-//     registerButton.disabled = !isFormValid;
-// }
-
-// // Добавляем обработчики для всех полей ввода
-// const inputs = [emailInput, nameInput, passwordInput, confirmPasswordInput];
-// inputs.forEach(input => {
-//     input.addEventListener('input', validateForm);
-// });
-
-// // Инициализируем состояние кнопки
-// validateForm();
-
-
-
-// nameInput.addEventListener("change", () => {
-//     const name = nameInput.value;
-//     if (!name.trim()) {
-//         nameError.classList.remove("hide");
-//         errorCounter++;
-//         return;
-//     } else {
-//         nameError.classList.add("hide");
-//     }
-// });
-
-// emailInput.addEventListener("change", async () => {
-//     const email = emailInput.value;
-//     if (email === "") {
-//       emailExistError.classList.add("hide");
-//       emailError.classList.add("hide");
-//     } else {
-//       const exists = await checkEmailExistence(email);
-//       if (exists) {
-//         emailExistError.classList.remove("hide");
-//         errorCounter++;
-//       } else {
-//         emailExistError.classList.add("hide");
-//       }
-  
-//       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-//       if (!emailRegex.test(emailInput.value)) {
-//         emailError.classList.remove("hide");
-//         errorCounter++;
-//       } else {
-//         emailError.classList.add("hide");
-//       }
-//     }
-//   });
-
-// passwordInput.addEventListener("change", () => {
-//     const password = passwordInput.value;
-//     const passwordRegex = /^(?=.*\d)(?=.*[!@#$%^&*()_+{}|:"<>?])[A-Za-z\d!@#$%^&*()_+{}|:"<>?]{8,}$/;
-//     if (!passwordRegex.test(password)) {
-//       passwordError.classList.remove("hide");
-//       errorCounter++;
-//       return;
-//     } else {
-//         passwordError.classList.add("hide");
-//     }
-// });
-
-// confirmPasswordInput.addEventListener("change", () => {
-//     const password = passwordInput.value;
-//     const confirmPassword = confirmPasswordInput.value;
-//     if (password !== confirmPassword) {
-//       confirmPasswordError.classList.remove("hide");
-//       errorCounter++;
-//       return;
-//     } else {
-//         confirmPasswordError.classList.add("hide");
-//     }
-// });
 const checkErrors =() => {
     errorCounter = 0; 
 
@@ -251,9 +173,6 @@ if (confirmPassword === "") {
     });
 });
 
-  
-  
-
 const checkEmailExistence = async (email) => {
     try {
       const response = await fetch("http://localhost:3000/api/user/check-email", {
@@ -284,6 +203,14 @@ const checkEmailExistence = async (email) => {
       if (!response.ok) {
         const errorData = await response.json();
         console.error(errorData.message); 
+      } else {
+       
+            const text = "Registration successful! Redirecting to login page...";
+            message(text);
+            setTimeout(() => {
+                loginForm();
+            }, 3000)
+        
       }
     } catch (error) {
       console.error('Error during registration:', error);
@@ -292,37 +219,11 @@ const checkEmailExistence = async (email) => {
   };
   
   const handleFormSubmit = async (event) => {
-    // const name = nameInput.value;
-    // const email = emailInput.value;
-    // const password = passwordInput.value;
-
+    const name = nameInput.value;
+    const email = emailInput.value;
+    const password = passwordInput.value;
 
     event.preventDefault();
-  
-    // if (!name.trim()) {
-    //     nameError.classList.remove("hide");
-    //     return;
-    //   }
-    
-    //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    //   emailInput.addEventListener("input", () => {
-    //     if (!emailRegex.test(emailInput.value)) {
-    //       emailError.classList.remove("hide");  
-    //     } else {
-    //       emailError.classList.add("hide");  
-    //     }
-    //   });
-  
-    // const passwordRegex = /^(?=.*\d)(?=.*[!@#$%^&*()_+{}|:"<>?])[A-Za-z\d!@#$%^&*()_+{}|:"<>?]{8,}$/;
-    // if (!passwordRegex.test(password)) {
-    //   passwordError.classList.remove("hide");
-    //   return;
-    // }
-  
-//   if (password !== confirmPassword) {
-//     confirmPasswordError.classList.remove("hide");
-//     return;
-//   }
   
     await registerUser(name, email, password);
   };
