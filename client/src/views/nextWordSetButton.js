@@ -6,11 +6,11 @@ const nextWordSetButton = document.createElement("button");
 nextWordSetButton.textContent = "Next 10 word ";
 nextWordSetButton.classList.add("next-button");
 document.getElementById("user-interface").appendChild(container);
-container. appendChild(nextWordSetButton);
+container.appendChild(nextWordSetButton);
 
 const setUpdatedCollections = async (data) => {
   try {
-    await fetch('http://localhost:3000/api/update-words', {
+    await fetch('http://localhost:3000/api/word/update-words', {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -22,7 +22,7 @@ const setUpdatedCollections = async (data) => {
 
 const clearCollections = async () => {
   try {
-    await fetch('http://localhost:3000/api/clear-collections', {
+    await fetch('http://localhost:3000/api/word/clear-collections', {
       method: "DELETE",
     });
   } catch (error) {
