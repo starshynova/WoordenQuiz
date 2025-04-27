@@ -51,7 +51,7 @@ export const welcomePage = () => {
       startButton.textContent = "Start WoordenQuiz!";
       containerStartButton.appendChild(startButton);
 
-      // startButton.addEventListener("click", loginForm)
+      startButton.addEventListener("click", loginForm)
       // startButton.addEventListener("click", getWord)
-      startButton.addEventListener("click", registerForm);
+      // startButton.addEventListener("click", registerForm);
 }

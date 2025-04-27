@@ -1,38 +1,42 @@
 export const registerForm = () => {
 document.getElementById("user-interface").innerHTML = "";
-const loginContainer = document.createElement("div");
-loginContainer.classList.add("login-container");
-document.getElementById("user-interface").appendChild(loginContainer);
+const registerContainer = document.createElement("div");
+registerContainer.classList.add("login-container");
+document.getElementById("user-interface").appendChild(registerContainer);
 
-const loginContainerHeader = document.createElement("div");
-loginContainerHeader.classList.add("login-container-header");
-loginContainerHeader.textContent = "Registration form"
-loginContainer.appendChild(loginContainerHeader);
+const registerContainerHeader = document.createElement("div");
+registerContainerHeader.classList.add("login-container-header");
+registerContainerHeader.textContent = "Registration form"
+registerContainer.appendChild(registerContainerHeader);
 
 const inputContainer = document.createElement("div");
 inputContainer.classList.add("input-container");
 inputContainer.style.marginTop = "-20px";
-loginContainer.appendChild(inputContainer);
+registerContainer.appendChild(inputContainer);
 
 const nameInputContainer = document.createElement("div");
+nameInputContainer.classList.add("field-input-container");
 const nameInput = document.createElement("input");
 nameInput.type = "text";
 nameInput.placeholder = "Name";
 nameInputContainer.appendChild(nameInput);
 
 const emailInputContainer = document.createElement("div");
+emailInputContainer.classList.add("field-input-container");
 const emailInput = document.createElement("input");
 emailInput.type = "text";
 emailInput.placeholder = "E-mail";
 emailInputContainer.appendChild(emailInput);
 
 const passwordInputContainer = document.createElement("div");
+passwordInputContainer.classList.add("field-input-container");
 const passwordInput = document.createElement("input");
 passwordInput.type = "password";
 passwordInput.placeholder = "Password";
 passwordInputContainer.appendChild(passwordInput);
 
 const confirmPasswordInputContainer = document.createElement("div");
+confirmPasswordInputContainer.classList.add("field-input-container");
 const confirmPasswordInput = document.createElement("input");
 confirmPasswordInput.type = "password";
 confirmPasswordInput.placeholder = "Confirm password";
@@ -82,7 +86,7 @@ registerButton.style.position = "absolute";
 registerButton.style.bottom = "40px";
 registerButton.textContent = "Register";
 registerButton.disabled = true; 
-loginContainer.appendChild(registerButton);
+registerContainer.appendChild(registerButton);
 
 function updateButtonState() {
     const isFormValid = 
@@ -176,8 +180,7 @@ function updateButtonState() {
 //         confirmPasswordError.classList.add("hide");
 //     }
 // });
-
-function checkErrors() {
+const checkErrors =() => {
     errorCounter = 0; 
 
     if (!nameInput.value.trim()) {
@@ -289,9 +292,9 @@ const checkEmailExistence = async (email) => {
   };
   
   const handleFormSubmit = async (event) => {
-    const name = nameInput.value;
-    const email = emailInput.value;
-    const password = passwordInput.value;
+    // const name = nameInput.value;
+    // const email = emailInput.value;
+    // const password = passwordInput.value;
 
 
     event.preventDefault();
