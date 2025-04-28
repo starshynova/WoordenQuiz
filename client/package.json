@@ -11,5 +11,8 @@
   "devDependencies": {
     "prettier": "^2.8.8"
   },
-  "main": "prettier.config.js"
+  "main": "prettier.config.js",
+  "dependencies": {
+    "jwt-decode": "^4.0.0"
+  }
 }

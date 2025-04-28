@@ -32,7 +32,17 @@ export const createUser = async (req, res) => {
       name: user.name,
       email: user.email,
       password: hashedPassword,
+      words: [
+        {_id: new ObjectId(),
+            front: "string",
+            back: "string",
+            stage: 0,
+            counter: 0,
+            status: "new",
+        }
+      ],
       created_date: new Date(),
+      lastView_date: new Date(),
     };
 
     const insertedUser = await users.insertOne(newUser);
@@ -46,7 +56,6 @@ export const createUser = async (req, res) => {
       },
     });
   } catch (error) {
-    logError(error);
     res
       .status(500)
       .json({ success: false, msg: "Unable to create user, try again later" });
@@ -199,3 +208,4 @@ export const checkUserEmail = async (req, res) => {
 const getUserByEmail = async (email) => {
   return await users.findOne({ email });
 };
+

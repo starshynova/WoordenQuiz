@@ -1,52 +1,66 @@
 import db from "../db/connectDB.js";
 import { ObjectId } from "mongodb";
 
-const { woorden, activeWoorden } = db;
+const { woorden, activeWoorden, users } = db;
 
 export const getWords = async (req, res) => {
+  const {id} = req.params;
     try {
-        const lengthActiveWoorden = await activeWoorden.countDocuments();
+      if (!ObjectId.isValid(id)) {
+        return res.status(400).json({ error: "Invalid user ID format" });
+      }
+      const user = await users.findOne({ _id: new ObjectId(id) });
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
     
-        if (lengthActiveWoorden === 0) {
+        if (!user.words || user.words.length === 0) {
           const newWords = await woorden
-      .find({ status: "new", stage: 0 })
-      .limit(10)
-      .toArray();
+            .limit(10)
+            .project({ _id: 1 })
+            .toArray();
     
-    const familiarWords = await woorden
-      .find({ status: "familiar" })
-      .limit(5)
-      .toArray();
-    
-    const temporaryWoorden = [...newWords, ...familiarWords];
-    
-          if (!temporaryWoorden) {
+          if (!newWords) {
             return res.status(404).json({ error: "No new words found" });
           }
+
+          newWords.forEach((word) => {
+            word.status = "new";
+            word.counter = 0;
+            word.stage = 0;
+            }
+          )
     
-          await activeWoorden.insertMany(
-            temporaryWoorden.map((word) => ({
-              wordId: word._id,
-              front: word.front,
-              back: word.back,
-              status: word.status,
-              counter: word.counter,
-              stage: word.stage,
-            })),
+          await users.updateOne(
+            { _id: user._id}, 
+            { $set: { words: newWords } }
           );
-        }
-        const nextWord = await activeWoorden
-          .find()
-          .sort({ stage: 1, updatedAt: 1 })
-          .limit(1)
-          .toArray();
+          const activeWord = newWords[0];
+          const frontBack = await woorden.findOne({ _id: activeWord._id });
+          activeWord.front = frontBack.front;
+          activeWord.back = frontBack.back;
+          return res.json({
+            word: activeWord,
+            totalWordsWithStage: newWords.length
+          });
+        } 
+
+        const nextWord = user.words
+          .filter(word => word.status === "new")
+          .sort((a, b) => a.stage - b.stage)[0];
+
         if (!nextWord) {
           return res.status(404).json({ error: "No word found" });
         }
+
+        const frontBack = await woorden.findOne({ _id: nextWord._id });
+        nextWord.front = frontBack.front;
+        nextWord.back = frontBack.back;
     
-        const totalWordsWithStage = await activeWoorden.countDocuments({ stage: nextWord[0].stage });
+        // const totalWordsWithStage = await activeWoorden.countDocuments({ stage: nextWord[0].stage });
+        const totalWordsWithStage = user.words.filter(word => word.stage === nextWord.stage).length;
         res.json({
-          word: nextWord[0],
+          word: nextWord,
           totalWordsWithStage: totalWordsWithStage, 
         });
       } catch (error) {

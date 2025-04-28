@@ -11,7 +11,7 @@ import {
 
 const woordenRouter = express.Router();
 
-woordenRouter.get("/", getWords);
+woordenRouter.get("/:id", getWords);
 woordenRouter.get("/active-word", getActiveWord);
 woordenRouter.put("/:id", updateWord);
 woordenRouter.put("/update-words", updateWords);
