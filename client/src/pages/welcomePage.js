@@ -51,7 +51,12 @@ export const welcomePage = () => {
       startButton.textContent = "Start WoordenQuiz!";
       containerStartButton.appendChild(startButton);
 
+      const token = localStorage.getItem("token");
+      if (token) {
+        startButton.addEventListener("click", getWord);
+      } else {
       startButton.addEventListener("click", loginForm)
+    }
       // startButton.addEventListener("click", getWord)
       // startButton.addEventListener("click", registerForm);
 }
