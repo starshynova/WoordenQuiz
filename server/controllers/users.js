@@ -33,13 +33,13 @@ export const createUser = async (req, res) => {
       email: user.email,
       password: hashedPassword,
       words: [
-        {_id: new ObjectId(),
-            front: "string",
-            back: "string",
-            stage: 0,
-            counter: 0,
-            status: "new",
-        }
+        // {_id: new ObjectId(),
+        //     front: "string",
+        //     back: "string",
+        //     stage: 0,
+        //     counter: 0,
+        //     status: "new",
+        // }
       ],
       created_date: new Date(),
       lastView_date: new Date(),

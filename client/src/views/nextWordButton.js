@@ -1,4 +1,4 @@
-import { getWord } from "../pages/getWord.js";
+import { getWord, userId } from "../pages/getWord.js";
 import { currentWordId, currentStage, currentCounter, getIncorrectAnswer } from "../pages/getWord.js";
 import { nextWordSetPage } from "./nextWordSetButton.js";
 
@@ -8,7 +8,7 @@ nextButton.classList.add("next-button");
 
 const setUpdateData = async (data) => {
   try {
-    await fetch(`http://localhost:3000/api/word/${currentWordId}`, {
+    await fetch(`http://localhost:3000/api/word/update/${userId}/${currentWordId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -28,8 +28,8 @@ export const nextWord = async () => {
       updateData.counter = currentCounter + 1;
     }
 
-  } else if (currentStage === 8) {
-nextWordSetPage();
+//   } else if (currentStage === 8) {
+// nextWordSetPage();
   }
 
   await setUpdateData(updateData);
