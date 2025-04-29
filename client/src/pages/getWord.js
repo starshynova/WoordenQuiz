@@ -27,7 +27,6 @@ export const getIncorrectAnswer = () => incorrectAnswer;
 
 export const getWord = async () => {
   let word;
-  
   try {
     const decodedToken = jwtDecode(token);
     userId = decodedToken.id;

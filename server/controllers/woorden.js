@@ -3,79 +3,90 @@ import { ObjectId } from "mongodb";
 
 const { woorden, activeWoorden, users } = db;
 
+
 export const getWords = async (req, res) => {
-  const {id} = req.params;
-    try {
-      if (!ObjectId.isValid(id)) {
-        return res.status(400).json({ error: "Invalid user ID format" });
+  const { id } = req.params;
+
+  try {
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "Invalid user ID format" });
+    }
+
+    const user = await users.findOne({ _id: new ObjectId(id) });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const userWords = user.words || [];
+    const wordStatusNew = userWords.filter(word => word.status === "new");
+    const newWordsAmount = 10 - wordStatusNew.length;
+
+    let updatedWords = [...userWords];
+
+    if (newWordsAmount > 0) {
+      let lastNewWord = wordStatusNew[wordStatusNew.length - 1];
+      let query = {};
+
+      if (lastNewWord && lastNewWord._id) {
+        query = { _id: { $gt: new ObjectId(lastNewWord._id) } };
       }
-      const user = await users.findOne({ _id: new ObjectId(id) });
-      if (!user) {
-        return res.status(404).json({ error: "User not found" });
-      }
-    
-        if (!user.words || user.words.length === 0) {
-          const newWords = await woorden
-            .find({})
-            .limit(10)
-            .project({ _id: 1 })
-            .toArray();
-    
-          if (!newWords) {
-            return res.status(404).json({ error: "No new words found" });
-          }
 
-          newWords.forEach((word) => {
-            word._id = new ObjectId(word._id);
-            word.status = "new";
-            word.counter = 0;
-            word.stage = 0;
-            }
-          )
-    
-          await users.updateOne(
-            { _id: user._id}, 
-            { $set: { words: newWords } }
-          );
-          const activeWord = newWords[0];
-          const frontBack = await woorden.findOne({ _id: new ObjectId(activeWord._id) });
-          if (!frontBack) {
-            return res.status(404).json({ error: "Word data not found in woorden collection for activeWord" });
-          }
-          activeWord.front = frontBack.front;
-          activeWord.back = frontBack.back;
-          return res.json({
-            word: activeWord,
-            totalWordsWithStage: newWords.length
-          });
-        } 
+      const newWords = await woorden
+        .find(query)
+        .limit(newWordsAmount)
+        .project({ _id: 1 })
+        .toArray();
 
-        const nextWord = user.words
-          .filter(word => word.status === "new")
-          .sort((a, b) => a.stage - b.stage)[0];
+      newWords.forEach(word => {
+        word.status = "new";
+        word.counter = 0;
+        word.stage = 0;
+      });
 
-        if (!nextWord) {
-          return res.status(404).json({ error: "No word found" });
-        }
+      updatedWords = [...userWords, ...newWords];
 
-        const frontBack = await woorden.findOne({ _id: new ObjectId(nextWord._id) });
-        if (!frontBack) {
-          return res.status(404).json({ error: "Word data not found in woorden collection" });
-        }
-        nextWord.front = frontBack.front;
-        nextWord.back = frontBack.back;
-    
-        // const totalWordsWithStage = await activeWoorden.countDocuments({ stage: nextWord[0].stage });
-        const totalWordsWithStage = user.words.filter(word => word.stage === nextWord.stage).length;
-        res.json({
-          word: nextWord,
-          totalWordsWithStage: totalWordsWithStage, 
-        });
-      } catch (error) {
-        console.error("Error fetching word:", error);
-        res.status(500).json({ error: "Internal server error" });
-      }
+      await users.updateOne(
+        { _id: new ObjectId(id) },
+        { $set: { words: updatedWords } }
+      );
+    }
+
+    const updatedUser = await users.findOne({ _id: new ObjectId(id) });
+
+    const nextWord = updatedUser.words
+      .filter(word => word.status === "new")
+      .sort((a, b) => a.stage - b.stage)[0];
+
+    if (!nextWord) {
+      return res.status(404).json({ error: "No word found" });
+    }
+
+    const frontBack = await woorden.findOne({ _id: new ObjectId(nextWord._id) });
+    if (!frontBack) {
+      return res.status(404).json({ error: "Word data not found in woorden collection" });
+    }
+
+    nextWord.front = frontBack.front;
+    nextWord.back = frontBack.back;
+
+    const totalWordsWithStage = updatedUser.words.filter(
+      word => word.status === "new" 
+      && word.stage === nextWord.stage
+    ).length;
+
+    return res.json({
+      word: nextWord,
+      totalWordsWithStage: totalWordsWithStage,
+    });
+
+  } catch (error) {
+    console.error("Error fetching word:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
+
+
+
 
 export const getActiveWord = async (req, res) => {
     try {
@@ -131,44 +142,85 @@ export const updateWord = async (req, res) => {
 };
 
 
-  export const updateWords = async (req, res) => {
-    try {
-      const updatedActiveWoorden = await activeWoorden.find().toArray();
+  // export const updateWords = async (req, res) => {
+  //   try {
+  //     const updatedActiveWoorden = await activeWoorden.find().toArray();
   
-      const processWord = async (word) => {
-        let updatedData = {
-          status: word.status,
-          counter: word.counter,
-          stage: word.stage,
-        };
+  //     const processWord = async (word) => {
+  //       let updatedData = {
+  //         status: word.status,
+  //         counter: word.counter,
+  //         stage: word.stage,
+  //       };
   
-        if (word.counter === 0 || word.counter === 1) {
-          updatedData.status = "learned";
-        } else if (word.counter === 2 || word.counter === 3) {
-          updatedData.status = "familiar";
-          updatedData.counter = 0;
-          updatedData.stage = 5;
-        } else if (word.counter === 4 || word.counter === 5) {
-          updatedData.counter = 0;
-          updatedData.stage = 0;
-        }
+  //       if (word.counter === 0 || word.counter === 1) {
+  //         updatedData.status = "learned";
+  //       } else if (word.counter === 2 || word.counter === 3) {
+  //         updatedData.status = "familiar";
+  //         updatedData.counter = 0;
+  //         updatedData.stage = 5;
+  //       } else if (word.counter === 4 || word.counter === 5) {
+  //         updatedData.counter = 0;
+  //         updatedData.stage = 0;
+  //       }
         
-        await woorden.updateOne(
-          { _id: word.wordId },
-          { $set: updatedData },
-        );
-      };
+  //       await woorden.updateOne(
+  //         { _id: word.wordId },
+  //         { $set: updatedData },
+  //       );
+  //     };
   
-      for (const word of updatedActiveWoorden) {
-        await processWord(word);
-      }
+  //     for (const word of updatedActiveWoorden) {
+  //       await processWord(word);
+  //     }
   
-      res.json({ message: "Words updated successfully" });
-    } catch (error) {
-      console.error("Error updating words:", error);
-      res.status(500).json({ error: "Internal server error" });
+  //     res.json({ message: "Words updated successfully" });
+  //   } catch (error) {
+  //     console.error("Error updating words:", error);
+  //     res.status(500).json({ error: "Internal server error" });
+  //   }
+  // };
+
+  export const updateWords = async (req, res) => {
+  try {
+    const userId = req.params.userId; 
+    if (!userId) return res.status(400).json({ error: "Missing user ID" });
+
+    const user = await users.findOne({ _id: new ObjectId(userId) });
+    if (!user || !user.words) {
+      return res.status(404).json({ error: "User or words not found" });
     }
-  };
+
+    const updatedWords = user.words.map((word) => {
+      if (word.status !== "new") return word;
+
+      let updatedData = { ...word };
+
+      if (word.counter === 0 || word.counter === 1) {
+        updatedData.status = "learned";
+      } else if (word.counter === 2 || word.counter === 3) {
+        updatedData.status = "familiar";
+        updatedData.counter = 0;
+        updatedData.stage = 5;
+      } else if (word.counter === 4 || word.counter === 5) {
+        updatedData.counter = 0;
+        updatedData.stage = 0;
+      }
+
+      return updatedData;
+    });
+
+    await users.updateOne(
+      { _id: new ObjectId(userId) },
+      { $set: { words: updatedWords } }
+    );
+
+    res.json({ message: "User words updated successfully" });
+  } catch (error) {
+    console.error("Error updating user words:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
 
 
     export const getQuizTwo = async (req, res) => {

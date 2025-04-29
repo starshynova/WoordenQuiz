@@ -14,7 +14,7 @@ const woordenRouter = express.Router();
 woordenRouter.get("/vocabulary/:id", getWords);
 woordenRouter.get("/active-word", getActiveWord);
 woordenRouter.put("/update/:userId/:wordId", updateWord);
-woordenRouter.put("/update-words", updateWords);
+woordenRouter.put("/:userId/update-words", updateWords);
 woordenRouter.get("/quiz-two/:userId/:wordId", getQuizTwo);
 woordenRouter.get("/quiz-four/:userId/:wordId", getQuizFour);
 woordenRouter.delete("/clear-collection", clearCollection);

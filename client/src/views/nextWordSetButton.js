@@ -1,4 +1,4 @@
-import { getWord } from "../pages/getWord.js";
+import { getWord, userId } from "../pages/getWord.js";
 
 // export const nextWordSetPage = () => {
 // document.getElementById("user-interface").innerHTML = "";
@@ -59,13 +59,25 @@ export const nextWordSetPage = () => {
   container.appendChild(nextWordSetButton);
   document.getElementById("user-interface").appendChild(container);
 
-  // nextWordSetButton.addEventListener("click", async () => {
-  //   await setUpdatedCollections(); // эти функции уже у тебя есть
-  //   await clearCollections();
+  const updateWords = async (data) => {
 
-  //   document.getElementById("user-interface").innerHTML = "";
-  //   await getWord(); // теперь запускаем новый набор слов
-  // });
+  try {
+    await fetch(`http://localhost:3000/api/word/${userId}/update-words`, {
+      method: "PUT",
+       headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+  } catch (error) {
+    console.error("Error when updating collections:", error);
+  }
+}
+
+  nextWordSetButton.addEventListener("click", async () => {
+  await updateWords();
+
+  document.getElementById("user-interface").innerHTML = "";
+  await getWord();
+});
 };
 
 
