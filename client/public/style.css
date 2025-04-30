@@ -4,22 +4,22 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: radial-gradient(circle, #866BC3, #5732A0 );
+  background: radial-gradient(circle, #866bc3, #5732a0);
 }
 
 button:not(:disabled):hover {
   scale: 105%;
 }
 
- #user-interface {
+#user-interface {
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
- }
+}
 
- .description-container {
+.description-container {
   width: 80%;
   height: auto;
   display: flex;
@@ -27,9 +27,9 @@ button:not(:disabled):hover {
   justify-content: space-between;
   align-items: center;
   row-gap: 40px;
- }
+}
 
- .description {
+.description {
   width: 20%;
   height: 120px;
   border: 2px solid #170029;
@@ -37,9 +37,9 @@ button:not(:disabled):hover {
   background: #ffffff;
   color: #170029;
   padding: 10px;
- }
+}
 
- .login-container {
+.login-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -109,7 +109,7 @@ input::placeholder {
   font-style: italic;
 }
 
- .container {
+.container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -196,7 +196,7 @@ input::placeholder {
   padding: 10px 20px;
   font-size: 20px;
   cursor: pointer;
-  border:  3px solid #3f1161;
+  border: 3px solid #3f1161;
   border-radius: 10px;
   background-color: #ffffff;
   color: #170029;
@@ -242,7 +242,7 @@ input::placeholder {
   margin-right: 5%;
 }
 
-.answer, 
+.answer,
 .answer-big {
   width: 40%;
   height: 80px;
@@ -260,11 +260,11 @@ input::placeholder {
 }
 
 .answer-big {
-    height: 120px;
+  height: 120px;
 }
 
 .answer:hover,
-.answer-big:hover  {
+.answer-big:hover {
   background-color: #ebc0ff;
   font-size: 24px;
   border-color: #1e072e;

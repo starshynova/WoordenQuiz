@@ -1,136 +1,140 @@
-import { generateTwoAnswers } from "./generateTwoAnswers.js";
-import { generateFourAnswers, generateFourAnswersInversion } from "./generateFourAnswers.js";
-import { nextButton } from "./nextWordButton.js";
-import { finishSetButton } from "./finishSetButton.js";
-import { currentStage, setIncorrectAnswer, totalStageCount, totalStageNewCount } from "../pages/getWord.js";
-import { nextWord } from "./nextWordButton.js";
-import { nextWordSetPage } from "./nextWordSetButton.js";
+import { generateTwoAnswers } from './generateTwoAnswers.js';
+import {
+  generateFourAnswers,
+  generateFourAnswersInversion,
+} from './generateFourAnswers.js';
+import { nextButton } from './nextWordButton.js';
+import {
+  currentStage,
+  setIncorrectAnswer,
+  totalStageCount,
+  totalStageNewCount,
+} from '../pages/getWord.js';
+import { nextWord } from './nextWordButton.js';
 
-export const renderQuizCard = async (answerCount, direction = 'front-to-back') => {
-  document.getElementById("user-interface").innerHTML = "";
-  const container = document.createElement("div");
-  container.classList.add("container");
-  const containerHeader = document.createElement("div");
-  containerHeader.classList.add("container-header");
+export const renderQuizCard = async (
+  answerCount,
+  direction = 'front-to-back'
+) => {
+  document.getElementById('user-interface').innerHTML = '';
+  const container = document.createElement('div');
+  container.classList.add('container');
+  const containerHeader = document.createElement('div');
+  containerHeader.classList.add('container-header');
   if (currentStage === 3 || currentStage === 4) {
-  containerHeader.textContent = `You are able to choose one of two answers.`
+    containerHeader.textContent = `You are able to choose one of two answers.`;
   } else if (currentStage > 4 || currentStage < 8) {
-    containerHeader.textContent = `You are able to choose one of four answers.`
+    containerHeader.textContent = `You are able to choose one of four answers.`;
   }
   container.appendChild(containerHeader);
-  const containerNextButton = document.createElement("div");
-  containerNextButton.classList.add("container-next-button");
-  nextButton.classList.add("hide");
+  const containerNextButton = document.createElement('div');
+  containerNextButton.classList.add('container-next-button');
+  nextButton.classList.add('hide');
   containerNextButton.appendChild(nextButton);
-  
+
   let stageCount;
   if (answerCount === 4) {
     stageCount = totalStageCount;
   } else if (answerCount === 2) {
     stageCount = totalStageNewCount;
-  };
-  
+  }
+
   if (stageCount === 1) {
-    nextButton.classList.remove("hide");
+    nextButton.classList.remove('hide');
   }
-  if (currentStage < 7 ) {
-    nextButton.textContent = "Go to the next stage";
-    // nextButton.addEventListener("click", nextWord);
+  if (currentStage < 7) {
+    nextButton.textContent = 'Go to the next stage';
   } else if (currentStage === 7) {
-    nextButton.textContent = "Finish this set";
-    // nextButton.addEventListener("click", nextWordSetPage);
+    nextButton.textContent = 'Finish this set';
   }
-  
-  
 
- 
-
-  const cardBlock = await createCardBlock(container, answerCount, direction, stageCount);
+  const cardBlock = await createCardBlock(
+    container,
+    answerCount,
+    direction,
+    stageCount
+  );
   container.appendChild(cardBlock);
   container.appendChild(containerNextButton);
-  // if (answerCount === 4) {
-  //   container.appendChild(finishSetButton);
-  // }
 
-  document.getElementById("user-interface").appendChild(container);
+  document.getElementById('user-interface').appendChild(container);
 };
 
-const createCardBlock = async (container, answerCount, direction, stageCount) => {
-
+const createCardBlock = async (
+  container,
+  answerCount,
+  direction,
+  stageCount
+) => {
   let data;
   if (answerCount === 2) {
     data = await generateTwoAnswers();
   } else if (answerCount === 4) {
-    if (direction === "front-to-back") {
+    if (direction === 'front-to-back') {
       data = await generateFourAnswers();
-    } else if (direction === "back-to-front") {
+    } else if (direction === 'back-to-front') {
       data = await generateFourAnswersInversion();
     } else {
-      console.error("Unknown direction:", direction);
+      console.error('Unknown direction:', direction);
       return;
     }
   }
 
-  const question = document.createElement("div");
-  question.classList.add("question");
+  const question = document.createElement('div');
+  question.classList.add('question');
   question.textContent = data.question;
   container.appendChild(question);
 
-  const answerContainer = document.createElement("div");
-  answerContainer.className = "answer-block";
+  const answerContainer = document.createElement('div');
+  answerContainer.className = 'answer-block';
   container.appendChild(answerContainer);
 
   const correctAnswer = data.correctAnswer;
 
   const createAnswerElement = (answerText) => {
-    const element = document.createElement("button");
+    const element = document.createElement('button');
     if (answerCount === 4) {
-      element.classList.add("answer");
+      element.classList.add('answer');
     } else if (answerCount === 2) {
-      element.classList.add("answer-big");
+      element.classList.add('answer-big');
     }
     element.textContent = answerText;
 
-    element.addEventListener("click", () => {
-      document.querySelectorAll(".answer, .answer-big").forEach((btn) => {
+    element.addEventListener('click', () => {
+      document.querySelectorAll('.answer, .answer-big').forEach((btn) => {
         btn.disabled = true;
       });
 
       if (answerText === correctAnswer) {
-        element.classList.add("correct-answer");
+        element.classList.add('correct-answer');
         if (stageCount === 1) {
-          nextButton.disabled = false; 
+          nextButton.disabled = false;
         } else {
           setTimeout(() => {
             nextWord();
-          }, 100);
+          }, 1000);
         }
       } else {
-        element.classList.add("incorrect-answer");
+        element.classList.add('incorrect-answer');
         setIncorrectAnswer(true);
-        
 
         const correctAnswerElement = Array.from(answerContainer.children).find(
-          (btn) => btn.innerText === correctAnswer,
+          (btn) => btn.innerText === correctAnswer
         );
         if (correctAnswerElement) {
-          correctAnswerElement.classList.add("correct-answer");
+          correctAnswerElement.classList.add('correct-answer');
         }
         if (stageCount === 1) {
-          nextButton.disabled = false; 
+          nextButton.disabled = false;
         } else {
           setTimeout(() => {
             nextWord();
-          }, 100);
+          }, 1000);
         }
       }
       if (stageCount === 1) {
         nextButton.disabled = false;
       }
-
-      // if (currentStage === 7 && stageCount === 1) {
-      //   finishSetButton.disabled = false;
-      // }
     });
 
     return element;
@@ -143,4 +147,3 @@ const createCardBlock = async (container, answerCount, direction, stageCount) =>
 
   return answerContainer;
 };
-
