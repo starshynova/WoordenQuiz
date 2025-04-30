@@ -15,7 +15,7 @@ if (!token) {
 export let userId;
 export let currentWordId;
 export let currentStage;
-export const stageCounters = {};
+// export const stageCounters = {};
 export let currentCounter;
 let incorrectAnswer = false;
 export const setIncorrectAnswer = (value) => {
@@ -62,28 +62,28 @@ export const getWord = async () => {
     renderQuizCard(4, 'back-to-front');
   }
 
-  if (currentStage < 3 && totalStageNewCount === 1) {
-    nextButton.removeEventListener("click", nextWordSetPage)
-    nextButton.addEventListener("click", nextWord);
-    nextButton.textContent = "Go to the next stage"; 
-  } else if (currentStage < 3) {
-    nextButton.textContent = "Next word";
-  }
-  if (currentStage > 2 && currentStage < 7 ) {
-    nextButton.classList.remove("hide");
-    nextButton.textContent = "Go to the next stage";
-    if (totalStageCount !== 1) {
-      nextButton.classList.add("hide");
-    }
-  }
-  if (currentStage === 7 ) {
-    nextButton.classList.remove("hide");
-    nextButton.textContent = "Finish this set";
-    nextButton.removeEventListener("click", nextWord);
-    nextButton.addEventListener("click", nextWordSetPage);
-    if (totalStageCount !== 1) {
-      nextButton.classList.add("hide");
-    }
-  }
+  // if (currentStage < 3 && totalStageNewCount === 1) {
+  //   nextButton.removeEventListener("click", nextWordSetPage)
+  //   nextButton.addEventListener("click", nextWord);
+  //   nextButton.textContent = "Go to the next stage"; 
+  // } else if (currentStage < 3) {
+  //   nextButton.textContent = "Next word";
+  // }
+  // if (currentStage > 2 && currentStage < 7 ) {
+  //   nextButton.classList.remove("hide");
+  //   nextButton.textContent = "Go to the next stage";
+  //   if (totalStageCount !== 1) {
+  //     nextButton.classList.add("hide");
+  //   }
+  // }
+  // if (currentStage === 7 ) {
+  //   nextButton.classList.remove("hide");
+  //   nextButton.textContent = "Finish this set";
+  //   nextButton.removeEventListener("click", nextWord);
+  //   nextButton.addEventListener("click", nextWordSetPage);
+  //   if (totalStageCount !== 1) {
+  //     nextButton.classList.add("hide");
+  //   }
+  // }
 };
 

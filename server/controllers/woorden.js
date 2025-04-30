@@ -247,6 +247,7 @@ export const updateWord = async (req, res) => {
         updatedData.counter = 0;
         updatedData.stage = 5;
       } else if (word.counter === 4 || word.counter === 5) {
+        updatedData.status = "new";
         updatedData.counter = 0;
         updatedData.stage = 0;
       }

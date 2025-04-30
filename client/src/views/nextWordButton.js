@@ -1,5 +1,5 @@
 import { getWord, userId } from "../pages/getWord.js";
-import { currentWordId, currentStage, currentCounter, getIncorrectAnswer } from "../pages/getWord.js";
+import { currentWordId, currentStage, currentCounter, getIncorrectAnswer, totalStageCount } from "../pages/getWord.js";
 import { nextWordSetPage } from "./nextWordSetButton.js";
 
 export const nextButton = document.createElement("button");
@@ -28,15 +28,19 @@ export const nextWord = async () => {
       updateData.counter = currentCounter + 1;
     }
 
-  } else if (currentStage === 8) {
-nextWordSetPage();
+//   } else if (currentStage === 8) {
+// nextWordSetPage();
   }
 
   await setUpdateData(updateData);
 
   document.getElementById("user-interface").innerHTML = "";
-  console.log("currentStage:", currentStage);
+  // console.log("currentStage:", currentStage);
+  if (currentStage === 7 && totalStageCount === 1) {
+    nextWordSetPage();
+  } else {
   getWord();
+  }
 }
 
 nextButton.addEventListener("click", nextWord);
