@@ -1,20 +1,29 @@
-import { getWord, userId } from "../pages/getWord.js";
-import { currentWordId, currentStage, currentCounter, getIncorrectAnswer, totalStageCount } from "../pages/getWord.js";
-import { nextWordSetPage } from "./nextWordSetButton.js";
+import { getWord, userId } from '../pages/getWord.js';
+import {
+  currentWordId,
+  currentStage,
+  currentCounter,
+  getIncorrectAnswer,
+  totalStageCount,
+} from '../pages/getWord.js';
+import { nextWordSetPage } from './nextWordSetPage.js';
 
-export const nextButton = document.createElement("button");
+export const nextButton = document.createElement('button');
 
-nextButton.classList.add("next-button");
+nextButton.classList.add('next-button');
 
 const setUpdateData = async (data) => {
   try {
-    await fetch(`http://localhost:3000/api/word/update/${userId}/${currentWordId}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
+    await fetch(
+      `http://localhost:3000/api/word/update/${userId}/${currentWordId}`,
+      {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      }
+    );
   } catch (error) {
-    console.error("Error when updating a word:", error);
+    console.error('Error when updating a word:', error);
   }
 };
 
@@ -27,20 +36,16 @@ export const nextWord = async () => {
     if (getIncorrectAnswer?.() === true) {
       updateData.counter = currentCounter + 1;
     }
-
-//   } else if (currentStage === 8) {
-// nextWordSetPage();
   }
 
   await setUpdateData(updateData);
 
-  document.getElementById("user-interface").innerHTML = "";
-  // console.log("currentStage:", currentStage);
+  document.getElementById('user-interface').innerHTML = '';
   if (currentStage === 7 && totalStageCount === 1) {
     nextWordSetPage();
   } else {
-  getWord();
+    getWord();
   }
-}
+};
 
-nextButton.addEventListener("click", nextWord);
+nextButton.addEventListener('click', nextWord);
