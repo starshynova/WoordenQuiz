@@ -21,6 +21,7 @@ let incorrectAnswer = false;
 export const setIncorrectAnswer = (value) => {
   incorrectAnswer = value;
 };
+export let totalStageNewCount = 0;
 export let totalStageCount = 0;
 
 export const getIncorrectAnswer = () => incorrectAnswer;
@@ -36,9 +37,11 @@ export const getWord = async () => {
     console.log("User data:", word);
     currentWordId = word.word._id;
     currentStage = word.word.stage;
-    totalStageCount = word.totalWordsWithStage; 
+    totalStageNewCount = word.totalWordsWithStageNew; 
+    totalStageCount = word.totalWordsWithStage;
     currentCounter = word.word.counter;
-    console.log("current counter:", currentCounter)
+    console.log("current counter:", currentCounter);
+    console.log("current stage:", currentStage);
   } catch (error) {
     console.error("Error getting word:", error);
     return;
@@ -59,7 +62,9 @@ export const getWord = async () => {
     renderQuizCard(4, 'back-to-front');
   }
 
-  if (currentStage < 3 && totalStageCount === 1) {
+  if (currentStage < 3 && totalStageNewCount === 1) {
+    nextButton.removeEventListener("click", nextWordSetPage)
+    nextButton.addEventListener("click", nextWord);
     nextButton.textContent = "Go to the next stage"; 
   } else if (currentStage < 3) {
     nextButton.textContent = "Next word";

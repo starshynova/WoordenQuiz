@@ -33,6 +33,8 @@ export const getWords = async (req, res) => {
 
       const newWords = await woorden
         .find(query)
+        .sort({ $natural: 1 })
+        // .sort({ _id: 1 }) 
         .limit(newWordsAmount)
         .project({ _id: 1 })
         .toArray();
@@ -43,7 +45,16 @@ export const getWords = async (req, res) => {
         word.stage = 0;
       });
 
-      updatedWords = [...userWords, ...newWords];
+      // updatedWords = [...userWords, ...newWords];
+      updatedWords = [
+        ...userWords,
+        ...newWords.map(word => ({
+          ...word,
+          status: "new",
+          counter: 0,
+          stage: 0
+        }))
+      ];
 
       await users.updateOne(
         { _id: new ObjectId(id) },
@@ -54,7 +65,7 @@ export const getWords = async (req, res) => {
     const updatedUser = await users.findOne({ _id: new ObjectId(id) });
 
     const nextWord = updatedUser.words
-      .filter(word => word.status === "new")
+      .filter(word => word.status === "new" || word.status === "familiar")
       .sort((a, b) => a.stage - b.stage)[0];
 
     if (!nextWord) {
@@ -69,15 +80,48 @@ export const getWords = async (req, res) => {
     nextWord.front = frontBack.front;
     nextWord.back = frontBack.back;
 
-    const totalWordsWithStage = updatedUser.words.filter(
-      word => word.status === "new" 
-      && word.stage === nextWord.stage
-    ).length;
+    // const totalWordsWithStageNew = updatedUser.words
+    // .filter(
+    //   word =>
+    //     (word.status === "new" || word.status === "familiar") &&
+    //     word.stage === nextWord.stage
+    // )
+    // .slice(0, 15).length;
 
-    return res.json({
-      word: nextWord,
-      totalWordsWithStage: totalWordsWithStage,
-    });
+    // const totalWordsWithStage = updatedUser.words.filter(
+    //   word => word.status === "new" 
+    //   && word.status === "familiar"
+    //   && word.stage === nextWord.stage
+    // ).length;
+
+    // return res.json({
+    //   word: nextWord,
+    //   totalWordsWithStageNew: totalWordsWithStageNew,
+    // });
+
+    const totalWordsWithStageNew = updatedUser.words.filter(
+  word => word.status === "new" && word.stage === nextWord.stage
+);
+
+let totalWordsWithStage = [...totalWordsWithStageNew];
+
+if (nextWord.stage >= 5) {
+  const familiarWords = updatedUser.words.filter(
+    word => word.status === "familiar" && word.stage === nextWord.stage
+  );
+
+  const slotsLeft = 15 - totalWordsWithStage.length;
+  if (slotsLeft > 0) {
+    totalWordsWithStage = totalWordsWithStage.concat(familiarWords.slice(0, slotsLeft));
+  }
+}
+
+res.json({
+  word: nextWord,
+  totalWordsWithStageNew: totalWordsWithStageNew.length,
+  totalWordsWithStage: totalWordsWithStage.length,
+});
+
 
   } catch (error) {
     console.error("Error fetching word:", error);
@@ -242,17 +286,17 @@ export const updateWord = async (req, res) => {
           return res.status(404).json({ error: "Word not found in woorden collection" });
         }
     
-        const eligibleWordIds = user.words
+        const suitableWordIds = user.words
           .filter(w => w.status === 'new' && w._id.toString() !== wordId)
           .map(w => new ObjectId(w._id));
     
-        if (eligibleWordIds.length < 1) {
+        if (suitableWordIds.length < 1) {
           return res.status(404).json({ error: "Not enough alternative words with status 'new'" });
         }
     
         const [wrongWord] = await woorden
           .aggregate([
-            { $match: { _id: { $in: eligibleWordIds } } },
+            { $match: { _id: { $in: suitableWordIds } } },
             { $sample: { size: 1 } },
           ])
           .toArray();
@@ -291,19 +335,17 @@ export const updateWord = async (req, res) => {
               return res.status(404).json({ error: "Word not found in woorden collection" });
             }
         
-            // Найдём id других слов со статусом 'new'
-            const eligibleWordIds = user.words
+            const suitableWordIds = user.words
               .filter(w => w.status === 'new' && w._id.toString() !== wordId)
               .map(w => new ObjectId(w._id));
         
-            if (eligibleWordIds.length < 3) {
+            if (suitableWordIds.length < 3) {
               return res.status(404).json({ error: "Not enough alternative words with status 'new'" });
             }
         
-            // Получим 3 случайных слова из woorden по этим id
             const wrongAnswers = await woorden
               .aggregate([
-                { $match: { _id: { $in: eligibleWordIds } } },
+                { $match: { _id: { $in: suitableWordIds } } },
                 { $sample: { size: 3 } },
               ])
               .toArray();
@@ -388,10 +430,10 @@ export const updateWord = async (req, res) => {
 //         return res.status(404).json({ error: "No word found" });
 //       }
   
-//       const totalWordsWithStage = await activeWoorden.countDocuments({ stage: nextWord[0].stage });
+//       const totalWordsWithStageNew = await activeWoorden.countDocuments({ stage: nextWord[0].stage });
 //       res.json({
 //         word: nextWord[0],
-//         totalWordsWithStage: totalWordsWithStage, 
+//         totalWordsWithStageNew: totalWordsWithStageNew, 
 //       });
 //     } catch (error) {
 //       console.error("Error fetching word:", error);

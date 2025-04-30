@@ -28,13 +28,14 @@ export const nextWord = async () => {
       updateData.counter = currentCounter + 1;
     }
 
-//   } else if (currentStage === 8) {
-// nextWordSetPage();
+  } else if (currentStage === 8) {
+nextWordSetPage();
   }
 
   await setUpdateData(updateData);
 
   document.getElementById("user-interface").innerHTML = "";
+  console.log("currentStage:", currentStage);
   getWord();
 }
 

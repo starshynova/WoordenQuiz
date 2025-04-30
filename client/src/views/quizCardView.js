@@ -2,7 +2,7 @@ import { generateTwoAnswers } from "./generateTwoAnswers.js";
 import { generateFourAnswers, generateFourAnswersInversion } from "./generateFourAnswers.js";
 import { nextButton } from "./nextWordButton.js";
 import { finishSetButton } from "./finishSetButton.js";
-import { currentStage, setIncorrectAnswer, totalStageCount } from "../pages/getWord.js";
+import { currentStage, setIncorrectAnswer, totalStageCount, totalStageNewCount } from "../pages/getWord.js";
 import { nextWord } from "./nextWordButton.js";
 
 export const renderQuizCard = async (answerCount, direction = 'front-to-back') => {
@@ -19,9 +19,16 @@ export const renderQuizCard = async (answerCount, direction = 'front-to-back') =
   container.appendChild(containerHeader);
   const containerNextButton = document.createElement("div");
   containerNextButton.classList.add("container-next-button");
-  containerNextButton.appendChild(nextButton)
+  containerNextButton.appendChild(nextButton);
 
-  const cardBlock = await createCardBlock(container, answerCount, direction);
+  let stageCount;
+  if (answerCount === 4) {
+    stageCount = totalStageCount;
+  } else if (answerCount === 2) {
+    stageCount = totalStageNewCount;
+  };
+
+  const cardBlock = await createCardBlock(container, answerCount, direction, stageCount);
   container.appendChild(cardBlock);
   container.appendChild(containerNextButton);
   if (answerCount === 4) {
@@ -31,7 +38,7 @@ export const renderQuizCard = async (answerCount, direction = 'front-to-back') =
   document.getElementById("user-interface").appendChild(container);
 };
 
-const createCardBlock = async (container, answerCount, direction) => {
+const createCardBlock = async (container, answerCount, direction, stageCount) => {
 
   let data;
   if (answerCount === 2) {
@@ -74,7 +81,9 @@ const createCardBlock = async (container, answerCount, direction) => {
 
       if (answerText === correctAnswer) {
         element.classList.add("correct-answer");
-        if (totalStageCount !== 1) { 
+        if (stageCount === 1) {
+          nextButton.disabled = false; 
+        } else {
           setTimeout(() => {
             nextWord();
           }, 500);
@@ -90,17 +99,19 @@ const createCardBlock = async (container, answerCount, direction) => {
         if (correctAnswerElement) {
           correctAnswerElement.classList.add("correct-answer");
         }
-        if (totalStageCount !== 1) { 
-        setTimeout(() => {
-          nextWord();
-        }, 500);
+        if (stageCount === 1) {
+          nextButton.disabled = false; 
+        } else {
+          setTimeout(() => {
+            nextWord();
+          }, 500);
+        }
       }
-      }
-      if (totalStageCount === 1) {
-        nextButton.disabled = false;
-      }
+      // if (stageCount === 1) {
+      //   nextButton.disabled = false;
+      // }
 
-      if (currentStage === 7 && totalStageCount === 1) {
+      if (currentStage === 7 && stageCount === 1) {
         finishSetButton.disabled = false;
       }
     });
@@ -115,3 +126,4 @@ const createCardBlock = async (container, answerCount, direction) => {
 
   return answerContainer;
 };
+
