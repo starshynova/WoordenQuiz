@@ -118,6 +118,7 @@ export const loginForm = () => {
           passwordError.classList.remove('hide');
           passwordError.textContent = data.error || 'Login failed';
         } else {
+          localStorage.setItem('token', data.token);
           await getWord();
         }
       } catch (error) {

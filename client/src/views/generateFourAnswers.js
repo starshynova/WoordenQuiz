@@ -6,7 +6,6 @@ export const generateFourAnswers = async () => {
       `http://localhost:3000/api/word/quiz-four/${userId}/${currentWordId}?direction=front-to-back`
     );
     const data = await response.json();
-    console.log('Quiz 4 data:', data);
     return data;
   } catch (error) {
     console.error('Error generating quiz:', error);
@@ -20,7 +19,6 @@ export const generateFourAnswersInversion = async () => {
       `http://localhost:3000/api/word/quiz-four/${userId}/${currentWordId}?direction=back-to-front`
     );
     const data = await response.json();
-    console.log('Quiz 4 data:', data);
     return data;
   } catch (error) {
     console.error('Error generating quiz:', error);

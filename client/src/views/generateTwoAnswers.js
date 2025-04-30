@@ -6,7 +6,6 @@ export const generateTwoAnswers = async () => {
       `http://localhost:3000/api/word/quiz-two/${userId}/${currentWordId}`
     );
     const data = await response.json();
-    console.log('Quiz 2 data:', data);
     return data;
   } catch (error) {
     console.error('Error generating quiz:', error);

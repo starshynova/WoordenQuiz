@@ -25,19 +25,15 @@ export const getWord = async () => {
     }
     const decodedToken = jwtDecode(token);
     userId = decodedToken.id;
-    console.log('User ID:', userId);
     const response = await fetch(
       `http://localhost:3000/api/word/vocabulary/${userId}`
     );
     word = await response.json();
-    console.log('User data:', word);
     currentWordId = word.word._id;
     currentStage = word.word.stage;
     totalStageNewCount = word.totalWordsWithStageNew;
     totalStageCount = word.totalWordsWithStage;
     currentCounter = word.word.counter;
-    console.log('current counter:', currentCounter);
-    console.log('current stage:', currentStage);
   } catch (error) {
     console.error('Error getting word:', error);
     return;
