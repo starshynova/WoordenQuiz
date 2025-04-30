@@ -121,6 +121,7 @@ loginButton.addEventListener("click", async (e) => {
         passwordError.textContent = data.error || "Login failed";
       } else {
         localStorage.setItem("token", data.token);
+        console.log("Token:", data.token);
         getWord();
       }
     } catch (error) {

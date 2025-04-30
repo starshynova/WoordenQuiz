@@ -1,9 +1,9 @@
-import { currentWordId } from "../pages/getWord.js";
+import { currentWordId, userId } from "../pages/getWord.js";
 
 export const generateFourAnswers = async () => {
   try {
     const response = await fetch(
-      `http://localhost:3000/api/word/quiz-four/${currentWordId}?direction=front-to-back`,
+      `http://localhost:3000/api/word/quiz-four/${userId}/${currentWordId}?direction=front-to-back`,
     );
     const data = await response.json();
     console.log("Quiz 4 data:", data);
@@ -17,7 +17,7 @@ export const generateFourAnswers = async () => {
 export const generateFourAnswersInversion = async () => {
   try {
     const response = await fetch(
-      `http://localhost:3000/api/word/quiz-four/${currentWordId}?direction=back-to-front`,
+      `http://localhost:3000/api/word/quiz-four/${userId}/${currentWordId}?direction=back-to-front`,
     );
     const data = await response.json();
     console.log("Quiz 4 data:", data);

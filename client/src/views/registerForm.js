@@ -225,7 +225,7 @@ const checkEmailExistence = async (email) => {
 
     event.preventDefault();
   
-    await registerUser(name, email, password);
+    registerUser(name, email, password);
   };
   
   registerButton.addEventListener('click', handleFormSubmit);

@@ -1,5 +1,6 @@
-import { nextButton } from "./nextWordButton.js";
-import { currentStage } from "../pages/getWord.js";
+import { nextButton, nextWord } from "./nextWordButton.js";
+import { currentStage, totalStageNewCount } from "../pages/getWord.js";
+import { nextWordSetPage } from "./nextWordSetButton.js";
 
 export function renderSingleCard(front, back) {
   document.getElementById("user-interface").innerHTML = "";
@@ -11,14 +12,25 @@ export function renderSingleCard(front, back) {
 
   const card = createCard(front, back);
 
+  
   if (nextButton.className = "hide") {
     nextButton.classList.remove("hide");
     nextButton.classList.add("next-button");
   }
 
+
+  // nextButton.removeEventListener("click", nextWordSetPage);
+  // nextButton.addEventListener("click", nextWord);
+  if (totalStageNewCount === 1) {
+    nextButton.textContent = "Go to the next stage";
+  } else {
+    nextButton.textContent = "Next word";
+  }
+
   const containerNexButton = document.createElement("div");
   containerNexButton.classList.add("container-next-button");
   containerNexButton.appendChild(nextButton);
+  
 
 
   container.appendChild(containerHeader);
