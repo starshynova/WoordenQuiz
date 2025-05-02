@@ -177,7 +177,7 @@ export const registerForm = () => {
   const checkEmailExistence = async (email) => {
     try {
       const response = await fetch(
-        'http://localhost:3000/api/user/check-email',
+        '/api/user/check-email',
         {
           method: 'POST',
           headers: {
@@ -196,7 +196,7 @@ export const registerForm = () => {
 
   const registerUser = async (name, email, password) => {
     try {
-      const response = await fetch('http://localhost:3000/api/user', {
+      const response = await fetch('/api/user', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

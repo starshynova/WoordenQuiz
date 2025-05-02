@@ -3,7 +3,7 @@ import { currentWordId, userId } from '../pages/getWord.js';
 export const generateFourAnswers = async () => {
   try {
     const response = await fetch(
-      `http://localhost:3000/api/word/quiz-four/${userId}/${currentWordId}?direction=front-to-back`
+      `/api/word/quiz-four/${userId}/${currentWordId}?direction=front-to-back`
     );
     const data = await response.json();
     return data;
@@ -16,7 +16,7 @@ export const generateFourAnswers = async () => {
 export const generateFourAnswersInversion = async () => {
   try {
     const response = await fetch(
-      `http://localhost:3000/api/word/quiz-four/${userId}/${currentWordId}?direction=back-to-front`
+      `/api/word/quiz-four/${userId}/${currentWordId}?direction=back-to-front`
     );
     const data = await response.json();
     return data;
