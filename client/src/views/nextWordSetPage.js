@@ -20,7 +20,7 @@ export const nextWordSetPage = () => {
 
   const updateWords = async (data) => {
     try {
-      await fetch(`http://localhost:3000/api/word/${userId}/update-words`, {
+      await fetch(`/api/word/${userId}/update-words`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),

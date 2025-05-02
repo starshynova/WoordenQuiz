@@ -15,7 +15,7 @@ nextButton.classList.add('next-button');
 const setUpdateData = async (data) => {
   try {
     await fetch(
-      `http://localhost:3000/api/word/update/${userId}/${currentWordId}`,
+      `/api/word/update/${userId}/${currentWordId}`,
       {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },

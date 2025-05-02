@@ -26,7 +26,7 @@ export const getWord = async () => {
     const decodedToken = jwtDecode(token);
     userId = decodedToken.id;
     const response = await fetch(
-      `http://localhost:3000/api/word/vocabulary/${userId}`
+      `/api/word/vocabulary/${userId}`
     );
     word = await response.json();
     currentWordId = word.word._id;
