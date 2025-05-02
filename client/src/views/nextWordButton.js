@@ -7,6 +7,7 @@ import {
   totalStageCount,
 } from '../pages/getWord.js';
 import { nextWordSetPage } from './nextWordSetPage.js';
+import { API_BASE_URL } from '../../config.js';
 
 export const nextButton = document.createElement('button');
 
@@ -15,7 +16,7 @@ nextButton.classList.add('next-button');
 const setUpdateData = async (data) => {
   try {
     await fetch(
-      `/api/word/update/${userId}/${currentWordId}`,
+      `${API_BASE_URL}/api/word/update/${userId}/${currentWordId}`,
       {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
