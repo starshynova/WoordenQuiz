@@ -2,6 +2,7 @@ import { renderSingleCard } from '../views/flashCardView.js';
 import { renderQuizCard } from '../views/quizCardView.js';
 import { message } from '../views/message.js';
 import jwtDecode from 'https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/+esm';
+import { API_BASE_URL } from '../../config.js';
 
 export let userId;
 export let currentWordId;
@@ -26,7 +27,7 @@ export const getWord = async () => {
     const decodedToken = jwtDecode(token);
     userId = decodedToken.id;
     const response = await fetch(
-      `/api/word/vocabulary/${userId}`
+      `${API_BASE_URL}/api/word/vocabulary/${userId}`
     );
     word = await response.json();
     currentWordId = word.word._id;

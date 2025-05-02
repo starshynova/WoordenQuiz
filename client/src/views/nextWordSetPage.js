@@ -1,4 +1,5 @@
 import { getWord, userId } from '../pages/getWord.js';
+import { API_BASE_URL } from '../../config.js';
 
 export const nextWordSetPage = () => {
   document.getElementById('user-interface').innerHTML = '';
@@ -20,7 +21,7 @@ export const nextWordSetPage = () => {
 
   const updateWords = async (data) => {
     try {
-      await fetch(`/api/word/${userId}/update-words`, {
+      await fetch(`${API_BASE_URL}/api/word/${userId}/update-words`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),

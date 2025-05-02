@@ -1,5 +1,6 @@
 import { loginForm } from './loginForm.js';
 import { message } from './message.js';
+import { API_BASE_URL } from '../../config.js';
 
 export const registerForm = () => {
   document.getElementById('user-interface').innerHTML = '';
@@ -177,7 +178,7 @@ export const registerForm = () => {
   const checkEmailExistence = async (email) => {
     try {
       const response = await fetch(
-        '/api/user/check-email',
+        `${API_BASE_URL}/api/user/check-email`,
         {
           method: 'POST',
           headers: {
@@ -196,7 +197,7 @@ export const registerForm = () => {
 
   const registerUser = async (name, email, password) => {
     try {
-      const response = await fetch('/api/user', {
+      const response = await fetch(`${API_BASE_URL}/api/user`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,9 +1,10 @@
 import { currentWordId, userId } from '../pages/getWord.js';
+import { API_BASE_URL } from '../../config.js';
 
 export const generateFourAnswers = async () => {
   try {
     const response = await fetch(
-      `/api/word/quiz-four/${userId}/${currentWordId}?direction=front-to-back`
+      `${API_BASE_URL}/api/word/quiz-four/${userId}/${currentWordId}?direction=front-to-back`
     );
     const data = await response.json();
     return data;
@@ -16,7 +17,7 @@ export const generateFourAnswers = async () => {
 export const generateFourAnswersInversion = async () => {
   try {
     const response = await fetch(
-      `/api/word/quiz-four/${userId}/${currentWordId}?direction=back-to-front`
+      `${API_BASE_URL}/api/word/quiz-four/${userId}/${currentWordId}?direction=back-to-front`
     );
     const data = await response.json();
     return data;

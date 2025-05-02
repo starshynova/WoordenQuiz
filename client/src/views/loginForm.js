@@ -1,5 +1,6 @@
 import { registerForm } from './registerForm.js';
 import { getWord } from '../pages/getWord.js';
+import { API_BASE_URL } from '../../config.js';
 
 export const loginForm = () => {
   document.getElementById('user-interface').innerHTML = '';
@@ -106,7 +107,7 @@ export const loginForm = () => {
         password: passwordInput.value,
       };
       try {
-        const response = await fetch('/api/user/login', {
+        const response = await fetch(`${API_BASE_URL}/api/user/login`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
