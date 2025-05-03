@@ -60,28 +60,40 @@ export const userProfilePage = async () => {
     container.appendChild(amountLearnedWordsText);
 
     let setLearnedWords = false;
+    const learnedWordsContainer = document.createElement('div');
+    learnedWordsContainer.classList.add('learned-words-container');
+    const learnedWordsList = document.createElement('ol');
     const learnedWordsButton = document.createElement('button');
-    if (setLearnedWords) {
-        learnedWordsButton.textContent = "Hide learned words";
-        learnedWordsContainer.innerHTML = ''; 
+    learnedWordsContainer.appendChild(learnedWordsList);
+    learnedWordsContainer.appendChild(learnedWordsButton);
+    container.appendChild(learnedWordsContainer);
+    learnedWordsButton.textContent = "Learned words";
+
+    learnedWordsButton.addEventListener("click", async () => {
+        setLearnedWords = !setLearnedWords;
+        if (setLearnedWords) {
+        learnedWordsList.innerHTML = ""; 
 
         const list = userData.words.filter(word => word.status === "learned");
+        console.log("list of learned words:", list);
 
         for (const word of list) {
             try {
-                const response = await fetch(`${API_BASE_URL}/api/word/${word.id}`);
+                const response = await fetch(`${API_BASE_URL}/api/word/${word._id}`);
                 const data = await response.json();
 
-                const wordElement = document.createElement('p');
+                const wordElement = document.createElement('li');
                 wordElement.textContent = `${data.front} - ${data.back}`;
-                learnedWordsContainer.appendChild(wordElement);
+                learnedWordsList.appendChild(wordElement);
             } catch (err) {
                 console.error("Error fetching word:", err);
             }
         }
+        learnedWordsButton.textContent = "Hide learned words";
     } else {
         learnedWordsButton.textContent = "Learned words";
-        learnedWordsContainer.innerHTML = '';
+        learnedWordsList.innerHTML = '';
     }
+});
 }
 

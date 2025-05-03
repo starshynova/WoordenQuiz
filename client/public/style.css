@@ -328,3 +328,14 @@ h5 {
   text-align: center;
   margin: auto;
 }
+
+.learned-words-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+};
+
+ol {
+  list-style-type: decimal;
+}
