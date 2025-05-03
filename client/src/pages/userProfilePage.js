@@ -1,10 +1,21 @@
 import jwtDecode from 'https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/+esm';
 import { API_BASE_URL } from '../../config.js';
 import { message } from '../views/message.js';
+import { welcomePage } from './welcomePage.js';
 
 
 export const userProfilePage = async () => {
     document.getElementById('user-interface').innerHTML = '';
+    const iconContainer = document.createElement('button');
+    iconContainer.classList.add("icon-container");
+    iconContainer.style.left = "40px";
+    const iconBack = document.createElement('img');
+    iconBack.src = "./assets/back.svg";
+    iconContainer.appendChild(iconBack);
+    iconContainer.addEventListener('click', () => {
+        welcomePage();
+    });
+
     const container = document.createElement('div');
     container.classList.add('container');
     const containerHeader = document.createElement('div');
@@ -12,6 +23,7 @@ export const userProfilePage = async () => {
     
     container.appendChild(containerHeader);
     document.getElementById('user-interface').appendChild(container);
+    document.getElementById('user-interface').appendChild(iconContainer);
     
     let userData;
 
