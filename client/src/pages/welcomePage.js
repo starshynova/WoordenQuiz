@@ -1,8 +1,17 @@
 import { loginForm } from '../views/loginForm.js';
 import { getWord } from './getWord.js';
+import { userProfilePage } from './userProfilePage.js';
+
 
 export const welcomePage = () => {
   document.getElementById('user-interface').innerHTML = '';
+  const iconContainer = document.createElement('button');
+  iconContainer.classList.add("icon-container");
+  const iconLogin = document.createElement('img');
+  iconLogin.src = "./assets/icon-profile.svg";
+  iconContainer.appendChild(iconLogin);
+  
+
   const container = document.createElement('div');
   container.classList.add('container');
   const containerHeader = document.createElement('div');
@@ -10,6 +19,7 @@ export const welcomePage = () => {
   containerHeader.textContent = 'Welcome to WoordenQuiz!';
   container.appendChild(containerHeader);
   document.getElementById('user-interface').appendChild(container);
+  document.getElementById('user-interface').appendChild(iconContainer);
 
   const descriptionContainer = document.createElement('div');
   descriptionContainer.classList.add('description-container');
@@ -51,7 +61,9 @@ export const welcomePage = () => {
   const token = localStorage.getItem('token');
   if (token) {
     startButton.addEventListener('click', getWord);
+    iconContainer.addEventListener("click", userProfilePage)
   } else {
     startButton.addEventListener('click', loginForm);
+    iconContainer.addEventListener("click", loginForm)
   }
 };
