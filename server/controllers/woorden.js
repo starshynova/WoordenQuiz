@@ -22,40 +22,82 @@ export const getWords = async (req, res) => {
 
     let updatedWords = [...userWords];
 
+    // if (newWordsAmount > 0) {
+    //   let lastNewWord = wordStatusNew[wordStatusNew.length - 1];
+    //   let query = {};
+
+    //   if (lastNewWord && lastNewWord._id) {
+    //     const existingIds = userWords.map(w => new ObjectId(w._id));
+    //     query = { _id: { $gt: new ObjectId(lastNewWord._id),
+    //       $nin: existingIds
+    //      } };
+    //   }
+
+    //   const newWords = await woorden
+    //     .find(query)
+    //     .sort({ $natural: 1 })
+    //     .limit(newWordsAmount)
+    //     .project({ _id: 1 })
+    //     .toArray();
+
+    //   // newWords.forEach((word) => {
+    //   //   word.status = 'new';
+    //   //   word.counter = 0;
+    //   //   word.stage = 0;
+    //   // });
+
+    //   updatedWords = [
+    //     ...userWords,
+    //     ...newWords.map((word) => ({
+    //       ...word,
+    //       status: 'new',
+    //       counter: 0,
+    //       stage: 0,
+    //     })),
+    //   ];
+
+    //   await users.updateOne(
+    //     { _id: new ObjectId(id) },
+    //     {
+    //       $set: {
+    //         words: updatedWords,
+    //         lastView_date: new Date(),
+    //       },
+    //     }
+    //   );
+    // }
+
     if (newWordsAmount > 0) {
       let lastNewWord = wordStatusNew[wordStatusNew.length - 1];
       let query = {};
-
+    
       if (lastNewWord && lastNewWord._id) {
-        const existingIds = userWords.map(w => new ObjectId(w._id));
-        query = { _id: { $gt: new ObjectId(lastNewWord._id),
-          $nin: existingIds
-         } };
+        query = { _id: { $gt: new ObjectId(lastNewWord._id) } };
       }
-
-      const newWords = await woorden
+    
+      const potentialNewWords = await woorden
         .find(query)
         .sort({ $natural: 1 })
-        .limit(newWordsAmount)
+        .limit(50) // запас, чтобы после фильтрации точно хватило
         .project({ _id: 1 })
         .toArray();
-
-      newWords.forEach((word) => {
-        word.status = 'new';
-        word.counter = 0;
-        word.stage = 0;
-      });
-
+    
+      const existingIdsSet = new Set(userWords.map((w) => String(w._id)));
+    
+      const filteredNewWords = potentialNewWords
+        .filter((word) => !existingIdsSet.has(String(word._id)))
+        .slice(0, newWordsAmount);
+    
       updatedWords = [
         ...userWords,
-        ...newWords.map((word) => ({
+        ...filteredNewWords.map((word) => ({
           ...word,
           status: 'new',
           counter: 0,
           stage: 0,
         })),
       ];
-
+    
       await users.updateOne(
         { _id: new ObjectId(id) },
         {
@@ -66,6 +108,8 @@ export const getWords = async (req, res) => {
         }
       );
     }
+    
+
 
     const updatedUser = await users.findOne({ _id: new ObjectId(id) });
 
@@ -180,7 +224,11 @@ export const updateWords = async (req, res) => {
         updatedData.status = 'new';
         updatedData.counter = 0;
         updatedData.stage = 0;
+      } else if (word.status === 'familiar') {
+        if ( word.counter === 0 || word.counter === 1) {
+        updatedData.status = 'learned';
       }
+    }
 
       return updatedData;
     });

@@ -3,8 +3,8 @@ import { userProfilePage } from './pages/userProfilePage.js';
 import { welcomePage } from './pages/welcomePage.js';
 
 const loadApp = () => {
-  // welcomePage();
-  userProfilePage();
+  welcomePage();
+  // userProfilePage();
 };
 
 window.addEventListener('load', loadApp);
