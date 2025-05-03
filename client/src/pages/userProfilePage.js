@@ -1,10 +1,21 @@
 import jwtDecode from 'https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/+esm';
 import { API_BASE_URL } from '../../config.js';
 import { message } from '../views/message.js';
+import { welcomePage } from './welcomePage.js';
 
 
 export const userProfilePage = async () => {
     document.getElementById('user-interface').innerHTML = '';
+    const iconContainer = document.createElement('button');
+    iconContainer.classList.add("icon-container");
+    iconContainer.style.left = "40px";
+    const iconBack = document.createElement('img');
+    iconBack.src = "./assets/back.svg";
+    iconContainer.appendChild(iconBack);
+    iconContainer.addEventListener('click', () => {
+        welcomePage();
+    });
+
     const container = document.createElement('div');
     container.classList.add('container');
     const containerHeader = document.createElement('div');
@@ -12,6 +23,7 @@ export const userProfilePage = async () => {
     
     container.appendChild(containerHeader);
     document.getElementById('user-interface').appendChild(container);
+    document.getElementById('user-interface').appendChild(iconContainer);
     
     let userData;
 
@@ -48,28 +60,40 @@ export const userProfilePage = async () => {
     container.appendChild(amountLearnedWordsText);
 
     let setLearnedWords = false;
+    const learnedWordsContainer = document.createElement('div');
+    learnedWordsContainer.classList.add('learned-words-container');
+    const learnedWordsList = document.createElement('ol');
     const learnedWordsButton = document.createElement('button');
-    if (setLearnedWords) {
-        learnedWordsButton.textContent = "Hide learned words";
-        learnedWordsContainer.innerHTML = ''; 
+    learnedWordsContainer.appendChild(learnedWordsList);
+    learnedWordsContainer.appendChild(learnedWordsButton);
+    container.appendChild(learnedWordsContainer);
+    learnedWordsButton.textContent = "Learned words";
+
+    learnedWordsButton.addEventListener("click", async () => {
+        setLearnedWords = !setLearnedWords;
+        if (setLearnedWords) {
+        learnedWordsList.innerHTML = ""; 
 
         const list = userData.words.filter(word => word.status === "learned");
+        console.log("list of learned words:", list);
 
         for (const word of list) {
             try {
-                const response = await fetch(`${API_BASE_URL}/api/word/${word.id}`);
+                const response = await fetch(`${API_BASE_URL}/api/word/${word._id}`);
                 const data = await response.json();
 
-                const wordElement = document.createElement('p');
+                const wordElement = document.createElement('li');
                 wordElement.textContent = `${data.front} - ${data.back}`;
-                learnedWordsContainer.appendChild(wordElement);
+                learnedWordsList.appendChild(wordElement);
             } catch (err) {
                 console.error("Error fetching word:", err);
             }
         }
+        learnedWordsButton.textContent = "Hide learned words";
     } else {
         learnedWordsButton.textContent = "Learned words";
-        learnedWordsContainer.innerHTML = '';
+        learnedWordsList.innerHTML = '';
     }
+});
 }
 

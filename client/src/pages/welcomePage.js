@@ -7,6 +7,7 @@ export const welcomePage = () => {
   document.getElementById('user-interface').innerHTML = '';
   const iconContainer = document.createElement('button');
   iconContainer.classList.add("icon-container");
+  iconContainer.style.right = "40px";
   const iconLogin = document.createElement('img');
   iconLogin.src = "./assets/icon-profile.svg";
   iconContainer.appendChild(iconLogin);

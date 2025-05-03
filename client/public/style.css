@@ -21,15 +21,19 @@ button:not(:disabled):hover {
 }
 
 .icon-container {
-  width: 80px;
-  height: 80px;
   position: absolute;
   top: 40px;
-  right: 40px;
+  /* right: 40px; */
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  background: transparent;
+  border: none;
+}
+
+.icon-container:hover svg {
+  stroke-width: 2px;
 }
 
 .description-container {
@@ -323,4 +327,15 @@ h5 {
   font-size: 20px;
   text-align: center;
   margin: auto;
+}
+
+.learned-words-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+};
+
+ol {
+  list-style-type: decimal;
 }

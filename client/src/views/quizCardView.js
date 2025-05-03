@@ -112,7 +112,7 @@ const createCardBlock = async (
         } else {
           setTimeout(() => {
             nextWord();
-          }, 1000);
+          }, 100);
         }
       } else {
         element.classList.add('incorrect-answer');
@@ -129,7 +129,7 @@ const createCardBlock = async (
         } else {
           setTimeout(() => {
             nextWord();
-          }, 1000);
+          }, 100);
         }
       }
       if (stageCount === 1) {
