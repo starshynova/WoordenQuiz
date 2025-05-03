@@ -17,6 +17,19 @@ button:not(:disabled):hover {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+}
+
+.icon-container {
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 
 .description-container {

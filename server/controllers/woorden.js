@@ -1,7 +1,7 @@
 import db from '../db/connectDB.js';
 import { ObjectId } from 'mongodb';
 
-const { woorden, activeWoorden, users } = db;
+const { woorden, users } = db;
 
 export const getWords = async (req, res) => {
   const { id } = req.params;
@@ -27,7 +27,10 @@ export const getWords = async (req, res) => {
       let query = {};
 
       if (lastNewWord && lastNewWord._id) {
-        query = { _id: { $gt: new ObjectId(lastNewWord._id) } };
+        const existingIds = userWords.map(w => new ObjectId(w._id));
+        query = { _id: { $gt: new ObjectId(lastNewWord._id),
+          $nin: existingIds
+         } };
       }
 
       const newWords = await woorden
@@ -308,3 +311,18 @@ export const getQuizFour = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+export const getWordById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const word = await woorden.findOne({ _id: new ObjectId(id) });
+    if (!word) {
+      return res.status(404).json({ error: 'Word not found' });
+    }
+    res.json(word);
+  } catch (error) {
+    console.error('Error fetching word:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
