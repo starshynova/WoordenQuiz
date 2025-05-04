@@ -5,7 +5,7 @@ import {
   updateWords,
   getQuizTwo,
   getQuizFour,
-  getWordById
+  getWordById,
 } from '../controllers/woorden.js';
 
 const woordenRouter = express.Router();
@@ -15,6 +15,6 @@ woordenRouter.put('/update/:userId/:wordId', updateWord);
 woordenRouter.put('/:userId/update-words', updateWords);
 woordenRouter.get('/quiz-two/:userId/:wordId', getQuizTwo);
 woordenRouter.get('/quiz-four/:userId/:wordId', getQuizFour);
-woordenRouter.get('/:id', getWordById)
+woordenRouter.get('/:id', getWordById);
 
 export default woordenRouter;

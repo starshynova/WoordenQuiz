@@ -15,14 +15,11 @@ nextButton.classList.add('next-button');
 
 const setUpdateData = async (data) => {
   try {
-    await fetch(
-      `${API_BASE_URL}/api/word/update/${userId}/${currentWordId}`,
-      {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      }
-    );
+    await fetch(`${API_BASE_URL}/api/word/update/${userId}/${currentWordId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
   } catch (error) {
     console.error('Error when updating a word:', error);
   }

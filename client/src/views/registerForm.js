@@ -177,16 +177,13 @@ export const registerForm = () => {
 
   const checkEmailExistence = async (email) => {
     try {
-      const response = await fetch(
-        `${API_BASE_URL}/api/user/check-email`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email }),
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}/api/user/check-email`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
       const data = await response.json();
       return data.exists;
     } catch (error) {
