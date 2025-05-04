@@ -11,12 +11,22 @@ import {
   totalStageNewCount,
 } from '../pages/getWord.js';
 import { nextWord } from './nextWordButton.js';
+import { userProfileIconContainer } from './userProfileButton.js';
+import { backIconContainer } from './backButton.js';
+import { welcomePage } from '../pages/welcomePage.js';
+import { userProfilePage } from '../pages/userProfilePage.js';
 
 export const renderQuizCard = async (
   answerCount,
   direction = 'front-to-back'
 ) => {
   document.getElementById('user-interface').innerHTML = '';
+  backIconContainer.addEventListener('click', () => {
+    welcomePage();
+  });
+  userProfileIconContainer.addEventListener('click', () => {
+    userProfilePage();
+  });
   const container = document.createElement('div');
   container.classList.add('container');
   const containerHeader = document.createElement('div');
@@ -57,6 +67,8 @@ export const renderQuizCard = async (
   container.appendChild(cardBlock);
   container.appendChild(containerNextButton);
 
+  document.getElementById('user-interface').appendChild(backIconContainer);
+  document.getElementById('user-interface').appendChild(userProfileIconContainer);
   document.getElementById('user-interface').appendChild(container);
 };
 

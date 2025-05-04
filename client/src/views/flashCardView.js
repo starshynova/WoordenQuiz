@@ -1,8 +1,18 @@
 import { nextButton } from './nextWordButton.js';
 import { currentStage, totalStageNewCount } from '../pages/getWord.js';
+import {backIconContainer} from '../views/backButton.js';
+import { userProfileIconContainer } from './userProfileButton.js';
+import { welcomePage } from '../pages/welcomePage.js';
+import { userProfilePage } from '../pages/userProfilePage.js';
 
 export function renderSingleCard(front, back) {
   document.getElementById('user-interface').innerHTML = '';
+  backIconContainer.addEventListener('click', () => {
+    welcomePage();
+  });
+  userProfileIconContainer.addEventListener('click', () => {
+    userProfilePage();
+  });
   const container = document.createElement('div');
   container.classList.add('container');
   const containerHeader = document.createElement('div');
@@ -30,6 +40,8 @@ export function renderSingleCard(front, back) {
   container.appendChild(card);
   container.appendChild(containerNexButton);
 
+  document.getElementById('user-interface').appendChild(backIconContainer);
+  document.getElementById('user-interface').appendChild(userProfileIconContainer);
   document.getElementById('user-interface').appendChild(container);
 }
 
