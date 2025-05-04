@@ -96,7 +96,7 @@ export const getUserById = async (req, res) => {
       .json({ success: false, msg: 'Invalid user ID format' });
   }
   try {
-    const user = await users.findOne({_id: new ObjectId(id)});
+    const user = await users.findOne({ _id: new ObjectId(id) });
     res.status(200).json({ success: true, user: user });
   } catch (err) {
     res.status(500).json({

@@ -1,6 +1,6 @@
 import { nextButton } from './nextWordButton.js';
 import { currentStage, totalStageNewCount } from '../pages/getWord.js';
-import {backIconContainer} from '../views/backButton.js';
+import { backIconContainer } from '../views/backButton.js';
 import { userProfileIconContainer } from './userProfileButton.js';
 import { welcomePage } from '../pages/welcomePage.js';
 import { userProfilePage } from '../pages/userProfilePage.js';
@@ -41,7 +41,9 @@ export function renderSingleCard(front, back) {
   container.appendChild(containerNexButton);
 
   document.getElementById('user-interface').appendChild(backIconContainer);
-  document.getElementById('user-interface').appendChild(userProfileIconContainer);
+  document
+    .getElementById('user-interface')
+    .appendChild(userProfileIconContainer);
   document.getElementById('user-interface').appendChild(container);
 }
 

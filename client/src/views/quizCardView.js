@@ -68,7 +68,9 @@ export const renderQuizCard = async (
   container.appendChild(containerNextButton);
 
   document.getElementById('user-interface').appendChild(backIconContainer);
-  document.getElementById('user-interface').appendChild(userProfileIconContainer);
+  document
+    .getElementById('user-interface')
+    .appendChild(userProfileIconContainer);
   document.getElementById('user-interface').appendChild(container);
 };
 

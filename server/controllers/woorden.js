@@ -70,24 +70,24 @@ export const getWords = async (req, res) => {
     if (newWordsAmount > 0) {
       let lastNewWord = wordStatusNew[wordStatusNew.length - 1];
       let query = {};
-    
+
       if (lastNewWord && lastNewWord._id) {
         query = { _id: { $gt: new ObjectId(lastNewWord._id) } };
       }
-    
+
       const potentialNewWords = await woorden
         .find(query)
         .sort({ $natural: 1 })
         .limit(50) // запас, чтобы после фильтрации точно хватило
         .project({ _id: 1 })
         .toArray();
-    
+
       const existingIdsSet = new Set(userWords.map((w) => String(w._id)));
-    
+
       const filteredNewWords = potentialNewWords
         .filter((word) => !existingIdsSet.has(String(word._id)))
         .slice(0, newWordsAmount);
-    
+
       updatedWords = [
         ...userWords,
         ...filteredNewWords.map((word) => ({
@@ -97,7 +97,7 @@ export const getWords = async (req, res) => {
           stage: 0,
         })),
       ];
-    
+
       await users.updateOne(
         { _id: new ObjectId(id) },
         {
@@ -108,8 +108,6 @@ export const getWords = async (req, res) => {
         }
       );
     }
-    
-
 
     const updatedUser = await users.findOne({ _id: new ObjectId(id) });
 
@@ -225,10 +223,10 @@ export const updateWords = async (req, res) => {
         updatedData.counter = 0;
         updatedData.stage = 0;
       } else if (word.status === 'familiar') {
-        if ( word.counter === 0 || word.counter === 1) {
-        updatedData.status = 'learned';
+        if (word.counter === 0 || word.counter === 1) {
+          updatedData.status = 'learned';
+        }
       }
-    }
 
       return updatedData;
     });
@@ -373,4 +371,4 @@ export const getWordById = async (req, res) => {
     console.error('Error fetching word:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
-}
+};

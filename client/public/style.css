@@ -17,7 +17,7 @@ button:not(:disabled):hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* position: relative; */
+  padding: auto;
 }
 
 .icon-container {
@@ -133,8 +133,6 @@ input::placeholder {
   width: 70%;
   max-width: 1000px;
   height: 60%;
-  /* height: auto; */
-  padding-bottom: 40px;
   min-height: 600px;
   position: relative;
   background-color: #ffffff;
@@ -337,10 +335,15 @@ h5 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-};
+}
+
+p {
+  font-size: 20px;
+}
 
 ol {
   width: 100%;
+  height: auto;
 }
 
 ol {
@@ -350,7 +353,7 @@ ol {
   column-gap: 80px;
 }
 
-.two-column-list li {
+li {
   margin: 10px 0;
   font-size: 12px;
 }
@@ -372,4 +375,3 @@ ol {
   background-color: #e6d9f7;
   font-size: 24px;
 }
-
