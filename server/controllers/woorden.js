@@ -22,7 +22,6 @@ export const getWords = async (req, res) => {
 
     let updatedWords = [...userWords];
 
-
     if (newWordsAmount > 0) {
       let lastNewWord = wordStatusNew[wordStatusNew.length - 1];
       let query = {};

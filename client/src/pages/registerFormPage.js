@@ -88,7 +88,7 @@ export const registerForm = () => {
 
   const loginMessage = document.createElement('div');
   const message = document.createElement('p');
-  message.textContent = "Do you already have an account? ";
+  message.textContent = 'Do you already have an account? ';
 
   const link = document.createElement('a');
   link.href = '#';

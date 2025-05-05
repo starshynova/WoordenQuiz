@@ -66,7 +66,6 @@ button:not(:disabled):hover {
   border-radius: 20px;
 }
 
-
 .login-container-header {
   display: flex;
   background-color: #170029;
@@ -143,7 +142,7 @@ input::placeholder {
   position: relative;
   background-color: #ffffff;
   border-radius: 20px;
-  }
+}
 
 .container-header {
   display: flex;
@@ -399,16 +398,15 @@ li {
 }
 
 @media screen and (min-width: 0px) and (max-width: 768px) {
-  
   .icon-container {
-    top: auto;    
+    top: auto;
     bottom: 30px;
   }
   .icon-container img {
     width: 40px;
     height: 40px;
   }
-  
+
   .description-container {
     width: 90%;
     row-gap: 20px;
@@ -418,24 +416,24 @@ li {
     overflow-y: auto;
     padding: 10px;
   }
-  
+
   .description {
     width: 40%;
     height: 200px;
   }
-  
+
   .login-container {
     width: 80%;
   }
-  
+
   .field-input-container {
     width: 80%;
   }
-  
+
   input {
     font-size: 16px;
   }
-  
+
   .container {
     width: 90%;
     max-width: auto;
@@ -445,28 +443,28 @@ li {
     position: fixed;
     top: 5%;
   }
-  
+
   .container-header {
     height: 80px;
     font-size: 16px;
   }
-  
+
   .card {
     width: 80%;
     max-width: 600px;
     height: 40%;
     max-height: 400px;
   }
-  
+
   .container-next-button {
     height: 80px;
   }
-  
+
   .next-button {
     height: 50px;
     font-size: 16px;
   }
-  
+
   .question {
     width: 80%;
     height: 80px;
@@ -475,7 +473,7 @@ li {
     position: absolute;
     top: 80px;
   }
-  
+
   .answer-block {
     width: 80%;
     flex-direction: column;
@@ -489,7 +487,7 @@ li {
     overflow-x: hidden;
     flex-wrap: nowrap;
   }
-  
+
   .answer,
   .answer-big {
     width: 90%;
@@ -497,13 +495,12 @@ li {
     font-size: 20px;
     border-radius: 10px;
   }
-  
-  
+
   .message-container {
     width: 80%;
     height: 20%;
   }
-  
+
   .learned-words-container {
     width: 90%;
   }
@@ -516,7 +513,7 @@ li {
   .learned-words-button:hover {
     font-size: 18px;
   }
-  
+
   ol {
     columns: 1;
     column-gap: none;

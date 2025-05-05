@@ -81,7 +81,7 @@ export const userProfilePage = async () => {
       learnedWordsList.innerHTML = '';
       document.body.style.height = 'auto';
       document.body.style.margin = '40px auto';
-      learnedWordsContainer.style.justifyContent = "start";
+      learnedWordsContainer.style.justifyContent = 'start';
       amountLearnedWordsText.textContent = 'Words you have already learned:';
       containerHeader.classList.add('hide');
       amountLearnedWordsText.style.paddingTop = '40px';
