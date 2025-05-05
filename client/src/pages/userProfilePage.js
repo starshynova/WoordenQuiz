@@ -81,10 +81,9 @@ export const userProfilePage = async () => {
       learnedWordsList.innerHTML = '';
       document.body.style.height = 'auto';
       document.body.style.margin = '40px auto';
+      learnedWordsContainer.style.justifyContent = "start";
       amountLearnedWordsText.textContent = 'Words you have already learned:';
       containerHeader.classList.add('hide');
-      container.style.height = 'auto';
-      learnedWordsContainer.style.height = 'auto';
       amountLearnedWordsText.style.paddingTop = '40px';
       continueLearningButton.style.marginBottom = '20px';
 
@@ -92,7 +91,6 @@ export const userProfilePage = async () => {
       if (list.length === 0) {
         learnedWordsButton.classList.add('hide');
       }
-      console.log('list of learned words:', list);
 
       for (const word of list) {
         try {
@@ -111,6 +109,7 @@ export const userProfilePage = async () => {
       learnedWordsButton.textContent = 'Learned words';
       learnedWordsList.innerHTML = '';
       containerHeader.classList.remove('hide');
+      learnedWordsContainer.style.justifyContent = 'center';
       amountLearnedWordsText.textContent = `You have already learned ${amountLearnedWords} words! \n
             You are on the right way! \n
             If you want to check the words you have learnt, just click on the button`;

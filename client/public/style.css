@@ -58,16 +58,14 @@ button:not(:disabled):hover {
 .login-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   width: 60%;
   max-width: 500px;
-  height: 80%;
-  min-height: 500px;
-  position: relative;
+  height: fit-content;
   background-color: #ffffff;
   border-radius: 20px;
 }
+
 
 .login-container-header {
   display: flex;
@@ -80,8 +78,6 @@ button:not(:disabled):hover {
   width: 100%;
   height: 80px;
   border-radius: 20px 20px 0 0;
-  position: absolute;
-  top: 0px;
 }
 
 .input-container {
@@ -92,6 +88,7 @@ button:not(:disabled):hover {
   align-items: center;
   flex-direction: column;
   row-gap: 30px;
+  margin: 40px 0;
 }
 
 .field-input-container {
@@ -100,6 +97,7 @@ button:not(:disabled):hover {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 }
 
 input {
@@ -125,6 +123,14 @@ input::placeholder {
   font-style: italic;
 }
 
+.button-message-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 20px;
+  margin-bottom: 20px;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -137,7 +143,7 @@ input::placeholder {
   position: relative;
   background-color: #ffffff;
   border-radius: 20px;
-}
+  }
 
 .container-header {
   display: flex;
@@ -229,6 +235,17 @@ input::placeholder {
   color: #858585;
   font-size: auto;
   border-color: #8e8e8e;
+}
+
+.quiz-block {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .question {
@@ -335,6 +352,8 @@ h5 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 p {
@@ -359,9 +378,12 @@ li {
 }
 
 .learned-words-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: auto;
   height: 50px;
-  padding: auto 20px;
+  padding: 0 20px;
   font-size: 18px;
   cursor: pointer;
   border: 3px solid #3f1161;
@@ -373,5 +395,130 @@ li {
 
 .learned-words-button:hover {
   background-color: #e6d9f7;
-  font-size: 24px;
+  font-size: 20px;
+}
+
+@media screen and (min-width: 0px) and (max-width: 768px) {
+  
+  .icon-container {
+    top: auto;    
+    bottom: 30px;
+  }
+  .icon-container img {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .description-container {
+    width: 90%;
+    row-gap: 20px;
+    position: absolute;
+    top: 80px;
+    bottom: 80px;
+    overflow-y: auto;
+    padding: 10px;
+  }
+  
+  .description {
+    width: 40%;
+    height: 200px;
+  }
+  
+  .login-container {
+    width: 80%;
+  }
+  
+  .field-input-container {
+    width: 80%;
+  }
+  
+  input {
+    font-size: 16px;
+  }
+  
+  .container {
+    width: 90%;
+    max-width: auto;
+    height: 85%;
+    min-height: auto;
+    overflow: hidden;
+    position: fixed;
+    top: 5%;
+  }
+  
+  .container-header {
+    height: 80px;
+    font-size: 16px;
+  }
+  
+  .card {
+    width: 80%;
+    max-width: 600px;
+    height: 40%;
+    max-height: 400px;
+  }
+  
+  .container-next-button {
+    height: 80px;
+  }
+  
+  .next-button {
+    height: 50px;
+    font-size: 16px;
+  }
+  
+  .question {
+    width: 80%;
+    height: 80px;
+    font-size: 24px;
+    margin: 40px 0 60px 0;
+    position: absolute;
+    top: 80px;
+  }
+  
+  .answer-block {
+    width: 80%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 0 0 20px;
+    position: absolute;
+    top: 240px;
+    bottom: 80px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex-wrap: nowrap;
+  }
+  
+  .answer,
+  .answer-big {
+    width: 90%;
+    height: 60px;
+    font-size: 20px;
+    border-radius: 10px;
+  }
+  
+  
+  .message-container {
+    width: 80%;
+    height: 20%;
+  }
+  
+  .learned-words-container {
+    width: 90%;
+  }
+
+  .learned-words-button {
+    height: 40px;
+    font-size: 16px;
+  }
+
+  .learned-words-button:hover {
+    font-size: 18px;
+  }
+  
+  ol {
+    columns: 1;
+    column-gap: none;
+  }
 }
