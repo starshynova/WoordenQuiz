@@ -17,7 +17,7 @@ export function renderSingleCard(front, back) {
   container.classList.add('container');
   const containerHeader = document.createElement('div');
   containerHeader.classList.add('container-header');
-  containerHeader.textContent = `There is a flash-card from ${currentStage + 1} stage`;
+  containerHeader.textContent = `Flash-card from ${currentStage + 1} stage`;
 
   const card = createCard(front, back);
 

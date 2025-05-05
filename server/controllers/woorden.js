@@ -25,11 +25,11 @@ export const getWords = async (req, res) => {
     if (newWordsAmount > 0) {
       let lastNewWord;
       if (wordStatusNew.length > 0) {
-        lastNewWord = wordStatusNew[wordStatusNew.length - 1]; 
+        lastNewWord = wordStatusNew[wordStatusNew.length - 1];
       } else {
-        lastNewWord = userWords[userWords.length - 1]; 
+        lastNewWord = userWords[userWords.length - 1];
       }
-    
+
       let query = {};
 
       if (lastNewWord && lastNewWord._id) {
@@ -39,7 +39,7 @@ export const getWords = async (req, res) => {
       const potentialNewWords = await woorden
         .find(query)
         .sort({ $natural: 1 })
-        .limit(50) 
+        .limit(50)
         .project({ _id: 1 })
         .toArray();
 

@@ -22,14 +22,14 @@ export const welcomePage = () => {
   container.appendChild(descriptionContainer);
 
   const stagesDescriptions = [
-    'Description of the first stage.',
-    'Description of the second stage.',
-    'Description of the third stage.',
-    'Description of the fourth stage.',
-    'Description of the fifth stage.',
-    'Description of the sixth stage.',
-    'Description of the seventh stage.',
-    'Description of the eighth stage.',
+    'Initial introduction to new words. The card shows a Dutch word. Tap to reveal the English translation.',
+    'Visual enhancement. The card shows again a Dutch word — tap to see the English translation.',
+    'Develop active memory. The card shows an English word — tap to reveal the Dutch translation.',
+    'Check understanding with minimal difficulty. The card shows a Dutch word. Choose the correct English translation from two options.',
+    'Repeat: again a Dutch word and two answer choices.',
+    'More difficult task of recognising. The card shows a Dutch word with four English translation options.',
+    'Repeat: again a Dutch word with four answer options.',
+    'Final check in the reverse direction. The card shows an English word — choose the correct Dutch translation from four options.',
   ];
 
   stagesDescriptions.forEach((description, index) => {
@@ -37,7 +37,7 @@ export const welcomePage = () => {
     descriptionElement.classList.add('description');
     const descriptionHeading = document.createElement('h3');
     descriptionHeading.textContent = `Stage ${index + 1}`;
-    const descriptionText = document.createElement('p');
+    const descriptionText = document.createElement('h4');
     descriptionText.textContent = description;
 
     descriptionElement.appendChild(descriptionHeading);

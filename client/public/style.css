@@ -20,6 +20,22 @@ button:not(:disabled):hover {
   padding: auto;
 }
 
+h3 {
+  color: #5732a0;
+  font-size: 20px;
+  text-align: center;
+  margin: 0;
+}
+
+h4 {
+  color: #170029;
+  font-size: 14px;
+  text-align: center;
+  margin: 0;
+  font-weight: 400;
+  margin-top: 10px;
+}
+
 .icon-container {
   position: fixed;
   top: 40px;
@@ -36,18 +52,18 @@ button:not(:disabled):hover {
 }
 
 .description-container {
-  width: 80%;
+  width: 90%;
   height: auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  row-gap: 40px;
+  row-gap: 20px;
 }
 
 .description {
-  width: 20%;
-  height: 120px;
+  width: 21%;
+  height: 130px;
   border: 2px solid #170029;
   border-radius: 10px;
   background: #ffffff;
