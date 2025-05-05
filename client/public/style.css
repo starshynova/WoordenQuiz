@@ -193,6 +193,7 @@ input::placeholder {
   align-items: center;
   backface-visibility: hidden;
   font-size: 48px;
+  text-align: center;
 }
 
 .card-back {
@@ -268,10 +269,12 @@ input::placeholder {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
+  align-items: center;
   justify-content: space-between;
   row-gap: 20px;
-  margin-left: 5%;
-  margin-right: 5%;
+  /* margin-left: 5%;
+  margin-right: 5%; */
+  z-index: 2;
 }
 
 .answer,
@@ -356,7 +359,7 @@ h5 {
 }
 
 p {
-  font-size: 20px;
+  font-size: 18px;
 }
 
 ol {
@@ -479,7 +482,7 @@ li {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 0 0 0 20px;
+    margin-bottom: 20px;
     position: absolute;
     top: 240px;
     bottom: 80px;
