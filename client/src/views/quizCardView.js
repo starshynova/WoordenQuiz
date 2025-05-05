@@ -32,9 +32,9 @@ export const renderQuizCard = async (
   const containerHeader = document.createElement('div');
   containerHeader.classList.add('container-header');
   if (currentStage === 3 || currentStage === 4) {
-    containerHeader.textContent = `You are able to choose one of two answers.`;
+    containerHeader.textContent = `Stage ${currentStage}. You are able to choose one of two answers.`;
   } else if (currentStage > 4 || currentStage < 8) {
-    containerHeader.textContent = `You are able to choose one of four answers.`;
+    containerHeader.textContent = `Stage ${currentStage}. You are able to choose one of four answers.`;
   }
   container.appendChild(containerHeader);
   const containerNextButton = document.createElement('div');
