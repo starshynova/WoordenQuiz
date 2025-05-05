@@ -22,51 +22,6 @@ export const getWords = async (req, res) => {
 
     let updatedWords = [...userWords];
 
-    // if (newWordsAmount > 0) {
-    //   let lastNewWord = wordStatusNew[wordStatusNew.length - 1];
-    //   let query = {};
-
-    //   if (lastNewWord && lastNewWord._id) {
-    //     const existingIds = userWords.map(w => new ObjectId(w._id));
-    //     query = { _id: { $gt: new ObjectId(lastNewWord._id),
-    //       $nin: existingIds
-    //      } };
-    //   }
-
-    //   const newWords = await woorden
-    //     .find(query)
-    //     .sort({ $natural: 1 })
-    //     .limit(newWordsAmount)
-    //     .project({ _id: 1 })
-    //     .toArray();
-
-    //   // newWords.forEach((word) => {
-    //   //   word.status = 'new';
-    //   //   word.counter = 0;
-    //   //   word.stage = 0;
-    //   // });
-
-    //   updatedWords = [
-    //     ...userWords,
-    //     ...newWords.map((word) => ({
-    //       ...word,
-    //       status: 'new',
-    //       counter: 0,
-    //       stage: 0,
-    //     })),
-    //   ];
-
-    //   await users.updateOne(
-    //     { _id: new ObjectId(id) },
-    //     {
-    //       $set: {
-    //         words: updatedWords,
-    //         lastView_date: new Date(),
-    //       },
-    //     }
-    //   );
-    // }
-
     if (newWordsAmount > 0) {
       let lastNewWord = wordStatusNew[wordStatusNew.length - 1];
       let query = {};

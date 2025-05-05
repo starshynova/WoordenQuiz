@@ -1,12 +1,11 @@
-import { registerForm } from './registerForm.js';
-import { getWord } from '../pages/getWord.js';
+import { registerForm } from './registerFormPage.js';
+import { getWord } from './getWord.js';
 import { API_BASE_URL } from '../../config.js';
 
 export const loginForm = () => {
   document.getElementById('user-interface').innerHTML = '';
   const loginContainer = document.createElement('div');
   loginContainer.classList.add('login-container');
-  loginContainer.style.height = '60%';
   document.getElementById('user-interface').appendChild(loginContainer);
 
   const loginContainerHeader = document.createElement('div');
@@ -16,7 +15,6 @@ export const loginForm = () => {
 
   const inputContainer = document.createElement('div');
   inputContainer.classList.add('input-container');
-  inputContainer.style.marginTop = '-40px';
   loginContainer.appendChild(inputContainer);
 
   const emailInputContainer = document.createElement('div');
@@ -67,7 +65,6 @@ export const loginForm = () => {
   loginButton.classList.add('next-button');
   loginButton.style.width = '200px';
   loginButton.textContent = 'Log In';
-  loginContainer.appendChild(loginButton);
 
   const registerMessage = document.createElement('div');
   const message = document.createElement('p');
@@ -84,18 +81,14 @@ export const loginForm = () => {
   });
 
   const buttonMessageContainer = document.createElement('div');
-  buttonMessageContainer.style.display = 'flex';
-  buttonMessageContainer.style.flexDirection = 'column';
-  buttonMessageContainer.style.alignItems = 'center';
-  buttonMessageContainer.style.rowGap = '20px';
-  buttonMessageContainer.style.position = 'absolute';
-  buttonMessageContainer.style.bottom = '20px';
+  buttonMessageContainer.classList.add('button-message-container');
 
   buttonMessageContainer.appendChild(loginButton);
+  registerMessage.appendChild(link);
+  buttonMessageContainer.appendChild(registerMessage);
 
   message.appendChild(link);
   registerMessage.appendChild(message);
-  buttonMessageContainer.appendChild(registerMessage);
   loginContainer.appendChild(buttonMessageContainer);
 
   loginButton.addEventListener('click', async (e) => {

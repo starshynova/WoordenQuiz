@@ -1,5 +1,5 @@
-import { loginForm } from './loginForm.js';
-import { message } from './message.js';
+import { loginForm } from './loginFormPage.js';
+import { message } from '../views/message.js';
 import { API_BASE_URL } from '../../config.js';
 
 export const registerForm = () => {
@@ -15,7 +15,6 @@ export const registerForm = () => {
 
   const inputContainer = document.createElement('div');
   inputContainer.classList.add('input-container');
-  inputContainer.style.marginTop = '-20px';
   registerContainer.appendChild(inputContainer);
 
   const nameInputContainer = document.createElement('div');
@@ -84,11 +83,33 @@ export const registerForm = () => {
   const registerButton = document.createElement('button');
   registerButton.classList.add('next-button');
   registerButton.style.width = '200px';
-  registerButton.style.position = 'absolute';
-  registerButton.style.bottom = '40px';
   registerButton.textContent = 'Register';
   registerButton.disabled = true;
-  registerContainer.appendChild(registerButton);
+
+  const loginMessage = document.createElement('div');
+  const message = document.createElement('p');
+  message.textContent = 'Do you already have an account? ';
+
+  const link = document.createElement('a');
+  link.href = '#';
+  link.textContent = 'Login';
+  link.classList.add('register-link');
+
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    loginForm();
+  });
+
+  const buttonMessageContainer = document.createElement('div');
+  buttonMessageContainer.classList.add('button-message-container');
+
+  buttonMessageContainer.appendChild(registerButton);
+  loginMessage.appendChild(link);
+  buttonMessageContainer.appendChild(loginMessage);
+
+  message.appendChild(link);
+  loginMessage.appendChild(message);
+  registerContainer.appendChild(buttonMessageContainer);
 
   function updateButtonState() {
     const isFormValid =

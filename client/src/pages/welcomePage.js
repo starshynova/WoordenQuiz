@@ -1,4 +1,4 @@
-import { loginForm } from '../views/loginForm.js';
+import { loginForm } from './loginFormPage.js';
 import { getWord } from './getWord.js';
 import { userProfilePage } from './userProfilePage.js';
 import { userProfileIconContainer } from '../views/userProfileButton.js';

@@ -94,14 +94,17 @@ const createCardBlock = async (
     }
   }
 
+  const quizBlock = document.createElement('div');
+  quizBlock.classList.add('quiz-block');
+  container.appendChild(quizBlock);
   const question = document.createElement('div');
   question.classList.add('question');
   question.textContent = data.question;
-  container.appendChild(question);
+  quizBlock.appendChild(question);
 
   const answerContainer = document.createElement('div');
   answerContainer.className = 'answer-block';
-  container.appendChild(answerContainer);
+  quizBlock.appendChild(answerContainer);
 
   const correctAnswer = data.correctAnswer;
 
