@@ -60,9 +60,9 @@ Users can register, log in, receive personalized word sets. Words are selected d
 ```
 
 ## Tech Stack
+- **Frontend:** HTML/CSS/JavaScript
 - **Backend:** Node.js + Express
 - **Database:** MongoDB
-- **Frontend:** HTML/CSS/JavaScript
 - **Deployment:** AWS EC2 + Nginx + PM2 + Let’s Encrypt
 - **Domain:** https://woordenquiz.duckdns.org
 
