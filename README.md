@@ -1,5 +1,7 @@
 # Woordenquiz
 
+You can try this app by visiting [WoordenQuiz](https://woordenquiz.duckdns.org/)
+
 ## Overview
 
 **Woordenquiz** is an educational application for learning words designed to help users practise their Dutch language skills through repetition and quizzes.  
