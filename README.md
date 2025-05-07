@@ -30,8 +30,10 @@ Users can register, log in, receive personalized word sets. Words are selected d
 - The backend ensures that each user receives new words if they have fewer than 10 "new" words in their set.
 - All user interactions (e.g., answer attempts, stages, word statuses) are stored and updated in the user's document in the `users` collection.
 
-**MongoDB collections:**
+**Database Structure:**
+
 1.  **users:**
+   
 ```
 {
   _id: ObjectId,
@@ -50,7 +52,9 @@ Users can register, log in, receive personalized word sets. Words are selected d
   lastView_date: Date
 }
 ```
+
 2. **woorden:**
+
 ```
 {
   _id: ObjectId,
@@ -60,11 +64,29 @@ Users can register, log in, receive personalized word sets. Words are selected d
 ```
 
 ## Tech Stack
-- **Frontend:** HTML/CSS/JavaScript
-- **Backend:** Node.js + Express
-- **Database:** MongoDB
-- **Deployment:** AWS EC2 + Nginx + PM2 + Let’s Encrypt
-- **Domain:** https://woordenquiz.duckdns.org
+
+### Client side
+
+1. HTML
+2. CSS
+3. JavaScript
+
+### Server side
+
+1. Node.js
+2. Express.js
+3. MongoDB
+
+### Deployment
+
+1. AWS EC2
+2. Nginx
+3. PM2
+4. Let’s Encrypt
+
+### Domain
+
+https://woordenquiz.duckdns.org
 
 ## Structure of the project
 
