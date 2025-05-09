@@ -136,8 +136,11 @@ Project structure:
     ├── routes
     │   ├── users.js
     │   └── woorden.js
-    └── db
-        └── connectDB.js
+    ├── db
+    │   └── connectDB.js
+    └── documentation
+        ├── userAPI_doc.yaml
+        └── wordAPI_doc.yaml
 
 ```
 
