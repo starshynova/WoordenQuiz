@@ -1,0 +1,192 @@
+openapi: 3.0.0
+info:
+  title: Word API
+  version: 1.0.0
+  description: API for word management
+
+paths:
+  /api/word/vocabulary/{id}:
+    get:
+      summary: Get next word for user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: User ID
+      responses:
+        '200':
+          description: Next word and statistics
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  word:
+                    type: object
+                  totalWordsWithStageNew:
+                    type: integer
+                  totalWordsWithStage:
+                    type: integer
+        '400':
+          description: Invalid user ID format
+        '404':
+          description: User or word not found
+        '500':
+          description: Internal server error
+
+  /api/word/update/{userId}/{wordId}:
+    put:
+      summary: Update a word's counter or stage
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: wordId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                counter:
+                  type: integer
+                stage:
+                  type: integer
+      responses:
+        '200':
+          description: Word updated successfully
+        '400':
+          description: Both 'counter' and 'stage' are missing
+        '404':
+          description: Word not updated
+        '500':
+          description: Internal server error
+
+  /api/word/{userId}/update-words:
+    put:
+      summary: Update all words for a user based on their counters
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User words updated successfully
+        '400':
+          description: Missing user ID
+        '404':
+          description: User or words not found
+        '500':
+          description: Internal server error
+
+  /api/word/quiz-two/{userId}/{wordId}:
+    get:
+      summary: Get 2-option quiz for a word
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: wordId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Quiz question and options
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  question:
+                    type: string
+                  options:
+                    type: array
+                    items:
+                      type: string
+                  correctAnswer:
+                    type: string
+                  wordId:
+                    type: string
+        '404':
+          description: User not found or Word not found in user's list or Word not found in woorden collection or Not enough alternative words with status 'new'
+        '500':
+          description: Internal server error
+
+  /api/word/quiz-four/{userId}/{wordId}:
+    get:
+      summary: Get 4-option quiz for a word
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: wordId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: direction
+          in: query
+          schema:
+            type: string
+            enum: [front-to-back, back-to-front]
+            default: front-to-back
+      responses:
+        '200':
+          description: Quiz question and 4 options
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  question:
+                    type: string
+                  options:
+                    type: array
+                    items:
+                      type: string
+                  correctAnswer:
+                    type: string
+                  wordId:
+                    type: string
+        '404':
+          description: User not found or Word not found in user's list or Word not found in woorden collection or Not enough alternative words with status 'new'
+        '500':
+          description: Internal server error
+
+  /api/word/{id}:
+    get:
+      summary: Get a word by its ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Word found
+          content:
+            application/json:
+              schema:
+                type: object
+        '404':
+          description: Word not found
+        '500':
+          description: Internal server error

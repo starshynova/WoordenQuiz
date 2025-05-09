@@ -1,0 +1,101 @@
+openapi: 3.0.0
+info:
+  title: User API
+  version: 1.0.0
+  description: API for user management
+
+paths:
+  /api/user/:
+    post:
+      summary: Create user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - email
+                - password
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '201':
+          description: Successful
+        '400':
+          description: E-mail already exist
+        '500':
+          description: Unable to create user, try again later
+
+  /api/user/login:
+    post:
+      summary: User authorisation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '201':
+          description: Authorisation successful, token returned
+        '400':
+          description: Please, provide your e-mail address and password
+        '401':
+          description: Invalid e-mail address of user or Invalid e-mail / password combination
+        '500':
+          description: Internal server error
+
+  /api/user/{id}:
+    get:
+      summary: Get user by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful
+        '400':
+          description: Invalid user ID format
+        '500':
+          description: Unable to get user by ID, try again later
+
+  /api/user/check-email:
+    post:
+      summary: Check for e-mail
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+      responses:
+        '200':
+          description: Successful
+        '400':
+          description: Please, provide your e-mail address
+        '500':
+          description: Internal server error
+
