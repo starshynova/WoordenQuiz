@@ -3,6 +3,7 @@ import { renderQuizCard } from '../views/quizCardView.js';
 import { message } from '../views/message.js';
 import jwtDecode from 'https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/+esm';
 import { API_BASE_URL } from '../../config.js';
+import { nextWordSetPage } from '../views/nextWordSetPage.js';
 
 export let userId;
 export let currentWordId;
@@ -30,11 +31,15 @@ export const getWord = async () => {
       `${API_BASE_URL}/api/word/vocabulary/${userId}`
     );
     word = await response.json();
+    if (word.needToUpdate) {
+      nextWordSetPage();
+    } 
     currentWordId = word.word._id;
     currentStage = word.word.stage;
     totalStageNewCount = word.totalWordsWithStageNew;
     totalStageCount = word.totalWordsWithStage;
     currentCounter = word.word.counter;
+    
   } catch (error) {
     console.error('Error getting word:', error);
     return;
