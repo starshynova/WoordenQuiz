@@ -2,6 +2,7 @@ import { loginForm } from './loginFormPage.js';
 import { getWord } from './getWord.js';
 import { userProfilePage } from './userProfilePage.js';
 import { userProfileIconContainer } from '../views/userProfileButton.js';
+import { instructionPage } from './instructionPage.js';
 
 export const welcomePage = () => {
   document.getElementById('user-interface').innerHTML = '';
@@ -58,6 +59,7 @@ export const welcomePage = () => {
   instructionButton.classList.add('next-button');
   instructionButton.style.marginRight = "20px";
   instructionButton.textContent = 'Instructions';
+  instructionButton.addEventListener('click', instructionPage)
   containerButtons.appendChild(instructionButton);
 
   const startButton = document.createElement('button');
@@ -65,8 +67,6 @@ export const welcomePage = () => {
   startButton.style.marginLeft = "20px";
   startButton.textContent = 'Start WoordenQuiz!';
   containerButtons.appendChild(startButton);
-
-  
 
   const token = localStorage.getItem('token');
   if (token) {

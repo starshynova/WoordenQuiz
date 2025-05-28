@@ -62,10 +62,16 @@ h4 {
   width: 90%;
   height: auto;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 50px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* align-items: center; */
+  /* flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  row-gap: 20px;
+  row-gap: 20px; */
 }
 
 .description {
@@ -295,8 +301,6 @@ input::placeholder {
   align-items: center;
   justify-content: space-between;
   row-gap: 20px;
-  /* margin-left: 5%;
-  margin-right: 5%; */
   z-index: 2;
 }
 
@@ -400,6 +404,25 @@ ol {
 li {
   margin: 10px 0;
   font-size: 12px;
+}
+
+.li-instruction {
+  font-size: 14px;
+  margin-left: 10px;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+.bold {
+  font-weight: bold;
+}
+
+.text-left {
+  text-align: left;
 }
 
 .learned-words-button {
@@ -544,4 +567,6 @@ li {
     columns: 1;
     column-gap: none;
   }
+
+  
 }
