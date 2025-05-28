@@ -20,6 +20,13 @@ button:not(:disabled):hover {
   padding: auto;
 }
 
+h2 {
+  color: #170029;
+  font-size: 25px;
+  text-align: center;
+  line-height: 1.5;
+}
+
 h3 {
   color: #5732a0;
   font-size: 20px;
