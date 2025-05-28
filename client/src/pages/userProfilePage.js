@@ -108,6 +108,8 @@ export const userProfilePage = async () => {
     } else {
       learnedWordsButton.textContent = 'Learned words';
       learnedWordsList.innerHTML = '';
+      document.body.style.height = '';
+      document.body.style.margin = '';
       containerHeader.classList.remove('hide');
       learnedWordsContainer.style.justifyContent = 'center';
       amountLearnedWordsText.textContent = `You have already learned ${amountLearnedWords} words! \n

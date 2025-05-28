@@ -1,7 +1,15 @@
 import { userProfileIconContainer } from '../views/userProfileButton.js';
+import { backIconContainer } from '../views/backButton.js';
+import { welcomePage } from './welcomePage.js';
+import { getWord } from './getWord.js';
+import { loginForm } from './loginFormPage.js';
+import { userProfilePage } from './userProfilePage.js';
 
 export const instructionPage = () => {
-     document.getElementById('user-interface').innerHTML = '';
+    document.getElementById('user-interface').innerHTML = '';
+    backIconContainer.addEventListener('click', () => {
+         welcomePage();
+       });
     
     const container = document.createElement('div');
     container.classList.add('container');
@@ -11,12 +19,13 @@ export const instructionPage = () => {
     containerHeader.textContent = 'How to use WoordenQuiz';
     container.appendChild(containerHeader);
     document.getElementById('user-interface').appendChild(container);
+    document.getElementById('user-interface').appendChild(backIconContainer);
     document
       .getElementById('user-interface')
       .appendChild(userProfileIconContainer);
 
     const instructionContainer = document.createElement('div');
-    instructionContainer.classList.add('description-container');
+    instructionContainer.classList.add('instruction-container');
     
     const instructionTitle = document.createElement('p');
     instructionTitle.textContent = "You learn words in sets of 10 words. Each word goes through 8 stages of memorisation.";
@@ -82,7 +91,7 @@ export const instructionPage = () => {
     mistakeExplain.appendChild(mistake01);
 
     const mistake23  =document.createElement('li');
-    mistake23.textContent = "Need to repeat (2-3 mistakes) - the word will come back in the next set, but from stage 4.";
+    mistake23.textContent = "Need to repeat (2-3 mistakes) - the word will come back in the next set, but from stage 6.";
     mistakeExplain.appendChild(mistake23);
 
     const mistake45 = document.createElement('li');
@@ -101,5 +110,23 @@ export const instructionPage = () => {
     instructionContainer.appendChild(instructionStage_4_8);
     instructionContainer.appendChild(nextStep);
     container.appendChild(instructionContainer);
+
+    const containerButton = document.createElement('div');
+    containerButton.classList.add('container-next-button');
+    container.appendChild(containerButton);
+
+    const startButton = document.createElement('button');
+    startButton.classList.add('next-button');
+    startButton.textContent = 'Start WoordenQuiz!';
+    containerButton.appendChild(startButton);
+    
+    const token = localStorage.getItem('token');
+      if (token) {
+        startButton.addEventListener('click', getWord);
+        userProfileIconContainer.addEventListener('click', userProfilePage);
+      } else {
+        startButton.addEventListener('click', loginForm);
+        userProfileIconContainer.addEventListener('click', loginForm);
+      }
     
 }
