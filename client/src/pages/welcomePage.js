@@ -3,6 +3,7 @@ import { getWord } from './getWord.js';
 import { userProfilePage } from './userProfilePage.js';
 import { userProfileIconContainer } from '../views/userProfileButton.js';
 import { instructionPage } from './instructionPage.js';
+import { payment } from './payment.js';
 
 export const welcomePage = () => {
   document.getElementById('user-interface').innerHTML = '';
@@ -43,6 +44,15 @@ export const welcomePage = () => {
   startButton.style.marginLeft = "20px";
   startButton.textContent = 'Start WoordenQuiz!';
   containerButtons.appendChild(startButton);
+
+  const donateButton = document.createElement('button');
+  donateButton.classList.add('next-button');
+  donateButton.style.marginLeft = "20px";
+  donateButton.textContent = "Donate";
+  containerButtons.appendChild(donateButton);
+
+  donateButton.addEventListener('click', payment);
+
 
   const token = localStorage.getItem('token');
   if (token) {
