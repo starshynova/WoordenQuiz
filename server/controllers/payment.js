@@ -8,24 +8,17 @@ export const createCheckoutSession = async (req, res) => {
 const { amount } = req.body;
 
   try {
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      line_items: [{
-        price_data: {
-          currency: 'eur',
-          product_data: {
-            name: 'Custom payment',
-          },
-          unit_amount: amount, 
-        },
-        quantity: 1,
-      }],
-      mode: 'payment',
-      success_url: 'http://localhost:5500/index.html',
-      cancel_url: 'http://localhost:5500/index2.html',
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount,
+      currency: 'eur',
+      payment_method_types: ['card', 'ideal'],
+      payment_method_data: {
+    }
     });
 
-    res.json({ url: session.url });
+    res.send({
+      clientSecret: paymentIntent.client_secret,
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
