@@ -13,7 +13,7 @@ app.use(cors());
 
 app.use('/api/word', woordenRouter);
 app.use('/api/user', userRouter);
-app.use('/api/payment', paymentRouter)
+app.use('/api/payment', paymentRouter);
 
 dotenv.config();
 

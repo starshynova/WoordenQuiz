@@ -72,17 +72,15 @@ export const getWords = async (req, res) => {
 
     const updatedUser = await users.findOne({ _id: new ObjectId(id) });
 
-
     const wordsAtStage8 = updatedUser.words.filter(
       (word) => word.status === 'new' && word.stage === 8
     );
-    
+
     const activeWords = updatedUser.words.filter(
       (word) =>
-        (word.status === 'new' || word.status === 'familiar') &&
-        word.stage < 8
+        (word.status === 'new' || word.status === 'familiar') && word.stage < 8
     );
-    
+
     if (wordsAtStage8.length > 0 && activeWords.length === 0) {
       return res.json({
         message: 'finished set',

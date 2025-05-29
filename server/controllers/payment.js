@@ -5,15 +5,14 @@ dotenv.config();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export const createCheckoutSession = async (req, res) => {
-const { amount } = req.body;
+  const { amount } = req.body;
 
   try {
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
       currency: 'eur',
       payment_method_types: ['card', 'ideal'],
-      payment_method_data: {
-    }
+      payment_method_data: {},
     });
 
     res.send({

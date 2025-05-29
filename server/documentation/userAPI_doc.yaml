@@ -98,4 +98,3 @@ paths:
           description: Please, provide your e-mail address
         '500':
           description: Internal server error
-
