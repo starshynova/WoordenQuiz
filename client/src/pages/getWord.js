@@ -33,13 +33,12 @@ export const getWord = async () => {
     word = await response.json();
     if (word.needToUpdate) {
       nextWordSetPage();
-    } 
+    }
     currentWordId = word.word._id;
     currentStage = word.word.stage;
     totalStageNewCount = word.totalWordsWithStageNew;
     totalStageCount = word.totalWordsWithStage;
     currentCounter = word.word.counter;
-    
   } catch (error) {
     console.error('Error getting word:', error);
     return;

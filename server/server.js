@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import woordenRouter from './routes/woorden.js';
 import userRouter from './routes/users.js';
+import paymentRouter from './routes/payment.js';
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(cors());
 
 app.use('/api/word', woordenRouter);
 app.use('/api/user', userRouter);
+app.use('/api/payment', paymentRouter);
 
 dotenv.config();
 

@@ -13,15 +13,15 @@ Users can register, log in, receive personalized word sets. Words are selected d
 1.  **User Authentication**
     The user registers with a name, email and password. When logging in, a JWT token is provided, which is stored in localStorage.
 
-2. **Learning Process**  
-   Words are provided in small sets. Each word goes through several stages as the user interacts with it. The words become new, familiar or learned depending on the user's quiz results.
+2.  **Learning Process**  
+    Words are provided in small sets. Each word goes through several stages as the user interacts with it. The words become new, familiar or learned depending on the user's quiz results.
 
-3. **Status After Learning Loop**  
-   After completing a full learning loop, each word can have one of the following statuses: `new`, `familiar`, or `learned`.
+3.  **Status After Learning Loop**  
+    After completing a full learning loop, each word can have one of the following statuses: `new`, `familiar`, or `learned`.
 
-   - If the user makes **no more than one mistake**, the word is considered **learned**, and its status becomes `learned`.
-   - If the user makes **2 or 3 mistakes**, the word is considered **partially learned**, and it will appear again in the next loop along with new words, but starting from **stage 6**.
-   - If the user makes **4 or 5 mistakes**, the word is considered **unknown**, its status remains `new`, and the user will learn it again from the beginning in the next loop.
+    - If the user makes **no more than one mistake**, the word is considered **learned**, and its status becomes `learned`.
+    - If the user makes **2 or 3 mistakes**, the word is considered **partially learned**, and it will appear again in the next loop along with new words, but starting from **stage 6**.
+    - If the user makes **4 or 5 mistakes**, the word is considered **unknown**, its status remains `new`, and the user will learn it again from the beginning in the next loop.
 
 ## Getting the Data
 
@@ -33,7 +33,7 @@ Users can register, log in, receive personalized word sets. Words are selected d
 **Database Structure:**
 
 1.  **users:**
-   
+
 ```
 {
   _id: ObjectId,
@@ -143,6 +143,3 @@ Project structure:
         └── wordAPI_doc.yaml
 
 ```
-
-
-
