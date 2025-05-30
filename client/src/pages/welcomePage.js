@@ -54,7 +54,7 @@ export const welcomePage = () => {
 
   donateButton.addEventListener('click', payment);
 
-  const token = localStorage.getItem('token');
+  const token = sessionStorage.getItem('token');
   if (token) {
     startButton.addEventListener('click', getWord);
     userProfileIconContainer.addEventListener('click', userProfilePage);

@@ -23,7 +23,7 @@ export const userProfilePage = async () => {
   let userData;
 
   try {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (!token) {
       message('You are not logged in. Please log in to continue.');
     }

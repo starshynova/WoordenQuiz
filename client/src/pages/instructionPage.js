@@ -128,7 +128,7 @@ export const instructionPage = () => {
   startButton.textContent = 'Start WoordenQuiz!';
   containerButton.appendChild(startButton);
 
-  const token = localStorage.getItem('token');
+  const token = sessionStorage.getItem('token');
   if (token) {
     startButton.addEventListener('click', getWord);
     userProfileIconContainer.addEventListener('click', userProfilePage);
