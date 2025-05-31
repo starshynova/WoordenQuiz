@@ -4,6 +4,7 @@ import { userProfilePage } from './userProfilePage.js';
 import { userProfileIconContainer } from '../views/userProfileButton.js';
 import { instructionPage } from './instructionPage.js';
 import { payment } from './paymentPage.js';
+import { categoryPage } from './categoryPage.js';
 
 export const welcomePage = () => {
   document.getElementById('user-interface').innerHTML = '';
@@ -50,9 +51,17 @@ export const welcomePage = () => {
   donateButton.classList.add('next-button');
   donateButton.style.marginLeft = '20px';
   donateButton.textContent = 'Donate';
+  donateButton.addEventListener('click', payment);
   containerButtons.appendChild(donateButton);
 
-  donateButton.addEventListener('click', payment);
+  const categoryButton = document.createElement('button');
+  categoryButton.classList.add('next-button');
+  categoryButton.style.marginLeft = '20px';
+  categoryButton.textContent = 'Categories';
+  categoryButton.addEventListener('click', categoryPage)
+  containerButtons.appendChild(categoryButton);
+
+  
 
   const token = sessionStorage.getItem('token');
   if (token) {

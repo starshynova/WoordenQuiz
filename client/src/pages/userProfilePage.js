@@ -1,6 +1,6 @@
 import jwtDecode from 'https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/+esm';
 import { API_BASE_URL } from '../../config.js';
-import { message } from '../views/message.js';
+import { messageView } from '../views/messageView.js';
 import { welcomePage } from './welcomePage.js';
 import { getWord } from './getWord.js';
 import { backIconContainer } from '../views/backButton.js';
@@ -25,7 +25,7 @@ export const userProfilePage = async () => {
   try {
     const token = sessionStorage.getItem('token');
     if (!token) {
-      message('You are not logged in. Please log in to continue.');
+      messageView('You are not logged in. Please log in to continue.');
     }
     const decodedToken = jwtDecode(token);
     const userId = decodedToken.id;

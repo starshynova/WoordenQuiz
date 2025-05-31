@@ -1,7 +1,7 @@
 import db from '../db/connectDB.js';
 import { ObjectId } from 'mongodb';
 
-const { woorden, users } = db;
+const { words, users } = db;
 
 export const getWords = async (req, res) => {
   const { id } = req.params;
@@ -36,7 +36,7 @@ export const getWords = async (req, res) => {
         query = { _id: { $gt: new ObjectId(lastNewWord._id) } };
       }
 
-      const potentialNewWords = await woorden
+      const potentialNewWords = await words
         .find(query)
         .sort({ $natural: 1 })
         .limit(50)
@@ -96,13 +96,13 @@ export const getWords = async (req, res) => {
       return res.status(404).json({ error: 'No word found' });
     }
 
-    const frontBack = await woorden.findOne({
+    const frontBack = await words.findOne({
       _id: new ObjectId(nextWord._id),
     });
     if (!frontBack) {
       return res
         .status(404)
-        .json({ error: 'Word data not found in woorden collection' });
+        .json({ error: 'Word data not found in words collection' });
     }
 
     nextWord.front = frontBack.front;
@@ -234,11 +234,11 @@ export const getQuizTwo = async (req, res) => {
       return res.status(404).json({ error: "Word not found in user's list" });
     }
 
-    const currentWord = await woorden.findOne({ _id: new ObjectId(wordId) });
+    const currentWord = await words.findOne({ _id: new ObjectId(wordId) });
     if (!currentWord) {
       return res
         .status(404)
-        .json({ error: 'Word not found in woorden collection' });
+        .json({ error: 'Word not found in words collection' });
     }
 
     const suitableWordIds = user.words
@@ -251,7 +251,7 @@ export const getQuizTwo = async (req, res) => {
         .json({ error: "Not enough alternative words with status 'new'" });
     }
 
-    const [wrongWord] = await woorden
+    const [wrongWord] = await words
       .aggregate([
         { $match: { _id: { $in: suitableWordIds } } },
         { $sample: { size: 1 } },
@@ -289,11 +289,11 @@ export const getQuizFour = async (req, res) => {
       return res.status(404).json({ error: "Word not found in user's list" });
     }
 
-    const currentWord = await woorden.findOne({ _id: new ObjectId(wordId) });
+    const currentWord = await words.findOne({ _id: new ObjectId(wordId) });
     if (!currentWord) {
       return res
         .status(404)
-        .json({ error: 'Word not found in woorden collection' });
+        .json({ error: 'Word not found in words collection' });
     }
 
     const suitableWordIds = user.words
@@ -306,7 +306,7 @@ export const getQuizFour = async (req, res) => {
         .json({ error: "Not enough alternative words with status 'new'" });
     }
 
-    const wrongAnswers = await woorden
+    const wrongAnswers = await words
       .aggregate([
         { $match: { _id: { $in: suitableWordIds } } },
         { $sample: { size: 3 } },
@@ -339,7 +339,7 @@ export const getWordById = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const word = await woorden.findOne({ _id: new ObjectId(id) });
+    const word = await words.findOne({ _id: new ObjectId(id) });
     if (!word) {
       return res.status(404).json({ error: 'Word not found' });
     }
@@ -347,5 +347,26 @@ export const getWordById = async (req, res) => {
   } catch (error) {
     console.error('Error fetching word:', error);
     res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+// export const getCategory = async (req, res) => {
+//   try {
+//     const categories = await words.distinct('category');
+//     res.json(categories);
+//   } catch (error) {
+//     console.error('Error when receiving categories:', error);
+//     res.status(500).json({ message: 'Internal server error' });
+//   }
+// };
+
+export const getCategory = async (req, res) => {
+  try {
+    const categories = await words.distinct('category');
+    console.log('categories from DB:', categories); // <-- добавь лог
+    res.json(categories);
+  } catch (error) {
+    console.error('Error when receiving categories:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
