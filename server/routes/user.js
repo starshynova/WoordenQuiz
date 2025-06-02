@@ -4,7 +4,7 @@ import {
   loginUser,
   checkUserEmail,
   getUserById,
-} from '../controllers/users.js';
+} from '../controllers/user.js';
 
 const userRouter = express.Router();
 

@@ -6,13 +6,15 @@ dotenv.config();
 const client = new MongoClient(process.env.MONGODB_URL, {
   serverApi: {
     version: ServerApiVersion.v1,
-    strict: true,
     deprecationErrors: true,
   },
 });
 
-const db = client.db('WoordenQuiz');
-const woorden = db.collection('woorden');
-const users = db.collection('users');
+await client.connect(); 
 
-export default { woorden, users };
+const db = client.db('WoordenQuiz');
+const words = db.collection('words');
+const users = db.collection('users');
+const categories = db.collection('categories');
+
+export default { words, users, categories };

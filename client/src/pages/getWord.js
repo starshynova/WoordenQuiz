@@ -1,6 +1,6 @@
 import { renderSingleCard } from '../views/flashCardView.js';
 import { renderQuizCard } from '../views/quizCardView.js';
-import { message } from '../views/message.js';
+import { messageView } from '../views/messageView.js';
 import jwtDecode from 'https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/+esm';
 import { API_BASE_URL } from '../../config.js';
 import { nextWordSetPage } from '../views/nextWordSetPage.js';
@@ -19,21 +19,40 @@ export let totalStageCount = 0;
 export const getIncorrectAnswer = () => incorrectAnswer;
 
 export const getWord = async () => {
+  document.getElementById('user-interface').innerHTML = '';
+
   let word;
   try {
     const token = sessionStorage.getItem('token');
     if (!token) {
-      message('You are not logged in. Please log in to continue.');
+      messageView('You are not logged in. Please log in to continue.');
     }
     const decodedToken = jwtDecode(token);
     userId = decodedToken.id;
-    const response = await fetch(
-      `${API_BASE_URL}/api/word/vocabulary/${userId}`
-    );
-    word = await response.json();
-    if (word.needToUpdate) {
-      nextWordSetPage();
+    const response = await fetch(`${API_BASE_URL}/api/word/vocabulary/${userId}`);
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Server returned error:', errorData);
+      messageView(errorData.message || 'Failed to get word');
+      return;
     }
+
+    word = await response.json();
+
+    if (word.message === "finished set") {
+      nextWordSetPage();
+      return;
+    } else if (word.message === "category completed") {
+      messageView("You have completed this category!");
+      return;
+    }
+
+    if (!word.word) {
+      messageView("No word found.");
+      return;
+    }
+
     currentWordId = word.word._id;
     currentStage = word.word.stage;
     totalStageNewCount = word.totalWordsWithStageNew;

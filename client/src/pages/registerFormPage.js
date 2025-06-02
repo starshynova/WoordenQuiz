@@ -1,5 +1,5 @@
 import { loginForm } from './loginFormPage.js';
-import { message } from '../views/message.js';
+import { messageView } from '../views/messageView.js';
 import { API_BASE_URL } from '../../config.js';
 
 export const registerForm = () => {
@@ -228,7 +228,7 @@ export const registerForm = () => {
         console.error(errorData.message);
       } else {
         const text = 'Registration successful! Redirecting to login page...';
-        message(text);
+        messageView(text);
         setTimeout(() => {
           loginForm();
         }, 3000);
