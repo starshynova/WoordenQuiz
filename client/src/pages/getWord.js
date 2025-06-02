@@ -29,7 +29,9 @@ export const getWord = async () => {
     }
     const decodedToken = jwtDecode(token);
     userId = decodedToken.id;
-    const response = await fetch(`${API_BASE_URL}/api/word/vocabulary/${userId}`);
+    const response = await fetch(
+      `${API_BASE_URL}/api/word/vocabulary/${userId}`
+    );
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -40,16 +42,16 @@ export const getWord = async () => {
 
     word = await response.json();
 
-    if (word.message === "finished set") {
+    if (word.message === 'finished set') {
       nextWordSetPage();
       return;
-    } else if (word.message === "category completed") {
-      messageView("You have completed this category!");
+    } else if (word.message === 'category completed') {
+      messageView('You have completed this category!');
       return;
     }
 
     if (!word.word) {
-      messageView("No word found.");
+      messageView('No word found.');
       return;
     }
 

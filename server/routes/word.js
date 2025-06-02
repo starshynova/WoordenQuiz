@@ -17,5 +17,4 @@ wordRouter.get('/quiz-two/:userId/:wordId', getQuizTwo);
 wordRouter.get('/quiz-four/:userId/:wordId', getQuizFour);
 wordRouter.get('/:id', getWordById);
 
-
 export default wordRouter;

@@ -1,7 +1,12 @@
 import { paymentForm } from '../views/paynemtForm.js';
+import { backIconContainer } from '../views/backButton.js';
+import { welcomePage } from './welcomePage.js';
 
 export const payment = () => {
   document.getElementById('user-interface').innerHTML = '';
+  backIconContainer.addEventListener('click', () => {
+    welcomePage();
+  });
 
   const container = document.createElement('div');
   container.classList.add('container');
@@ -12,6 +17,7 @@ export const payment = () => {
   container.appendChild(containerHeader);
 
   document.getElementById('user-interface').appendChild(container);
+  document.getElementById('user-interface').appendChild(backIconContainer);
 
   const warningMessageContainer = document.createElement('div');
   warningMessageContainer.classList.add('payment-message-container');

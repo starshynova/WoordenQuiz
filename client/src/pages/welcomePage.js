@@ -41,6 +41,13 @@ export const welcomePage = () => {
   instructionButton.addEventListener('click', instructionPage);
   containerButtons.appendChild(instructionButton);
 
+  const categoryButton = document.createElement('button');
+  categoryButton.classList.add('next-button');
+  categoryButton.style.marginLeft = '20px';
+  categoryButton.textContent = 'Categories';
+  categoryButton.addEventListener('click', categoryPage);
+  containerButtons.appendChild(categoryButton);
+
   const startButton = document.createElement('button');
   startButton.classList.add('next-button');
   startButton.style.marginLeft = '20px';
@@ -53,15 +60,6 @@ export const welcomePage = () => {
   donateButton.textContent = 'Donate';
   donateButton.addEventListener('click', payment);
   containerButtons.appendChild(donateButton);
-
-  const categoryButton = document.createElement('button');
-  categoryButton.classList.add('next-button');
-  categoryButton.style.marginLeft = '20px';
-  categoryButton.textContent = 'Categories';
-  categoryButton.addEventListener('click', categoryPage)
-  containerButtons.appendChild(categoryButton);
-
-  
 
   const token = sessionStorage.getItem('token');
   if (token) {

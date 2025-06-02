@@ -97,7 +97,7 @@ export const instructionPage = () => {
 
   const mistake23 = document.createElement('li');
   mistake23.textContent =
-    'Need to repeat (2-3 mistakes) - the word will come back in the next set, but from stage 6.';
+    'Need to repeat (2-3 mistakes) - the word will come back in the next set, but from stage 4.';
   mistakeExplain.appendChild(mistake23);
 
   const mistake45 = document.createElement('li');
