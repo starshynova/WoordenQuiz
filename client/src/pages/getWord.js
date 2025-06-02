@@ -19,6 +19,8 @@ export let totalStageCount = 0;
 export const getIncorrectAnswer = () => incorrectAnswer;
 
 export const getWord = async () => {
+  document.getElementById('user-interface').innerHTML = '';
+
   let word;
   try {
     const token = sessionStorage.getItem('token');
@@ -27,13 +29,30 @@ export const getWord = async () => {
     }
     const decodedToken = jwtDecode(token);
     userId = decodedToken.id;
-    const response = await fetch(
-      `${API_BASE_URL}/api/word/vocabulary/${userId}`
-    );
-    word = await response.json();
-    if (word.needToUpdate) {
-      nextWordSetPage();
+    const response = await fetch(`${API_BASE_URL}/api/word/vocabulary/${userId}`);
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Server returned error:', errorData);
+      messageView(errorData.message || 'Failed to get word');
+      return;
     }
+
+    word = await response.json();
+
+    if (word.message === "finished set") {
+      nextWordSetPage();
+      return;
+    } else if (word.message === "category completed") {
+      messageView("You have completed this category!");
+      return;
+    }
+
+    if (!word.word) {
+      messageView("No word found.");
+      return;
+    }
+
     currentWordId = word.word._id;
     currentStage = word.word.stage;
     totalStageNewCount = word.totalWordsWithStageNew;

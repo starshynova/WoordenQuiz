@@ -1,6 +1,6 @@
 import { registerForm } from './registerFormPage.js';
-import { getWord } from './getWord.js';
 import { API_BASE_URL } from '../../config.js';
+import { welcomePage } from './welcomePage.js';
 
 export const loginForm = () => {
   document.getElementById('user-interface').innerHTML = '';
@@ -113,7 +113,7 @@ export const loginForm = () => {
           passwordError.textContent = data.error || 'Login failed';
         } else {
           sessionStorage.setItem('token', data.token);
-          await getWord();
+          await welcomePage();
         }
       } catch (error) {
         console.error('Error:', error);

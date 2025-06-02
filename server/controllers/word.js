@@ -4,138 +4,177 @@ import { ObjectId } from 'mongodb';
 const { words, users } = db;
 
 export const getWords = async (req, res) => {
-  const { id } = req.params;
+    const { id } = req.params;
 
-  try {
-    if (!ObjectId.isValid(id)) {
-      return res.status(400).json({ error: 'Invalid user ID format' });
-    }
+    try {
+        let user = await users.findOne({ _id: new ObjectId(id) }); 
 
-    const user = await users.findOne({ _id: new ObjectId(id) });
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-
-    const userWords = user.words || [];
-    const wordStatusNew = userWords.filter((word) => word.status === 'new');
-    const newWordsAmount = 10 - wordStatusNew.length;
-
-    let updatedWords = [...userWords];
-
-    if (newWordsAmount > 0) {
-      let lastNewWord;
-      if (wordStatusNew.length > 0) {
-        lastNewWord = wordStatusNew[wordStatusNew.length - 1];
-      } else {
-        lastNewWord = userWords[userWords.length - 1];
-      }
-
-      let query = {};
-
-      if (lastNewWord && lastNewWord._id) {
-        query = { _id: { $gt: new ObjectId(lastNewWord._id) } };
-      }
-
-      const potentialNewWords = await words
-        .find(query)
-        .sort({ $natural: 1 })
-        .limit(50)
-        .project({ _id: 1 })
-        .toArray();
-
-      const existingIdsSet = new Set(userWords.map((w) => String(w._id)));
-
-      const filteredNewWords = potentialNewWords
-        .filter((word) => !existingIdsSet.has(String(word._id)))
-        .slice(0, newWordsAmount);
-
-      updatedWords = [
-        ...userWords,
-        ...filteredNewWords.map((word) => ({
-          ...word,
-          status: 'new',
-          counter: 0,
-          stage: 0,
-        })),
-      ];
-
-      await users.updateOne(
-        { _id: new ObjectId(id) },
-        {
-          $set: {
-            words: updatedWords,
-            lastView_date: new Date(),
-          },
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' }); 
         }
-      );
-    }
+        if (!ObjectId.isValid(id)) { 
+            return res.status(400).json({ error: 'Invalid user ID format' });
+        }
 
-    const updatedUser = await users.findOne({ _id: new ObjectId(id) });
 
-    const wordsAtStage8 = updatedUser.words.filter(
-      (word) => word.status === 'new' && word.stage === 8
-    );
+        const currentCategory = user.currentCategory;
+        if (currentCategory === undefined || currentCategory === null) { 
+            return res.status(400).json({ error: 'No category selected' });
+        }
 
-    const activeWords = updatedUser.words.filter(
-      (word) =>
-        (word.status === 'new' || word.status === 'familiar') && word.stage < 8
-    );
+        let userWords = user.words || [];
 
-    if (wordsAtStage8.length > 0 && activeWords.length === 0) {
-      return res.json({
-        message: 'finished set',
-        needToUpdate: true,
-      });
-    }
-
-    const nextWord = updatedUser.words
-      .filter((word) => word.status === 'new' || word.status === 'familiar')
-      .sort((a, b) => a.stage - b.stage)[0];
-
-    if (!nextWord) {
-      return res.status(404).json({ error: 'No word found' });
-    }
-
-    const frontBack = await words.findOne({
-      _id: new ObjectId(nextWord._id),
-    });
-    if (!frontBack) {
-      return res
-        .status(404)
-        .json({ error: 'Word data not found in words collection' });
-    }
-
-    nextWord.front = frontBack.front;
-    nextWord.back = frontBack.back;
-
-    const totalWordsWithStageNew = updatedUser.words.filter(
-      (word) => word.status === 'new' && word.stage === nextWord.stage
-    );
-
-    let totalWordsWithStage = [...totalWordsWithStageNew];
-
-    if (nextWord.stage >= 5) {
-      const familiarWords = updatedUser.words.filter(
-        (word) => word.status === 'familiar' && word.stage === nextWord.stage
-      );
-
-      const slotsLeft = 15 - totalWordsWithStage.length;
-      if (slotsLeft > 0) {
-        totalWordsWithStage = totalWordsWithStage.concat(
-          familiarWords.slice(0, slotsLeft)
+        const userWordsInCategory = userWords.filter(
+            (word) => word.category === currentCategory
         );
-      }
-    }
+        const wordStatusNew = userWordsInCategory.filter(
+            (word) => word.status === 'new'
+        );
+        const newWordsAmount = 10 - wordStatusNew.length;
+        let updatedWords = [...userWords]; 
 
-    res.json({
-      word: nextWord,
-      totalWordsWithStageNew: totalWordsWithStageNew.length,
-      totalWordsWithStage: totalWordsWithStage.length,
-    });
-  } catch (error) {
-    console.error('Error fetching word:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
+        let userWordsUpdatedFlag = false; 
+
+        if (newWordsAmount > 0) {
+            const existingIdsSet = new Set(userWords.map((w) => String(w._id)));
+
+            const potentialNewWords = await words
+                .find({ category: currentCategory })
+                .sort({ _id: 1 })
+                .limit(100)
+                .toArray();
+
+            const filteredNewWords = potentialNewWords
+                .filter((word) => !existingIdsSet.has(String(word._id)))
+                .slice(0, newWordsAmount);
+
+            if (filteredNewWords.length > 0) {
+                updatedWords = [
+                    ...userWords,
+                    ...filteredNewWords.map((word) => ({
+                        ...word,
+                        status: 'new',
+                        counter: 0,
+                        stage: 0,
+                        category: currentCategory,
+                    })),
+                ];
+
+                await users.updateOne(
+                    { _id: new ObjectId(id) },
+                    {
+                        $set: {
+                            words: updatedWords,
+                            lastView_date: new Date(),
+                        },
+                    }
+                );
+                userWordsUpdatedFlag = true; 
+            }
+        }
+
+        if (userWordsUpdatedFlag) {
+            user = await users.findOne({ _id: new ObjectId(id) });
+            userWords = user.words || [];
+        }
+
+        const totalWordsInGlobalCategory = await words.countDocuments({ category: currentCategory });
+        const userWordsAtStage8InCategory = userWords.filter(
+            (word) => word.category === currentCategory && word.stage === 8
+        );
+
+        if (userWordsAtStage8InCategory.length === totalWordsInGlobalCategory && totalWordsInGlobalCategory > 0) {
+            const updatedLearnedCategories = new Set(user.learnedCategories || []);
+            updatedLearnedCategories.add(currentCategory);
+
+            await users.updateOne(
+                { _id: new ObjectId(id) },
+                { $set: { learnedCategories: Array.from(updatedLearnedCategories) } }
+            );
+            return res.json({
+                message: 'category completed',
+                needToUpdate: true,
+            });
+        }
+
+
+        const wordsAtStage8 = userWords.filter( 
+            (word) => word.category === currentCategory && word.stage === 8
+        );
+        const activeWords = userWords.filter( 
+            (word) =>
+                word.category === currentCategory &&
+                (word.status === 'new' || word.status === 'familiar') &&
+                word.stage < 8
+        );
+
+        if (wordsAtStage8.length > 0 && activeWords.length === 0) {
+            return res.json({
+                message: 'finished set',
+                needToUpdate: true,
+            });
+        }
+
+        const nextWord = user.words 
+            .filter(
+                (word) =>
+                    word.category === currentCategory &&
+                    (word.status === 'new' || word.status === 'familiar')
+            )
+            .sort((a, b) => a.stage - b.stage)[0];
+
+        if (!nextWord) {
+            return res.status(404).json({ error: 'No active word found for learning in this category.' });
+        }
+
+        const frontBack = await words.findOne({
+            _id: new ObjectId(nextWord._id),
+        });
+
+        if (!frontBack) {
+            return res
+                .status(404)
+                .json({ error: 'Word data not found in words collection' });
+        }
+
+        nextWord.front = frontBack.front;
+        nextWord.back = frontBack.back;
+
+        const totalWordsWithStageNew = user.words.filter(
+            (word) =>
+                word.category === currentCategory &&
+                word.status === 'new' &&
+                word.stage === nextWord.stage
+        );
+
+        let totalWordsWithStage = [...totalWordsWithStageNew];
+
+        if (nextWord.stage >= 5) {
+            const familiarWords = user.words.filter(
+                (word) =>
+                    word.category === currentCategory &&
+                    word.status === 'familiar' &&
+                    word.stage === nextWord.stage
+            );
+
+            const slotsLeft = 15 - totalWordsWithStage.length;
+            if (slotsLeft > 0) {
+                totalWordsWithStage = totalWordsWithStage.concat(
+                    familiarWords.slice(0, slotsLeft)
+                );
+            }
+        }
+
+        res.json({
+            word: nextWord,
+            totalWordsWithStageNew: totalWordsWithStageNew.length,
+            totalWordsWithStage: totalWordsWithStage.length,
+        });
+
+    } catch (error) {
+        console.error('Error fetching word:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
 };
 
 export const updateWord = async (req, res) => {
@@ -189,23 +228,33 @@ export const updateWords = async (req, res) => {
 
       let updatedData = { ...word };
 
-      if (word.counter === 0 || word.counter === 1) {
-        updatedData.status = 'learned';
-      } else if (word.counter === 2 || word.counter === 3) {
-        updatedData.status = 'familiar';
-        updatedData.counter = 0;
-        updatedData.stage = 5;
-      } else if (word.counter === 4 || word.counter === 5) {
-        updatedData.status = 'new';
-        updatedData.counter = 0;
-        updatedData.stage = 0;
+      if (word.status === 'new') {
+        if (word.counter === 0 || word.counter === 1) {
+          updatedData.status = 'learned';
+        } else if (word.counter === 2 || word.counter === 3) {
+          updatedData.status = 'familiar';
+          updatedData.counter = 0;
+          updatedData.stage = 3;
+        } else if (word.counter === 4 || word.counter === 5) {
+          updatedData.status = 'new'; 
+          updatedData.counter = 0;
+          updatedData.stage = 0;
+        }
       } else if (word.status === 'familiar') {
         if (word.counter === 0 || word.counter === 1) {
           updatedData.status = 'learned';
+        } else if (word.counter === 2 || word.counter === 3) {
+          updatedData.status = 'familiar';
+          updatedData.counter = 0;
+          updatedData.stage = 3;
+        } else if (word.counter === 4 || word.counter === 5) {
+          updatedData.status = 'new'; 
+          updatedData.counter = 0;
+          updatedData.stage = 0;
         }
       }
 
-      return updatedData;
+      return updatedData; 
     });
 
     await users.updateOne(
@@ -347,26 +396,5 @@ export const getWordById = async (req, res) => {
   } catch (error) {
     console.error('Error fetching word:', error);
     res.status(500).json({ error: 'Internal server error' });
-  }
-};
-
-// export const getCategory = async (req, res) => {
-//   try {
-//     const categories = await words.distinct('category');
-//     res.json(categories);
-//   } catch (error) {
-//     console.error('Error when receiving categories:', error);
-//     res.status(500).json({ message: 'Internal server error' });
-//   }
-// };
-
-export const getCategory = async (req, res) => {
-  try {
-    const categories = await words.distinct('category');
-    console.log('categories from DB:', categories); // <-- добавь лог
-    res.json(categories);
-  } catch (error) {
-    console.error('Error when receiving categories:', error);
-    res.status(500).json({ message: 'Internal server error' });
   }
 };

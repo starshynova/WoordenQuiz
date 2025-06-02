@@ -8,7 +8,7 @@ body {
 }
 
 button:not(:disabled):hover {
-  scale: 102%;
+  scale: 105%;
 }
 
 #user-interface {
@@ -459,6 +459,34 @@ ul {
   justify-content: center;
   align-items: center;
 }
+
+.category-button {
+  display: flex;
+  width: 240px;
+  height: 80px;
+  margin: 20px;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  border: #3f1161 2px solid;
+  background-color: #ffffff;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.category-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  /* margin-top: 120px; */
+  margin-bottom: 100px;
+  padding: 20px 40px;
+  overflow-y: auto;
+}
+
+
 
 @media screen and (min-width: 0px) and (max-width: 768px) {
   .icon-container {

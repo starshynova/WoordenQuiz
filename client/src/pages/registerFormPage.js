@@ -1,5 +1,4 @@
 import { loginForm } from './loginFormPage.js';
-// import { message } from '../views/message.js';
 import { messageView } from '../views/messageView.js';
 import { API_BASE_URL } from '../../config.js';
 

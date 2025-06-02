@@ -2,8 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import wordRouter from './routes/word.js';
-import userRouter from './routes/users.js';
+import userRouter from './routes/user.js';
 import paymentRouter from './routes/payment.js';
+import categoryRouter from './routes/category.js';
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(cors());
 app.use('/api/word', wordRouter);
 app.use('/api/user', userRouter);
 app.use('/api/payment', paymentRouter);
+app.use('/api/category', categoryRouter)
 
 dotenv.config();
 
