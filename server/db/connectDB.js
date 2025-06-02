@@ -10,7 +10,7 @@ const client = new MongoClient(process.env.MONGODB_URL, {
   },
 });
 
-await client.connect(); 
+await client.connect();
 
 const db = client.db('WoordenQuiz');
 const words = db.collection('words');

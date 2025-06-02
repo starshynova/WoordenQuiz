@@ -1,9 +1,9 @@
-import { API_BASE_URL } from "../../config.js";
-import { backIconContainer } from "../views/backButton.js";
-import { welcomePage } from "./welcomePage.js";
-import { messageView } from "../views/messageView.js";
+import { API_BASE_URL } from '../../config.js';
+import { backIconContainer } from '../views/backButton.js';
+import { welcomePage } from './welcomePage.js';
+import { messageView } from '../views/messageView.js';
 import jwtDecode from 'https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/+esm';
-import { getWord } from "./getWord.js";
+import { getWord } from './getWord.js';
 
 let userId;
 
@@ -43,11 +43,15 @@ export const categoryPage = async () => {
     const categories = await response.json();
 
     if (categories.length === 0) {
-      return messageView("No categories found");
+      return messageView('No categories found');
     }
 
     categories.sort((a, b) => a.category - b.category);
-    console.log("Categories:", categories);
+
+    const responseUser = await fetch(`${API_BASE_URL}/api/user/${userId}`);
+    const userData = await responseUser.json();
+
+    const userLearnedCategory = userData.user.learnedCategories;
 
     categories.forEach((cat) => {
       const categoryButton = document.createElement('button');
@@ -55,32 +59,39 @@ export const categoryPage = async () => {
       categoryButton.classList.add('category-button');
       categoryContainer.appendChild(categoryButton);
 
-      categoryButton.addEventListener('click', async () => {
-        try {
-          const res = await fetch(`${API_BASE_URL}/api/category/${userId}/category`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ category: cat.category }),
-          });
+      if (userLearnedCategory && userLearnedCategory.includes(cat.category)) {
+        categoryButton.disabled = true;
+        categoryButton.textContent += ' ✓';
+      } else {
+        categoryButton.addEventListener('click', async () => {
+          try {
+            const res = await fetch(
+              `${API_BASE_URL}/api/category/${userId}/category`,
+              {
+                method: 'PUT',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ category: cat.category }),
+              }
+            );
 
-          const data = await res.json();
+            const data = await res.json();
 
-          if (!res.ok) {
-            messageView(data.error || 'Failed to set category');
-          } else {
-            getWord();
-            console.log('The category is set:', data);
+            if (!res.ok) {
+              messageView(data.error || 'Failed to set category');
+            } else {
+              getWord();
+            }
+          } catch (error) {
+            console.error('Error when setting a category:', error);
+            messageView('Error when selecting a category');
           }
-        } catch (error) {
-          console.error('Error when setting a category:', error);
-          messageView('Error when selecting a category');
-        }
-      });
+        });
+      }
     });
   } catch (error) {
     console.error('Error loading categories:', error);
-    messageView("Error loading categories");
+    messageView('Error loading categories');
   }
 };

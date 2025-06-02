@@ -4,177 +4,181 @@ import { ObjectId } from 'mongodb';
 const { words, users } = db;
 
 export const getWords = async (req, res) => {
-    const { id } = req.params;
+  const { id } = req.params;
 
-    try {
-        let user = await users.findOne({ _id: new ObjectId(id) }); 
+  try {
+    let user = await users.findOne({ _id: new ObjectId(id) });
 
-        if (!user) {
-            return res.status(404).json({ error: 'User not found' }); 
-        }
-        if (!ObjectId.isValid(id)) { 
-            return res.status(400).json({ error: 'Invalid user ID format' });
-        }
-
-
-        const currentCategory = user.currentCategory;
-        if (currentCategory === undefined || currentCategory === null) { 
-            return res.status(400).json({ error: 'No category selected' });
-        }
-
-        let userWords = user.words || [];
-
-        const userWordsInCategory = userWords.filter(
-            (word) => word.category === currentCategory
-        );
-        const wordStatusNew = userWordsInCategory.filter(
-            (word) => word.status === 'new'
-        );
-        const newWordsAmount = 10 - wordStatusNew.length;
-        let updatedWords = [...userWords]; 
-
-        let userWordsUpdatedFlag = false; 
-
-        if (newWordsAmount > 0) {
-            const existingIdsSet = new Set(userWords.map((w) => String(w._id)));
-
-            const potentialNewWords = await words
-                .find({ category: currentCategory })
-                .sort({ _id: 1 })
-                .limit(100)
-                .toArray();
-
-            const filteredNewWords = potentialNewWords
-                .filter((word) => !existingIdsSet.has(String(word._id)))
-                .slice(0, newWordsAmount);
-
-            if (filteredNewWords.length > 0) {
-                updatedWords = [
-                    ...userWords,
-                    ...filteredNewWords.map((word) => ({
-                        ...word,
-                        status: 'new',
-                        counter: 0,
-                        stage: 0,
-                        category: currentCategory,
-                    })),
-                ];
-
-                await users.updateOne(
-                    { _id: new ObjectId(id) },
-                    {
-                        $set: {
-                            words: updatedWords,
-                            lastView_date: new Date(),
-                        },
-                    }
-                );
-                userWordsUpdatedFlag = true; 
-            }
-        }
-
-        if (userWordsUpdatedFlag) {
-            user = await users.findOne({ _id: new ObjectId(id) });
-            userWords = user.words || [];
-        }
-
-        const totalWordsInGlobalCategory = await words.countDocuments({ category: currentCategory });
-        const userWordsAtStage8InCategory = userWords.filter(
-            (word) => word.category === currentCategory && word.stage === 8
-        );
-
-        if (userWordsAtStage8InCategory.length === totalWordsInGlobalCategory && totalWordsInGlobalCategory > 0) {
-            const updatedLearnedCategories = new Set(user.learnedCategories || []);
-            updatedLearnedCategories.add(currentCategory);
-
-            await users.updateOne(
-                { _id: new ObjectId(id) },
-                { $set: { learnedCategories: Array.from(updatedLearnedCategories) } }
-            );
-            return res.json({
-                message: 'category completed',
-                needToUpdate: true,
-            });
-        }
-
-
-        const wordsAtStage8 = userWords.filter( 
-            (word) => word.category === currentCategory && word.stage === 8
-        );
-        const activeWords = userWords.filter( 
-            (word) =>
-                word.category === currentCategory &&
-                (word.status === 'new' || word.status === 'familiar') &&
-                word.stage < 8
-        );
-
-        if (wordsAtStage8.length > 0 && activeWords.length === 0) {
-            return res.json({
-                message: 'finished set',
-                needToUpdate: true,
-            });
-        }
-
-        const nextWord = user.words 
-            .filter(
-                (word) =>
-                    word.category === currentCategory &&
-                    (word.status === 'new' || word.status === 'familiar')
-            )
-            .sort((a, b) => a.stage - b.stage)[0];
-
-        if (!nextWord) {
-            return res.status(404).json({ error: 'No active word found for learning in this category.' });
-        }
-
-        const frontBack = await words.findOne({
-            _id: new ObjectId(nextWord._id),
-        });
-
-        if (!frontBack) {
-            return res
-                .status(404)
-                .json({ error: 'Word data not found in words collection' });
-        }
-
-        nextWord.front = frontBack.front;
-        nextWord.back = frontBack.back;
-
-        const totalWordsWithStageNew = user.words.filter(
-            (word) =>
-                word.category === currentCategory &&
-                word.status === 'new' &&
-                word.stage === nextWord.stage
-        );
-
-        let totalWordsWithStage = [...totalWordsWithStageNew];
-
-        if (nextWord.stage >= 5) {
-            const familiarWords = user.words.filter(
-                (word) =>
-                    word.category === currentCategory &&
-                    word.status === 'familiar' &&
-                    word.stage === nextWord.stage
-            );
-
-            const slotsLeft = 15 - totalWordsWithStage.length;
-            if (slotsLeft > 0) {
-                totalWordsWithStage = totalWordsWithStage.concat(
-                    familiarWords.slice(0, slotsLeft)
-                );
-            }
-        }
-
-        res.json({
-            word: nextWord,
-            totalWordsWithStageNew: totalWordsWithStageNew.length,
-            totalWordsWithStage: totalWordsWithStage.length,
-        });
-
-    } catch (error) {
-        console.error('Error fetching word:', error);
-        res.status(500).json({ error: 'Internal server error' });
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
     }
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'Invalid user ID format' });
+    }
+
+    const currentCategory = user.currentCategory;
+    if (currentCategory === undefined || currentCategory === null) {
+      return res.status(400).json({ error: 'No category selected' });
+    }
+
+    let userWords = user.words || [];
+
+    const userWordsInCategory = userWords.filter(
+      (word) => word.category === currentCategory
+    );
+    const wordStatusNew = userWordsInCategory.filter(
+      (word) => word.status === 'new'
+    );
+    const newWordsAmount = 10 - wordStatusNew.length;
+    let updatedWords = [...userWords];
+
+    let userWordsUpdatedFlag = false;
+
+    if (newWordsAmount > 0) {
+      const existingIdsSet = new Set(userWords.map((w) => String(w._id)));
+
+      const potentialNewWords = await words
+        .find({ category: currentCategory })
+        .sort({ _id: 1 })
+        .limit(100)
+        .toArray();
+
+      const filteredNewWords = potentialNewWords
+        .filter((word) => !existingIdsSet.has(String(word._id)))
+        .slice(0, newWordsAmount);
+
+      if (filteredNewWords.length > 0) {
+        updatedWords = [
+          ...userWords,
+          ...filteredNewWords.map((word) => ({
+            ...word,
+            status: 'new',
+            counter: 0,
+            stage: 0,
+            category: currentCategory,
+          })),
+        ];
+
+        await users.updateOne(
+          { _id: new ObjectId(id) },
+          {
+            $set: {
+              words: updatedWords,
+              lastView_date: new Date(),
+            },
+          }
+        );
+        userWordsUpdatedFlag = true;
+      }
+    }
+
+    if (userWordsUpdatedFlag) {
+      user = await users.findOne({ _id: new ObjectId(id) });
+      userWords = user.words || [];
+    }
+
+    const totalWordsInGlobalCategory = await words.countDocuments({
+      category: currentCategory,
+    });
+    const userWordsAtStage8InCategory = userWords.filter(
+      (word) => word.category === currentCategory && word.stage === 8
+    );
+
+    if (
+      userWordsAtStage8InCategory.length === totalWordsInGlobalCategory &&
+      totalWordsInGlobalCategory > 0
+    ) {
+      const updatedLearnedCategories = new Set(user.learnedCategories || []);
+      updatedLearnedCategories.add(currentCategory);
+
+      await users.updateOne(
+        { _id: new ObjectId(id) },
+        { $set: { learnedCategories: Array.from(updatedLearnedCategories) } }
+      );
+      return res.json({
+        message: 'category completed',
+        needToUpdate: true,
+      });
+    }
+
+    const wordsAtStage8 = userWords.filter(
+      (word) => word.category === currentCategory && word.stage === 8
+    );
+    const activeWords = userWords.filter(
+      (word) =>
+        word.category === currentCategory &&
+        (word.status === 'new' || word.status === 'familiar') &&
+        word.stage < 8
+    );
+
+    if (wordsAtStage8.length > 0 && activeWords.length === 0) {
+      return res.json({
+        message: 'finished set',
+        needToUpdate: true,
+      });
+    }
+
+    const nextWord = user.words
+      .filter(
+        (word) =>
+          word.category === currentCategory &&
+          (word.status === 'new' || word.status === 'familiar')
+      )
+      .sort((a, b) => a.stage - b.stage)[0];
+
+    if (!nextWord) {
+      return res
+        .status(404)
+        .json({ error: 'No active word found for learning in this category.' });
+    }
+
+    const frontBack = await words.findOne({
+      _id: new ObjectId(nextWord._id),
+    });
+
+    if (!frontBack) {
+      return res
+        .status(404)
+        .json({ error: 'Word data not found in words collection' });
+    }
+
+    nextWord.front = frontBack.front;
+    nextWord.back = frontBack.back;
+
+    const totalWordsWithStageNew = user.words.filter(
+      (word) =>
+        word.category === currentCategory &&
+        word.status === 'new' &&
+        word.stage === nextWord.stage
+    );
+
+    let totalWordsWithStage = [...totalWordsWithStageNew];
+
+    if (nextWord.stage >= 5) {
+      const familiarWords = user.words.filter(
+        (word) =>
+          word.category === currentCategory &&
+          word.status === 'familiar' &&
+          word.stage === nextWord.stage
+      );
+
+      const slotsLeft = 15 - totalWordsWithStage.length;
+      if (slotsLeft > 0) {
+        totalWordsWithStage = totalWordsWithStage.concat(
+          familiarWords.slice(0, slotsLeft)
+        );
+      }
+    }
+
+    res.json({
+      word: nextWord,
+      totalWordsWithStageNew: totalWordsWithStageNew.length,
+      totalWordsWithStage: totalWordsWithStage.length,
+    });
+  } catch (error) {
+    console.error('Error fetching word:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 };
 
 export const updateWord = async (req, res) => {
@@ -236,7 +240,7 @@ export const updateWords = async (req, res) => {
           updatedData.counter = 0;
           updatedData.stage = 3;
         } else if (word.counter === 4 || word.counter === 5) {
-          updatedData.status = 'new'; 
+          updatedData.status = 'new';
           updatedData.counter = 0;
           updatedData.stage = 0;
         }
@@ -248,13 +252,13 @@ export const updateWords = async (req, res) => {
           updatedData.counter = 0;
           updatedData.stage = 3;
         } else if (word.counter === 4 || word.counter === 5) {
-          updatedData.status = 'new'; 
+          updatedData.status = 'new';
           updatedData.counter = 0;
           updatedData.stage = 0;
         }
       }
 
-      return updatedData; 
+      return updatedData;
     });
 
     await users.updateOne(
@@ -345,14 +349,29 @@ export const getQuizFour = async (req, res) => {
         .json({ error: 'Word not found in words collection' });
     }
 
-    const suitableWordIds = user.words
-      .filter((w) => w.status === 'new' && w._id.toString() !== wordId)
+    let suitableWordIds = user.words
+      .filter(
+        (w) =>
+          (w.status === 'new' || w.status === 'familiar') &&
+          w._id.toString() !== wordId
+      )
       .map((w) => new ObjectId(w._id));
 
     if (suitableWordIds.length < 3) {
-      return res
-        .status(404)
-        .json({ error: "Not enough alternative words with status 'new'" });
+      const additionalIds = user.words
+        .filter(
+          (w) =>
+            w.status === 'learned' &&
+            w._id.toString() !== wordId &&
+            !suitableWordIds.some((id) => id.toString() === w._id.toString())
+        )
+        .map((w) => new ObjectId(w._id));
+
+      suitableWordIds = [...suitableWordIds, ...additionalIds].slice(0, 10);
+    }
+
+    if (suitableWordIds.length < 3) {
+      return res.status(404).json({ error: 'Not enough alternative words' });
     }
 
     const wrongAnswers = await words
