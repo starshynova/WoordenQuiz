@@ -20,7 +20,7 @@ Users can register, log in, receive personalized word sets. Words are selected d
     After completing a full learning loop, each word can have one of the following statuses: `new`, `familiar`, or `learned`.
 
     - If the user makes **no more than one mistake**, the word is considered **learned**, and its status becomes `learned`.
-    - If the user makes **2 or 3 mistakes**, the word is considered **partially learned**, and it will appear again in the next loop along with new words, but starting from **stage 6**.
+    - If the user makes **2 or 3 mistakes**, the word is considered **partially learned**, and it will appear again in the next loop along with new words, but starting from **stage 4**.
     - If the user makes **4 or 5 mistakes**, the word is considered **unknown**, its status remains `new`, and the user will learn it again from the beginning in the next loop.
 
 ## Getting the Data
