@@ -84,6 +84,9 @@ Users can register, log in, receive personalized word sets. Words are selected d
 3. PM2
 4. Let’s Encrypt
 
+### Third party service
+1. Stripe
+
 ### Domain
 
 https://woordenquiz.duckdns.org
