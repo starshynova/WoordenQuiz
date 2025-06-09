@@ -38,9 +38,12 @@ export const getWords = async (req, res) => {
       const existingIdsSet = new Set(userWords.map((w) => String(w._id)));
 
       const potentialNewWords = await words
-        .find({ category: currentCategory })
+        .find({
+          category: currentCategory,
+          _id: { $nin: Array.from(existingIdsSet).map((id) => new ObjectId(id)) },
+        })
         .sort({ _id: 1 })
-        .limit(100)
+        .limit(newWordsAmount)
         .toArray();
 
       const filteredNewWords = potentialNewWords
