@@ -25,7 +25,7 @@ Users can register, log in, receive personalized word sets. Words are selected d
 
 ## Getting the Data
 
-- The app gets vocabulary data from a MongoDB collection of words (`woorden`).
+- The app gets vocabulary data from a MongoDB collection of words (`words`).
 - When a user logs in, their current set of words is fetched based on their ID.
 - The backend ensures that each user receives new words if they have fewer than 10 "new" words in their set.
 - All user interactions (e.g., answer attempts, stages, word statuses) are stored and updated in the user's document in the `users` collection.
@@ -53,13 +53,24 @@ Users can register, log in, receive personalized word sets. Words are selected d
 }
 ```
 
-2. **woorden:**
+2. **words:**
 
 ```
 {
   _id: ObjectId,
   front: string, // word in Dutch
   back: string   // translation in English
+  category: number
+}
+```
+
+3. **categories**
+
+```
+{
+  _id: ObjectId,
+  category: number,
+  categoryName: string
 }
 ```
 
